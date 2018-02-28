@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+
+		<style type="text/css">
+			.Absolute-Center {  
+				text-align:center; 
+			}
+			.mui-navigate-right{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			.daye{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			.mui-table-view-cell{
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			.mui-table-view-cell:after{
+				left:0;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人详情</h1>
+			<a id="erweima" style="position: absolute;bottom: 10px;right: 10px; color:black;">
+		    	<svg class="icon mui-pull-right" aria-hidden="true" style="font-size:25px;">
+						<use xlink:href="#icon-QR-code-1"></use>
+				</svg>
+			</a>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:20px;">
+						    <img id="headPic" style="width:80px; height:80px; " src="" alt="个人头像" />
+						    <!-- <a id="credit-ratings" style="position: absolute;top: 10px;right: 10px; color:black;">信用评级：A+</a> -->
+						    <!-- <a style="position: absolute;bottom: 10px;left: 10px; color:black;">
+						    	
+								<span id="credit-score"></span>
+							</a> -->
+						</div>
+						<p id="nickname" class="Absolute-Center">nickname</p>
+					</li>
+					<li class="mui-table-view-cell">
+						<div id="container" style="height: 220px"></div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div id="company-belong" class="col-xs-12 mui-navigate-right">
+							<div class="col-xs-3 mui-text-left daye mui-hidden">
+								<span class="mui-pull-left">所属公司：</span>
+							</div>
+							<div class="col-xs-9 mui-text-left">
+								<span id="company">中原地产闵行分店</span>
+							</div>
+							<div class="col-xs-3 mui-text-left daye">
+								<span class="mui-pull-left"></span>
+							</div>
+							<div class="col-xs-9 mui-text-left">
+								<span id="colleague" class="mui-pull-left">我的同事</span>
+							</div>
+						</div>
+					</li>
+					<li id="residential-belong" class="mui-table-view-cell">
+						<div class="col-xs-12 mui-navigate-right">
+							<div class="col-xs-3 mui-text-left daye mui-hidden">
+								<span class="mui-pull-left">主营小区：</span>
+							</div>
+							<div class="col-xs-9 mui-text-left mui-hidden">
+								<span id="residential-area" class="mui-pull-left">大上海花园、上海康城</span>
+							</div>
+							<div class="col-xs-3 mui-text-left daye mui-hidden">
+								<span class="mui-pull-right"></span>
+							</div>
+							<div class="col-xs-9 mui-text-left">
+								<span id="competitor" class="mui-pull-left">主营小区同行</span>
+							</div>
+						</div>
+					</li>
+				</ul>
+		    </div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/ajax.js"></script>
+		<script src="../../js/area.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/wxShare.js"></script>
+		<script src="../../js/Expert/common/expertData.js"></script>
+		<script src="../../js/echarts.min.js"></script>
+		<script src="../../js/jquery.js"></script> 
+		<script src="../../js/jquery.qrcode.min.js"></script> 
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var credit;
+			var activity;
+			var openness;
+			var service;
+			var professional;
+			var id = getQueryStrFromUrl("userId");
+			var user = new Object();
+			user.id = id;
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				initUserInfo();
+				
+				//初始化微信分享
+				wxShare();
+			});
+			var loginUserId = null;
+			var dom = document.getElementById("container");
+			var myChart = echarts.init(dom);
+			var app = {};
+			var districts = '';
+			var organization = '';
+			option = null;
+			option = {
+			    title: {
+			        // text: '多雷达图'
+			    },
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        x: 'center',
+			        data:['信用度','活跃度','开放度','服务能力','专业能力']
+			    },
+			    radar: [
+			        {
+			            indicator: [
+			                {text: '信用度', max: 100},
+			                {text: '活跃度', max: 100},
+			                {text: '开放度', max: 100},
+			                {text: '服务能力', max: 100},
+			                {text: '专业能力', max: 100}
+			            ],
+			            center: ['50%','50%'],
+			            radius: 80
+			        }
+			    ],
+			    series: [
+			        {
+			            type: 'radar',
+			             tooltip: {
+			                trigger: 'item'
+			            },
+			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+			            data: [
+			                {
+			                    value: [60,73,85,50,80],
+			                    // name: '某软件'
+			                }
+			            ]
+			        }
+			    ]
+			};
+			
+			if (option && typeof option === "object") {
+			    myChart.setOption(option, true);
+			}
+
+			function initUserInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				
+				if(user)
+				{
+					loginUserId = user.id;
+				}
+				ajax_get_user_info({
+					userid: user.id,
+					loginuserid:loginUserId
+				});
+			}
+	
+			function getUserInfoSuccess(data)
+			{
+				localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+				
+				byId("headPic").src = data.picture;
+				initAgentInfo();
+			}
+			
+			function initAgentInfo()
+			{
+				var options = new Object();
+				options.id = loginUserId;
+				ajax_get_agent_detail(options,getAgentDetailSuc,getAgentDetailFailed);
+			}
+	
+			function getAgentDetailSuc(data)
+			{
+				console.log('getAgentDetailSuc data:'+JSON.stringify(data));
+				var rating;
+				byId("headPic").src = data.picture;
+				if(data.zmcredit>800){
+					rating="信用评级：A+";
+				}else if(data.zmcredit>750){
+					rating="信用评级：A";
+				}else if(data.zmcredit>700){
+					rating="信用评级：B+";
+				}else if(data.zmcredit>650){
+					rating="信用评级：B";
+				}else{
+					rating="信用评级：C";
+				}
+				byId("nickname").innerHTML=data.nickname;
+				// byId("credit-ratings").innerHTML=rating;
+				// byId("credit-score").innerHTML=data.zmcredit+'分';
+				organization = data.organization;
+				if(organization)
+				{
+					byId("company").innerHTML=data.organization;
+				}
+				else
+				{
+					byId("company").innerHTML = "暂无";
+					$('#colleague').addClass('mui-hidden');
+				}
+				
+				if(data.majordistricts.length>0){
+					for (var i=0;i<data.majordistricts.length;i++){
+						districts+=data.majordistricts[i].districtname;
+						console.log('i is '+i+' districts is '+districts);
+						districts+=',';
+					}
+					console.log('districts.length is '+districts.length);
+					districts=districts.substring(0,districts.length-1);
+					console.log('districts is '+districts);
+					byId("residential-area").innerHTML=districts;
+				}
+				else
+				{
+					byId("residential-area").innerHTML = "暂无";
+					$('#competitor').addClass('mui-hidden');	
+				}
+				
+				credit=data.zmcredit;
+				initEvent();
+			}
+
+			function getAgentDetailFailed(data)
+			{
+				console.log("getAgentDetailFailed");
+				initEvent();
+			}
+
+			function initEvent()
+			{
+				byId("company-belong").addEventListener('tap', function(event) {
+					var company_url = "http://www.zmzfang.com/weixin/Agent/Mine/Colleagues.html?type=1";
+					if(!organization)
+					{
+						company_url = "./MyAgentSettingModify.html";
+					}
+					
+					mui.openWindow({
+							url: company_url
+					});	
+					
+				}, false);
+				
+				byId("residential-belong").addEventListener('tap', function(event) {
+					
+					var residential_url = "http://www.zmzfang.com/weixin/Agent/Mine/Colleagues.html?type=2";
+					if(!districts)
+					{
+						residential_url = "./MyAgentSettingModify.html";
+					}
+					
+					mui.openWindow({
+							url: residential_url
+					});	
+				
+				}, false);
+			}
+
+			byId("erweima").addEventListener('tap', function(event) {
+				mui.openWindow({
+						url: 'http://www.zmzfang.com/weixin/Agent/erweima.html?web=AgentInfo.html&userid='+user.id
+				});
+			}, false);
+
+		</script>
+	</body>
+
+</html>

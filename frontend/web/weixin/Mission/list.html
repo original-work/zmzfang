@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<style type="text/css">
+			#popover{
+				left:calc(50% - 140px);
+				bottom:calc(50% - 180px);
+				height:360px;
+				background-image: url(../img/red-w.png);
+				background-size: 280px;
+				background-repeat: no-repeat;
+			}
+			.open{
+				border-radius: 50%;
+				background: #fdc339;
+				width: 80px;
+				height:80px;
+				position: absolute;
+				left:calc(50% - 40px);
+				bottom:calc(50% - 40px);
+				line-height: 80px;
+				font-size:2.75rem;
+				text-align: center;
+			}
+			.result{
+				display:none;
+				position:absolute;
+				bottom:135px;
+				text-align: center;
+				width:100%;
+			}
+			.result h5{
+				font-size: .85rem;
+				margin-bottom:15px;
+				color:#fff;
+				position:absolute;
+				bottom:80px;
+				width:100%;
+			}
+			.result p{
+				font-family: Arial;
+				font-size: 2.8rem;
+				height:2.8rem;
+				line-height: 2.8rem;
+				color:#000;
+				position:absolute;
+				bottom:20px;
+				width:100%;
+			}
+			.result p span{
+				font-size:.9rem;
+				margin-left: 5px;
+			}
+			.result p.col{
+				font-size: .75rem;
+				color:#ccc;
+				position:absolute;
+				bottom:-20px;
+				width:100%;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">红包任务</h1>
+		</header>
+		<div class="mui-content">
+			<img style="width: 100%;display: block;" src="../img/award.jpg" />
+			<div>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+								新手任务
+							<p class='mui-ellipsis'>目标:个人资料完成度>80%</p>
+							<p class='mui-ellipsis'>奖励:随机红包+首页展示</p>
+							<span id="send" style="position: absolute;right: 5px;padding:4px 8px;background:#62a0fd;border-radius:5px;color:#fff;font-size:.8rem;bottom:calc(50% - .8rem);">进行任务</span>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+								每日任务
+							<p class='mui-ellipsis'>目标:分享好友</p>
+							<p class='mui-ellipsis'>奖励:好友越多奖励越多</p>
+							<span id="send2" style="position: absolute;right: 5px;padding:4px 8px;background:#62a0fd;border-radius:5px;color:#fff;font-size:.8rem;bottom:calc(50% - .8rem);">进行任务</span>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+								企业红包
+							<p class='mui-ellipsis'>敬请期待</p>
+							<span style="position: absolute;right: 5px;padding:4px 8px;background:#ccc;border-radius:5px;color:#fff;font-size:.8rem;bottom:calc(50% - .8rem);">尚未开始</span>
+						</div>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+		<div id="popover" class="mui-popover">
+			<div class="red"><!-- shake-chunk -->
+				<div class="open" type="领取红包">拆</div>
+				<div class="result">
+
+					<h5>恭喜发财，大吉大利</h5>
+					<p>0.12<span>元</span></p>
+					<p class='col'>已存入芝麻账户，可用于提现</p>
+				</div>
+			</div>
+		</div>
+
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/auth.js"></script>
+	<script type="text/javascript">
+		$('.mui-content').Auth({'wechat':false});
+		var loginUser = userInfo
+		getAgentExtraInfo();
+		$('#send2').on('tap',function(){location.href='../Agent/Mine/invite.html'})
+		function getAgentExtraInfo()
+			{
+				if(loginUser && 1 == loginUser.agentflag)
+				{
+					var options = new Object();
+					options.userid = loginUser.id;
+					jQuery.ajax('http://www.zmzfang.com/?r=mission/get-mission-info', {
+						data: JSON.stringify(options),
+						dataType: 'json',
+						type: 'post',
+						timeout: 3000,
+						async: false,
+						success: function(data) {
+							getMissionInfoSuc(data);
+						},
+						error: function(xhr, type, errorThrown) {
+							mui('当前网络不通畅，请稍后再试！')
+						}
+					});
+				}
+			
+			}
+		function getMissionInfoSuc(data)
+			{
+				console.log("getAgentExtraInfoSuc data:"+JSON.stringify(data));
+				if(data && data.length != 0)
+				{
+					switch(data.status)
+					{
+						case 1:
+						
+						$('#send').css('background','#4cd964');
+						$('#send').html('领取奖励');
+						$('#send').on('tap',function(){
+							mui('#popover').popover('show');
+							$('.open').on('tap',function(){
+								setTimeout(function(){
+									setAcount();
+								},500);
+							});
+						})
+						break;
+						case 2:
+						$('#send').html('已完成');
+						$('#send').css('background','#ccc');
+						break;
+						default:
+						$('#send').on('tap',function(){location.href='../Agent/Mine/MyAgentSettingModify.html'})
+					}
+				}else{
+					mui.toast('任务完成度解析失败，请重试。')
+				}
+			}
+
+		function setAcount(){
+			var options = new Object();
+			options.userid = loginUser.id;
+			options.mid = 1;
+			jQuery.ajax('http://www.zmzfang.com/?r=mission/set-mission-info', {
+				data: JSON.stringify(options),
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					if(data.status){
+						$('#send').html('已完成');
+						$('#send').css('background','#ccc');
+						$('.open').css("display" , "none");
+						$('#popover').css("background-image" , "url(../img/red-y.png)");
+						$('.result').css("display" , "block");
+					}else{
+						mui.toast('账户获取失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+		}
+	</script>
+</body>
+</html>

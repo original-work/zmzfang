@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.touxiang {
+				text-align: center;
+			}
+			
+			.touxiang div {
+				/*width: 4em;*/
+				/*height: 4em;*/
+				margin: 0px auto;
+				margin-bottom: 5px;
+			}
+			
+			.touxiang_icon {
+				padding: 0px;
+				border-radius: 50%;
+				border: 2px solid white;
+				color: gray;
+			}
+			
+			.mine_list_font {
+				font-family: 'microsoft yahei';
+				font-size: 16px;
+				color: #000000;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的问答</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="mui-hidden need-login" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn" style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv" class="display-after-login">
+				<div class="headImg mui-hidden">
+					<div class="touxiang">
+						<div>
+							
+							<div style="width:70px; height:70px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:40px;">
+								<img id="headPic" style="width:70px; height:70px; " src="../img/headpic/default.jpg" alt="个人头像" />
+							</div>
+							<p> <span id="nickname" style="color: black;"></span><span id="scoreSpan" style="color: yellow;"></span> &nbsp;
+							</p>
+							<p id="phone" style="color: black;"></p>
+							<a id="bind" class="mui-hidden" href="http://www.zmzfang.com/?r=door/scope&view=test/expert">绑定</a>
+						</div>
+
+					</div>
+				</div>
+
+				<ul class="mui-table-view mui-hidden" style="margin-top: 0px;">
+					<li class="mui-table-view-cell">
+						<a id="expertHome" class="mui-navigate-right">
+							快问
+						</a>
+					</li>
+				</ul>
+				
+				<ul class="mui-table-view" style="margin-top: 0px;">
+					<li class="mui-table-view-cell">
+						<a id="appointmentList" class="mui-navigate-right" >
+							我问
+						</a>
+					</li>
+					<li id="appointmentMeLi" class="mui-table-view-cell mui-hidden">
+						<a id="appointmentMeList" class="mui-navigate-right" >
+							我答
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<a id="myQuestionListPaid" class="mui-navigate-right" >
+							我听
+						</a>
+					</li>	
+				</ul>
+				
+				<ul class="mui-table-view" style="margin-top: 20px;">
+					<li class="mui-table-view-cell" style="display: none">
+						<a id="myAccount" class="mui-navigate-right" >
+							账户
+						</a>
+					</li>
+					
+					<li id="expertInfoLi" class="mui-table-view-cell mui-hidden">
+						<a id="expertInfo" class="mui-navigate-right">
+							<span id="myExpert">我的专家</span>
+						</a>
+					</li>
+					
+					<li id="inviteExpertLi" class="mui-table-view-cell mui-hidden">
+						<a id="inviteExpert" class="mui-navigate-right">
+							申请直通车
+						</a>
+					</li>
+					
+					<!--<li id="applyExpertLi" class="mui-table-view-cell mui-hidden">
+						<a id="applyExpert" class="mui-navigate-right">
+							申请专家
+						</a>
+					</li>-->
+					
+				</ul>
+				
+			</div>
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/own.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<!--<script src="http://app.cloopen.com/im50/ytx-web-im-min-new.js"></script>
+		<script src="./js/im.listen.js"></script>-->
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/expertAjax.js"></script>
+		<script src="../js/Expert/menu.js?v=0.01"></script>
+		
+	</body>
+
+</html>

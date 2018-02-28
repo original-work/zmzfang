@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的收藏</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<!--<div id="slider" class="mui-slider" style="margin-left: 0px;overflow: visible;">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">
+				           收藏的购房需求
+			        </a>
+			       
+					<a class="mui-control-item" href="#item2mobile">
+				           关注的专家
+			        </a>
+			        
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper" style="margin-left: 0px;overflow: visible;">
+							<div class="mui-scroll">
+								<ul id="requirementUl" class="mui-table-view">
+								
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper" style="margin-left: 0px;overflow: visible;">
+							<div class="mui-scroll">
+								<div class="mui-loading">
+									<div class="mui-spinner">
+									</div>
+									
+								</div>
+								
+							</div>
+						</div>
+
+					</div>
+					
+					
+				</div>
+			</div>-->
+
+            <div class="mui-scroll">
+				<ul id="requirementUl" class="mui-table-view">
+				
+				</ul>
+			</div>
+			
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+	
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/dom.create.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/user.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false
+			});
+			
+//	        (function($) {
+//				$('.mui-scroll-wrapper').scroll({
+//					indicators: true //是否显示滚动条
+//				});
+//				
+//				var html2 = '<ul class="mui-table-view"></ul>';
+//				var item2 = document.getElementById('item2mobile');
+//				
+//				document.getElementById('slider').addEventListener('slide', function(e) {
+//					console.log('slideNumber:'+e.detail.slideNumber);
+//					if (e.detail.slideNumber === 1) {
+//						if (item2.querySelector('.mui-loading')) {
+//							setTimeout(function() {
+//								item2.querySelector('.mui-scroll').innerHTML = html2;
+//							}, 500);
+//						}
+//					} 
+//				});
+//				
+//				
+//			})(mui);
+			
+			mui.ready(function() {
+				$('#mineLink').addClass('mui-active')
+				initFavoriteInfo();//初始化收藏的需求列表
+				//初始化微信分享
+				wxShare();
+			});
+			
+			//增加需求列表中tap事件
+			mui('#requirementUl').on('tap', '.requirement-brief', function() {
+				var requirementId = this.getAttribute('requirement-id');
+				console.log('requirementId:'+requirementId);
+				localStorage.setItem("requirementId", requirementId);
+
+                var requiementPublishuserId = this.getAttribute('publishuser-id');
+				localStorage.setItem("requiementPublishuserId", requiementPublishuserId);
+
+				
+				mui.openWindow({
+					url: '../HomePage/RequirementDetail.html',
+					id: 'RequirementDetail.html'
+				});
+			});
+			
+			//初始化收藏的需求列表
+			function initFavoriteInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				
+				var userid = user.id;
+				console.log("userid:"+userid);
+				
+				ajax_get_favorite_requirement({
+					userid: userid
+				});
+			}
+			
+			
+			
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<title>芝麻找房</title>
+		<style type="text/css">
+		html,body{margin:0;padding:0;height:100%;}
+		/*span{position:absolute;color:#fff;}
+		.upper{position: absolute;width: 80px;height:80px;padding:2px;border:1px solid #ccc;background-color: #fff}
+		@media screen and ( min-width: 375px ) {
+			span{bottom:8%;right:33%;font-size: 20px;width:90px}
+			.upper{top:25%;right:34%;}
+		}
+		@media screen and ( max-width: 375px ) {
+			span{bottom:8%;right:30%;font-size: 20px;width:90px}
+			.upper{top:25%;right:34%;}
+		}
+		@media screen and ( max-width: 320px ) {
+			span{bottom:8%;right:28%;font-size: 20px;width:90px}
+		}*/
+		</style>
+	</head>
+	<body>
+	<div style="max-width: 800px;margin:0 auto;background: url('./img/h5/pic_bg_with_fonts.jpg');background-size:cover;position: relative;height:100%;width:100%">
+		<!-- <img src="./img/h5/pic_font1.gif" style="position:absolute;width:calc( 100% - 20px );bottom:20px;margin:0 auto;z-index:2;padding:0 10px" /> -->
+		<div style="width:300px;height:300px;position:absolute;top:calc(50% - 150px);background: rgba(0,0,0,.3);margin:0 auto;left:calc(50% - 150px);z-index:2">
+			<p style="text-align: center;color:#fff;margin:20px auto">我爱加班 加班使我快乐</p>
+			<p style="text-align: center;color:#fff;"><img class='headpic' src="" style="width: 80px;height:80px;padding:2px;border:1px solid #ccc;background-color: #fff" /></p>
+			<p style="text-align: center;color:#fff">No.<span class="number"></span></p>
+
+			<p style="text-align: center;"><button class="mui-btn" id="mine">我也在加班！</button></p>
+			<p style="text-align: center;"><button class="mui-btn" id="share">分享</button></p>
+			
+		</div>
+		<img src="./img/h5/pic_bg1.gif" style="position:absolute;width:100%;bottom:0;left:0;" />
+		<!-- <img src="./img/h5/pic_bg2.png" style="position:absolute;width:100%;top:0;left:0;" /> -->
+		<div id="mask" style="position: absolute;left: 0;top: 0;bottom: 0;right: 0;background-color: rgba(0,0,0,.5);background-image: url(./img/h5/none.png);background-position: top right;background-repeat: no-repeat;z-index: 3;display:none;">
+		</div>
+	</div>
+		<script src="./js/jquery.min.js"></script>
+		<script src="./js/wxShare.js"></script>
+		<script src="./js/common.js"></script>
+		<script type="text/javascript">
+			var data = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			var No;
+			var userid = getQueryStrFromUrl('userid');
+			var Hno = getQueryStrFromUrl('no');
+			$.post('http://www.zmzfang.com/?r=user/user-infos', {'users':[userid]}, function(res){
+					$('.number').html(Hno);
+					res = JSON.parse(res)
+					$('.headpic').attr('src',res[0].picture)
+			})
+			
+			$.get('http://www.zmzfang.com/?r=user/no',function(count,status){
+					if(status = 200){
+						No = count;
+						wxShare({"title":'我是「No.'+No+'」加班战斗鸡,五一看房来约我',"desc":'不加班的劳动节是假的劳动节！',"imgUrl":data.picture,'link':'http://www.zmzfang.com/?r=door/scope&view=H5&userid='+data.id+'&no='+No+'&noPhoneNoJump=1'});
+					}
+			});
+			$('#mine').on('click',function(){
+				$('.number').html(No);
+				$('.headpic').attr('src',data.picture)
+			});
+			$('#share').on('click',function(){
+				$('#mask').show()
+			})
+		</script>
+</body>
+</html>

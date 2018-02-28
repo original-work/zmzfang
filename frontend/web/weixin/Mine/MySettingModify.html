@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+        
+        <style type="text/css">
+        	.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			#headpic{
+				width:80px;
+				height:80px;
+				border-radius:50%;
+				overflow:hidden;
+				margin:30px auto 25px;
+			}
+			h5{
+				margin:15px 0;
+			}
+		/*picupload start*/
+			/*picupload base*/
+			.pick-button{width: 80px;height: 80px;background-image:  url(../img/iconfont-tianjia.png);position:relative;display:inline-block;background-size:80px 80px;}
+			.pick-button label{position:absolute;width:80px;height:80px;color:#fff;font-size:2rem;}
+			#file{position: absolute;clip: rect(1px 1px 1px 1px);}
+			.imgpath{display:inline-block;margin-right:10px;position: relative;}
+			.imgpath span{
+				display: block;
+	    		background-color: transparent;
+	    		height:20px;
+	    		position:absolute;
+	    		bottom:0px;
+	    		font-size:.5rem ;
+	    		width: 100%;
+	    		text-align: center;
+	    		color:#fff;
+	    	}
+	    	/*picupload 进度条*/
+	    	.imgpath.active span{
+	    		animation:   reverse progress-bar-stripes 0.80s linear infinite;
+	    		-webkit-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		-o-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		background-image: linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -o-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-size: 20px 20px;
+			    -webkit-background-size: 20px 20px;
+	    	}
+	    	@-webkit-keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+			@keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+		/*picupload end*/
+        </style>
+        
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人信息修改</h1>	
+			<a id="saveUserInfo" class="mui-pull-right" style="color: #999;padding-top:10px;">保存</a>
+		</header>
+		
+		<div class="mui-content">
+			
+			<div class="mui-page-content">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<div id="headpic">
+									<div class="pick-button"> 
+										<input id="file" type="file" accept="image/*" />
+										<label for="file"></label>
+									</div>
+								</div>
+								<p style="text-align: center">点击图片进行修改</p>
+							</li>
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>昵称</label>
+								<input id="nickName" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>手机号</label>
+								<input id="phone" type="text" disabled="disabled">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+								<label>邮箱地址</label>
+								<input id="email" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>性别</label>
+								<select id="sex" class="mui-btn mui-btn-block" style="float:left;width:50%">
+									<option value="1">男</option>
+									<option value="2">女</option>
+								</select>
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>城市</label>
+								<input id="city" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<h5>标签</h5>
+									<div class="mui-input-group">
+										<div class="mui-input-row mui-checkbox mui-left">
+											<label>刚需
+											<input name="checkbox1" value="1001" type="checkbox">
+											</label>
+										</div>
+										<div class="mui-input-row mui-checkbox mui-left">
+											<label>置换
+											<input name="checkbox1" value="1002" type="checkbox">
+											</label>
+										</div>
+										<div class="mui-input-row mui-checkbox mui-left">
+											<label>投资
+											<input name="checkbox1" value="1003" type="checkbox">
+											</label>
+										</div>	
+										<div class="mui-input-row mui-checkbox mui-left">
+											<label>观望
+											<input name="checkbox1" value="1004" type="checkbox">
+											</label>
+										</div>	
+										<div class="mui-input-row mui-checkbox mui-left">
+											<label>首套
+											<input name="checkbox1" value="1005" type="checkbox">
+											</label>
+										</div>	
+									</div>
+							</li>
+							
+							<li id="regionLi" class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+									<div style="height:40px">
+										<div class="col-xs-5" >
+											<label style="padding-left:0px;width: 100%;">活动区域</label>
+										</div>
+										<div class="col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+											<button id='showRegionPicker' class="mui-btn mui-btn-block" type='button' style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;">点击选择（可多选）</button>
+										</div>
+									</div>
+									
+									<div id='regionResult' class="" style="clear:both;padding-left: 15px;"></div>
+								</div>
+							</li>
+							
+							<li id="realNameLi" class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+								<label>真实姓名</label>
+								<input id="realName" type="text">
+								</div>
+							</li>
+							
+							<li id="identityCardLi" class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+								<label>身份证</label>
+								<input id="identityCard" type="text">
+								</div>
+							</li>
+
+						</ul>
+		    </div>	
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/city.data.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/PicUpload/dist/lrz.bundle.js"></script>
+		<!--<script src="../js/Expert/common/expertData.js?v=0.01"></script>-->
+	<!--	<script src="../js/wxShare.js"></script>-->
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var pic;
+			var picname;
+			var result = true;
+			var selectAreaFlag = 0;
+			var resultValueArray = new Array();
+			var resultTextArray = new Array();
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				initUserInfo();
+				//初始化微信分享
+				//wxShare();
+				//初始化城市列表
+				initCityPicker();
+				//初始化区域列表
+				initAreaControl();
+			});
+			
+			 //增加保存个人信息按钮事件
+			document.querySelector('#saveUserInfo').addEventListener('tap', function() {
+				console.log('saveUserInfo click');
+                saveUserInfo();
+			}, false);
+			
+			function initUserInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				
+				$('.pick-button').css('background-image','url('+user.picture+')')
+				byId("nickName").value = user.nickname;
+				byId("phone").value = user.phone;
+				
+				byId("email").value = user.email;
+				//byId("sex").value = user.sex;
+				initSelectElementByValue('sex',user.sex);
+				byId("city").value = user.city;
+				
+				byId("identityCard").value = user.identitycard;
+				byId("realName").value = user.realname;
+				initSelectedRegion(user.activeregion);
+
+				var split = user.tags.split(',');
+				var tags='';
+				/*
+				for(i in split){
+					$('input[name=checkbox1]')[split[i]-1].checked = 'checked'
+				}
+				*/
+				$('input[name=checkbox1]').each(function(item){
+					console.log('aaaaa:'+this.value);
+					if(split.indexOf(this.value) >= 0)
+					{
+						this.checked = 'checked';
+					}
+				});
+				
+				if(user.agentflag == '0')
+				{
+					//经纪人相关的几个字段 不显示
+					byId("identityCardLi").classList.add('mui-hidden');
+					byId("realNameLi").classList.add('mui-hidden');
+					byId("regionLi").classList.add('mui-hidden');
+					
+				}
+			}
+	
+			function saveUserInfo()
+			{
+				//alert('saveUserInfo');
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				var userid = user.id;
+				var nickname = byId("nickName").value;
+				var phone = byId("phone").value;
+				picname = data.picture;
+				var email = byId("email").value;	
+				
+				var index = byId("sex").selectedIndex;
+				var sex = byId("sex").options[index].value;
+
+				var city = byId("city").value;
+				var realname = byId("realName").value;	
+				var identitycard = byId("identityCard").value;
+				var agentflag = user.agentflag;
+				var activeregion = resultValueArray.join();
+				var chk_value = [];
+					$('input[name="checkbox1"]:checked').each(function(index){
+						chk_value.push($('input[name="checkbox1"]:checked')[index].value); 
+					});
+				if(chk_value.length == 0 && agentflag == 1){
+					mui.toast('请至少选择一个标签')
+					return;
+				}
+				uploadPic();
+				if(!result){
+					return;
+				}
+				var picture = picname;
+				alert(picture)
+				ajax_modify_user_info({
+					userid: userid,
+					nickname: nickname,
+					phone: phone,
+					picture: picture,
+					email: email,
+					sex: sex,
+					city: city,
+					select: chk_value,
+					realname: realname,
+					identitycard: identitycard,
+					agentflag: agentflag,
+					activeregion:activeregion
+				});
+			}
+			
+			function modifyUserInfoSuccess(data)
+			{
+				console.log("modifyUserInfoSuccess data:"+JSON.stringify(data));
+				if(data.rscode != 0)
+				{
+					mui.toast('修改用户信息失败:'+data.error);
+					return;
+				}
+				toastMSG = '修改个人信息成功';
+				mui.toast(toastMSG);
+				
+				mui.back();
+			}
+			
+			
+			function initSelectElementByValue(id,value)
+            {
+                console.log("initSelectElementByValue:id "+id+" value:"+value);
+                var selectElement=byId(id);
+                for(var i=0;i<selectElement.options.length;i++)
+                {
+                    console.log('value:'+selectElement.options[i].value);
+                    if(selectElement.options[i].value == value)
+                    {
+                        selectElement.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+			function initAreaControl()
+			{
+				var cityPicker3 = new mui.PopPicker({
+					layer: 3
+				});
+				var regionData = new Array();
+				regionData.push(areaData3[2]);
+				//cityPicker3.setData(areaData3);
+				cityPicker3.setData(regionData);
+				
+				var showCityPickerButton = document.getElementById('showRegionPicker');
+				var cityResult3 = document.getElementById('regionResult');
+				
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					if(resultValueArray.length>0){
+						console.log(resultValueArray[0].slice(0,2));
+						switch(resultValueArray[0].slice(0,2)){
+							case '11':
+								//cityPicker3.setData([areaData3[0]]);
+								break;
+							case '12':
+								// cityPicker3.setData([areaData3[1]]);
+								break;
+							case '13':
+								cityPicker3.setData(regionData);
+								break;
+						}
+					}
+					cityPicker3.show(function(items) {
+						if(resultValueArray.length >2){
+							mui.toast('您最多可选3个区域，请删除后再操作！');
+							return;
+						}
+						
+						for (i in resultValueArray){
+							if(items[2].value == resultValueArray[i]){
+								mui.toast('该区域已存在！');
+								return;
+							}
+							if(items[2].value.slice(0,2) !=resultValueArray[i].slice(0,2)){
+								mui.toast('非法的选取选项');
+								return;
+							}
+
+						}
+						
+						resultValueArray.push(items[2].value);
+						resultTextArray.push(items[1].text+items[2].text);
+						console.log(resultValueArray);
+
+						cityPicker3.innerHTML = "你选择的区域是:";
+						regionResult.innerHTML = '';
+						for (i in resultTextArray){
+							regionResult.innerHTML += '<span data="'+resultValueArray[i]+'" class="item mui-badge mui-badge-success">' +resultTextArray[i] + ' x</span>';
+						}
+						$('.item').on('tap', function() {
+							$(this).remove();
+							for(var i =0;i<resultValueArray.length;i++){  
+		            			if(resultValueArray[i]==$(this).attr('data')){
+		           	        		resultValueArray.splice(i,1);
+		           	        		resultTextArray.splice(i,1);
+		        	    		}
+     						}
+     						if(!resultValueArray.length){
+     							regionResult.innerHTML ='';
+     							cityPicker3.setData(regionData);
+     							selectAreaFlag = 0;
+     						}
+						});
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					    
+					    selectAreaFlag = 1;//add by chail on 20160714
+					     
+					});
+				}, false);
+			}
+
+			function initSelectedRegion(data)
+			{
+				//console.log('initSelectedRegion:'+data);
+				if(!data)
+				{
+					return;
+				}
+				var regionarray=data.split(",");
+				//console.log('regionarray length:' +regionarray.length);
+				var str = '';
+				var cityResult3 = byId('regionResult');
+				if(regionarray.length > 0)
+				{
+					for(var i=0;i<regionarray.length;i++)
+					{
+						resultValueArray.push(regionarray[i]);
+						resultTextArray.push(getAreaText(regionarray[i]));
+					}
+					selectAreaFlag = 1;//
+					showRegionResult();
+				}
+			
+				
+			}
+			
+			function showRegionResult()
+			{
+				var regionResult = byId('regionResult');
+				regionResult.innerHTML = "您选择的区域是:";
+				regionResult.classList.add("show");
+				
+				for (i in resultTextArray)
+				{
+					regionResult.innerHTML += '<span data="'+resultValueArray[i]+'" class="item mui-badge mui-badge-success">' +resultTextArray[i] + ' x</span>';
+				}
+				
+				
+				$('.item').on('tap', function() {
+					$(this).remove();
+					for(var i =0;i<resultValueArray.length;i++){  
+						if(resultValueArray[i]==$(this).attr('data')){
+			        		resultValueArray.splice(i,1);
+			        		resultTextArray.splice(i,1);
+			    		}
+					}
+					if(!resultValueArray.length){
+						regionResult.innerHTML ='';
+						cityPicker3.setData(regionData);
+						selectAreaFlag = 0;
+						regionResult.classList.remove("show");
+					}
+				});
+			}
+			
+			//初始化籍贯按钮
+			function initCityPicker()
+			{
+				//级联示例
+				var cityPicker = new mui.PopPicker({
+					layer: 1
+				});
+				cityPicker.setData(openedCityData);
+				var showCityPickerButton = document.getElementById('city');
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker.show(function(items) {
+						console.log("你选择的城市是:" + items[0].text);
+						showCityPickerButton.value = items[0].text;	
+					});
+				}, false);
+			}
+
+			// 图片渲染
+			$('#file').on('change',function(){
+				$('.pick-button label').html('<div class="imgpath"><img src="../js/PicUpload/loading.gif" width="80" height="80" /><span></span></div>');
+				lrz(this.files[0], {width: 128})
+				.then(function (rst) {
+					var img = new Image();
+					img.src = rst.base64;
+					img.onload = function () {
+						$('.imgpath img').attr('src',rst.base64)
+					};
+					
+					pic = rst.base64
+				})
+			
+			})
+			// 图片上传
+			function uploadPic() {
+				if(!pic){
+					return;
+				}
+				$.ajax({
+					url: 'http://www.zmzfang.com/?r=user/headpic-upload',
+					data: {base64:pic},
+					async: false,
+					type: 'POST',
+					dataType:"json",
+					beforeSend: function(){
+						$('.imgpath').children('span').addClass('active');
+						$('.imgpath').children('span').css('background-color','#007aff;');
+						$('.imgpath').children('span').text('上传中');
+					},
+					success: function (data) {
+						if(data.status > 0){
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#073');
+							$('.imgpath').children('span').text('ok');
+							mui.toast('头像已上传');
+							picname = "http://www.zmzfang.com/weixin/img/headpic/"+data.picname;
+						}else{
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#c00');
+							$('.imgpath').children('span').text('fail');
+							mui.toast('头像上传失败了！');
+							result = false;
+						}
+						
+					},error:function (){
+						$('.imgpath').removeClass('active');
+						$('.imgpath').children('span').css('background-color','#c00');
+						$('.imgpath').children('span').text('fail');
+						mui.toast('头像上传失败了！');
+						result = false;
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

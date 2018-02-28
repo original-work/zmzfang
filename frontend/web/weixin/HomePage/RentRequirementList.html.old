@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01">
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			/*.mui-content {
+				padding:88px 0 50px!important;
+			}*/
+			
+			.mui-table-view.mui-grid-view{
+				padding: 0;
+			}
+			.mui-i-select-list{
+				padding:0;
+				box-shadow: none;
+				top: 44px;
+				-webkit-box-shadow:none;
+			}
+			.mui-i-select-list .mui-icon{
+				font-size: 12px;
+			}
+
+			.filter_item {
+			    position: absolute;
+			    background: #fff;
+			    top: 88px;
+			    left: 0;
+			    right: 0;
+			    -webkit-transition: -webkit-transform .5s ease;
+			    transition: transform .5s ease;
+			    -webkit-transform: translate3d(0,-100%,0);
+			    transform: translate3d(0,-100%,0);
+			    opacity: 0;
+			    z-index: -1;
+			}
+			.filter_item.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			    overflow-y: auto;
+			    max-height: 24.25rem;
+			}
+
+			#popup {
+				position: absolute;
+			    left: 0;
+			    top: 44px;
+			    width: 100%;
+			    height: 100%;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translate3d(-100%,0,0);
+			    transform: translate3d(-100%,0,0);
+			    -webkit-transition: -webkit-transform .2s ease;
+			    transition: transform .2s ease;
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    opacity: 0;
+			    z-index: -1;
+			}
+			#popup.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 1000;
+			}
+			.mui-scroll-wrapper{
+				top: 88px;
+				bottom: 50px
+			}
+			.content{
+				font-size:.9rem;
+			}
+			.content .mui-table-view-cell{
+				padding-left:1rem;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav" style="z-index: 1000; ">
+        	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">求租需求列表</h1>
+			<a href="./search.html?type=3"><span id="search" class="mui-icon mui-icon-search" style="position: absolute;right: 20px;top:0px;"></span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-i-select-list mui-bar" style="z-index: 1000;">
+				<ul class="mui-table-view mui-grid-view ">
+		            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-i-selectBtn">
+		            	<a href="#"><span id="region_value">区域</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+		            </li>
+		            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-i-selectBtn">
+		            	<a href="#"><span id="metro_value">地铁</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+		            </li>
+		            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-i-selectBtn">
+		            	<a href="#"><span id="price_value">总价</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+		            </li>
+		            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-i-selectBtn">
+		            	<a href="#"><span id="room_value">户型</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+		            </li>
+		        </ul>
+			</div>
+			<div class="content">
+
+			    <div class="filter_item lists_region" data-mark="region">
+			                <ul class="region_list mui-table-view">
+			                    <li class="mui-table-view-cell"	 data-region=''>不限</li>
+			                </ul>
+			    </div>
+
+			    <div class="filter_item lists_metro" data-mark="metro">
+			                <ul class="metro_list mui-table-view">
+			                    <li class="mui-table-view-cell" data-metro=''>不限</li>
+			                </ul>
+			    </div>
+
+			    <div class="filter_item lists_price" data-mark="panel_price">
+			        <ul class="price_list mui-table-view">
+			            <li class="mui-table-view-cell" data-price='' class="price">不限</li>
+			            <li class="mui-table-view-cell" data-price=0-999 class="price">1000以下</li>
+			            <li class="mui-table-view-cell" data-price=1000-1999 class="price">1000-2000</li>
+			            <li class="mui-table-view-cell" data-price=2000-2999 class="price">2000-3000</li>
+			            <li class="mui-table-view-cell" data-price=3000-3999 class="price">3000-4000</li>
+			            <li class="mui-table-view-cell" data-price=4000-4999 class="price">4000-5000</li>
+			            <li class="mui-table-view-cell" data-price=5000-5999 class="price">5000-6000</li>
+			            <li class="mui-table-view-cell" data-price=6000-7999 class="price">6000-8000</li>
+			            <li class="mui-table-view-cell" data-price=8000-9999 class="price">8000-10000</li>
+			            <li class="mui-table-view-cell" data-price=10000-99999 class="price">10000以上</li>
+			        </ul>
+			    </div>
+
+			    <div class="filter_item lists_model" data-mark="panel_room">
+			        <ul class="room_list mui-table-view">
+			            <li class="mui-table-view-cell" data-model='' class="room">不限</li>
+			            <li class="mui-table-view-cell" data-model=1 class="room">一室</li>
+			            <li class="mui-table-view-cell" data-model=2 class="room">二室</li>
+			            <li class="mui-table-view-cell" data-model=3 class="room">三室</li>
+			            <li class="mui-table-view-cell" data-model=4 class="room">四室</li>
+			            <li class="mui-table-view-cell" data-model=5-10 class="room">五室及以上</li>
+			        </ul>
+			    </div>
+
+
+			</div>
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="requirementUl" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+			</div>
+		
+		</div>
+		<div id="popup">
+			<div id="district">
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/dom.create.js" charset="UTF-8"></script>
+
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/commonAjax.js" charset="UTF-8"></script>
+		
+		<script src="../js/area.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/user.js?v=0.01"></script>
+		<script type="text/javascript" src="../js/wxShare.js"></script>
+		<script>
+			var startSn = 0;
+		    var $housetype = "";
+			var $region = "";
+			var $price = "";
+			var oldSn = 0;	
+			var mask = mui.createMask(callback);
+			var offset = parseInt(window.document.location.href.split('=')[1]);
+			var flag;
+			mui.init(
+			{
+				swipeBack: false,
+				gestureConfig:{
+						doubletap:true
+				},
+				pullRefresh: {
+					container: '#pullrefresh',
+					// down: {
+					// 	callback: pulldownRefresh
+					// },
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+			
+			mui.ready(function() {
+				// alert("ready");
+			 	
+				wxShare({"link":"http://www.zmzfang.com/weixin/HomePage/RentRequirementList.html"});
+				var searchParameter = JSON.parse(sessionStorage.getItem('searchParameter'));
+				// console.log(searchParameter.start);
+				initAreaConfig();
+				
+			 	if(searchParameter){
+			 		$housetype = searchParameter.housetype;
+					$region = searchParameter.region;
+					$price = searchParameter.budget;
+					initstartSn = searchParameter.start;
+					getRequirementList(0,'',initstartSn);//获取需求列表
+					console.log('sessionStorage works')
+				}else{
+					getRequirementList(0);
+				}
+				
+			});
+			function initAreaConfig(){
+				var regionConfig = '';
+				var metroConfig = '';
+				for (i in areaData3[2].children){
+					regionConfig += '<li class="mui-table-view-cell" data-region="'+areaData3[2].children[i].value+'">'+areaData3[2].children[i].text+'</li>';
+				}
+				for (i in areaData3[0].children){
+					metroConfig += '<li class="mui-table-view-cell" data-metro="'+areaData3[0].children[i].value+'">'+areaData3[0].children[i].text+'</li>';
+				}
+				$('.metro_list').append(metroConfig);
+				$(".metro_list li").on("tap",metroTap);
+				$('.region_list').append(regionConfig);
+				$(".region_list li").on("tap",areaTap);
+			}
+			function isEmpty(str)  
+			{  
+			    if(str != null && str.length > 0)  
+			    {  
+			        return false;  
+			    }  
+			    return true;  
+			}  
+
+			function areaTap(){	
+				$region=$(this).attr('data-region');
+				$("#region_value").text($(this).text());
+				$("#metro_value").text('地铁');
+				startSn = 0;
+				mui('#pullrefresh').pullRefresh().scrollTo(0,0,0);
+				mui('#pullrefresh').pullRefresh().refresh(true);
+				getRequirementList(0);
+
+			}
+
+			function metroTap(){				
+				$region=$(this).attr('data-metro');
+				$("#metro_value").text( $(this).text() );
+				$("#region_value").text('区域');
+				startSn = 0;
+				mui('#pullrefresh').pullRefresh().scrollTo(0,0,0);
+				mui('#pullrefresh').pullRefresh().refresh(true);
+				getRequirementList(0);
+			}
+
+			$(".price_list li").on("tap",function(){
+				$price=$(this).text();
+				$price=$(this).attr('data-price');
+				$("#price_value").text( $(this).text());
+				startSn = 0;
+				mui('#pullrefresh').pullRefresh().scrollTo(0,0,0);
+				mui('#pullrefresh').pullRefresh().refresh(true);
+				getRequirementList(0);
+
+			});
+
+			$(".room_list li").on("tap",function(){
+				$housetype=$(this).attr('data-model');
+				$("#room_value").text( $(this).text());	
+				mui('#pullrefresh').pullRefresh().scrollTo(0,0,0);
+				mui('#pullrefresh').pullRefresh().refresh(true);
+				startSn = 0;
+				getRequirementList(0);
+
+			});
+			 //增加需求列表中tap事件
+			mui('#requirementUl').on('tap', 'li', function() {
+				var requirementId = $(this).children('#requirementBrief').attr('requirement-id');
+				
+				var requiementPublishuserId = $(this).children('#requirementBrief').attr('publishuser-id');
+				
+				var dstUrl = './RentRequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + requiementPublishuserId;
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				history.replaceState({}, "房源列表页", "RentRequirementList.html?offset="+offset);
+
+				sessionStorage.setItem("searchParameter" , '{"region": "'+$region+'","housetype": "'+$housetype+'","start": "'+startSn+'","budget": "'+$price+'"}');
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'RentRequirementDetail.html'
+				});
+			});
+			
+
+			function getRequirementList(startsn,flag,countsn)
+			{
+				var region = $region;
+				var housetype = $housetype;
+				var start = startsn;
+				var count = arguments[2] ? arguments[2] : 20;
+				var budget = $price;
+				// console.log("flag is "+flag);
+				
+				var options = new Object();
+				options.region = region;
+				options.housetype = housetype;
+				options.start = start;
+				options.count = count;
+				options.pricerange = budget;
+				
+				flag = flag;
+				ajax_to_server(getRentListUrl,options,getRequirementListSuccess,getRequirementListFailed);
+				mask.close();
+			}
+			
+			//获取需求列表成功后的处理方法，新建li元素
+			function getRequirementListSuccess(data)
+			{
+				var requirementUl=$('#requirementUl');
+				if(!data){
+					if(flag == "up")
+					{	
+						return;
+					}
+					requirementUl.html('<div style="color:#ccc;padding:30px 0;text-align:center">暂无数据;</div>');
+					return;
+				}
+				// pastDom = JSON.stringify(data);
+				// sessionStorage.pastDom = pastDom;
+
+				oldSn = startSn;
+				startSn =parseInt(startSn)+data.length;
+				console.log(startSn);
+				
+				
+				var firstFrag ='';
+				for(var i in data)
+				{
+					firstFrag +=fillRentRequirementListLi(data[i]);
+				}
+				// console.log(firstFrag);
+				if(flag == "up")
+				{	
+					requirementUl.append(firstFrag);
+				}
+				// else if(flag == "down")
+				// {
+				// 	requirementUl.appendChild(firstFrag);
+				// }
+				else{
+					requirementUl.html(firstFrag);
+				}
+				console.log("offset\n"+offset)
+				if(offset){
+					console.log('in scroll');
+					mui('#pullrefresh').pullRefresh().scrollTo(0,offset,0);
+					offset = null;
+				}
+
+			}
+			
+			function getRequirementListFailed(data)
+			{
+				
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				getRequirementList(startSn,"up");
+				// console.log(startSn - oldSn);
+				if((startSn - oldSn) < 20){
+					this.endPullupToRefresh(true); 
+				}else{
+					this.endPullupToRefresh(false);
+				} 
+			}
+			var index = '';
+			$('.mui-i-selectBtn').on('tap',function(){//区域，地铁，总价，户型被选中的动作
+					
+					if(index === $(this).index()){
+						index = '';
+						mask.close();
+					}else{
+						index = $(this).index();
+						$('.content .filter_item').removeClass('active');
+
+						$('.content .filter_item:eq('+index+')').addClass('active');
+
+						document.body.style.overflow='hidden';
+						mask.show();//显示遮罩
+					}
+			});
+			
+			function callback(){
+				$('.content .filter_item').removeClass('active');
+				document.body.style.overflow='';
+			}
+			
+		</script>
+	</body>
+
+</html>

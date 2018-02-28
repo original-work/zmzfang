@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+        
+        <style type="text/css">
+        	.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			#headpic label,#businessCardPic label{padding:0;}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			.muti-textarea
+			{
+				margin-bottom: 5px;
+				margin-top: 5px;
+				padding-left: 15px;
+				padding-right: 15px;
+				margin-left:15px;
+			}
+			
+			#popupSchool, #popup {
+				position: fixed;
+			    top: 0;
+    			left: 0;
+    			right: 0;
+    			bottom: 0;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translateX(100%);
+			    transform: translateX(100%);
+			    -webkit-transition: -webkit-transform .2s cubic-bezier(0,0,.25,1);
+   				transition: transform .2s cubic-bezier(0,0,.25,1);
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    z-index: 999;
+			}
+			#popupSchool.active,#popup.active {
+			    -webkit-transform: translateX(0);
+			    transform: translateX(0);
+			}
+			
+			.recommend{
+				color: #8f8f8f;
+    			background-color: #E5E5E5;
+    			font-size: 17px;
+			    line-height: 1;
+			    display: inline-block;
+			    padding: 5px 10px;
+			    margin-bottom: 5px;
+			    
+			}
+			
+			.recommend.active{
+				color: #fff;
+    			background-color: #4cd964;
+			}
+			
+			.mui-scroll
+			{
+				margin-bottom: 44px;
+			}
+			#headpic{
+				width:80px;
+				height:80px;
+				border-radius:50%;
+				overflow:hidden;
+				margin:30px auto 25px;
+			}
+			#businessCardPic{
+				width:152px;
+				height:82px;
+				margin:30px auto 25px;
+				border:1px solid #efefef;
+			}
+			h5{
+				margin:15px 0;
+			}
+		/*picupload start*/
+			/*picupload base*/
+			#headpic .pick-button{width: 80px;height: 80px;background-image:  url(../../img/iconfont-tianjia.png);position:relative;display:inline-block;background-size:80px 80px;}
+			#headpic .pick-button label{position:absolute;width:80px;height:80px;color:#fff;font-size:2rem;}
+			#businessCardPic .pick-button{width: 150px;height: 80px;background-image:  url(../../img/mp.jpg);position:relative;display:inline-block;background-size:150px 80px;}
+			#businessCardPic .pick-button label{position:absolute;width: 150px;height: 80px;color:#fff;font-size:2rem;}
+
+			#businessCardPicfile,#headpicfile{position: absolute;clip: rect(1px 1px 1px 1px);}
+			.imgpath{display:inline-block;margin-right:10px;position: relative;}
+			.imgpath span{
+				display: block;
+	    		background-color: transparent;
+	    		height:20px;
+	    		position:absolute;
+	    		bottom:0px;
+	    		font-size:.5rem ;
+	    		width: 100%;
+	    		text-align: center;
+	    		color:#fff;
+	    	}
+	    	/*picupload 进度条*/
+	    	.imgpath.active span{
+	    		animation:   reverse progress-bar-stripes 0.80s linear infinite;
+	    		-webkit-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		-o-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		background-image: linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -o-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-size: 20px 20px;
+			    -webkit-background-size: 20px 20px;
+	    	}
+	    	@-webkit-keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+			@keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+		/*picupload end*/
+		/*新标签样式*/
+			#bq .bqlist{
+				width:33.3%;
+				display: inline-block;
+
+			}
+			#bq {background:#f2f2f2;padding-top:8px;}
+			#bq label{
+				margin: 0 auto;
+				position: relative;
+				width: 65px;
+				height: 65px;
+				display: block;
+				background-size: 65px 65px;
+			}
+			input[type=checkbox]{
+				clip: rect(1px 1px 1px 1px);
+				position: absolute;
+			}
+        </style>
+        
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">经纪人信息修改</h1>	
+		</header>
+		
+		<footer class="mui-bar mui-bar-footer" style="background:#4cd964;">
+			<h1 class="mui-title" id='nextStep' style="color:#fff;">下一步</h1>
+        	<h1 class="mui-title mui-hidden" id='saveUserInfo' style="color:#fff;">保存</h1>
+        </footer>
+		
+		<div class="mui-content">
+			<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+				<a id="baseInfoLink" class="mui-control-item mui-active">
+					基本信息
+				</a>
+				<a id="detailInfoLink" class="mui-control-item">
+					详细信息
+				</a>
+			</div>
+			<div class="mui-slider-group">
+				<div id="baseInfo" class="mui-control-content mui-active">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<div id="headpic">
+									<div class="pick-button"> 
+										<input id="headpicfile" class="imgUpload" type="file" accept="image/*" />
+										<label for="headpicfile"></label>
+									</div>
+								</div>
+								<p style="text-align: center">点击图片修改头像</p>
+							</li>
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>真实姓名</label>
+								<input id="nickName" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>手机号</label>
+								<input id="phone" type="text" disabled="disabled">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+								<label>邮箱地址</label>
+								<input id="email" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>性别</label>
+								<select id="sex" class="mui-btn mui-btn-block" style="float:left;width:50%">
+									<option value="1">男</option>
+									<option value="2">女</option>
+								</select>
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>业务城市</label>
+								<input id="city" type="text" disabled="disabled">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<h5>标签</h5>
+									<div id="bq">
+										<div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="1" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="2" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="3" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="4" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="5" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="6" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="7" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="8" /></label>
+										</div><div class="bqlist">
+											<label><input type="checkbox" name="checkbox1" value="9" /></label>
+										</div>
+									</div>
+							</li>
+							
+							<li id="regionLi" class="mui-table-view-cell agent">
+								<div class="mui-input-row">
+									<div style="height:40px">
+										<div class="col-xs-5" >
+											<label style="padding-left:0px;width: 100%;">活动区域</label>
+										</div>
+										<div class="col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+											<button id='showRegionPicker' class="mui-btn mui-btn-block" type='button' style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;">点击选择（可多选）</button>
+										</div>
+									</div>
+									
+									<div id='regionResult' class="" style="clear:both;padding-left: 15px;"></div>
+								</div>
+							</li>
+							
+							<li id="realNameLi" class="mui-table-view-cell agent mui-hidden">
+								<div class="mui-input-row">
+								<label>真实姓名</label>
+								<input id="realName" type="text">
+								</div>
+							</li>
+							
+							<li id="identityCardLi" class="mui-table-view-cell agent">
+								<div class="mui-input-row">
+								<label>身份证</label>
+								<input id="identityCard" type="text">
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+				
+				
+				<div id="detailInfo" class="mui-control-content">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<div id="businessCardPic">
+									<div class="pick-button"> 
+										<input id="businessCardPicfile" class="imgUpload" type="file" accept="image/*" />
+										<label for="businessCardPicfile"></label>
+									</div>
+								</div>
+								<p style="text-align: center">点击图片修改名片</p>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>所属公司</label>
+								<input id="organization" type="text" placeholder="无公司请填独立经纪人">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>门店信息</label>
+								<input id="storeinfo" type="text" placeholder="总店">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+								<label>职位</label>
+									<select id="position" class="mui-btn mui-btn-block" style="float:left;width:50%">
+										<option value='业务员'>业务员</option>
+										<option value='置业顾问'>置业顾问</option>
+										<option value='客户经理'>客户经理</option>
+										<option value='店长'>店长</option>
+										<option value='案场销售'>案场销售</option>
+										<option value='客户主任'>客户主任</option>
+										<option value='销售总监'>销售总监</option>
+										<option value='行政管理'>行政管理</option>
+										<option value='房产评估师'>房产评估师</option>
+										<option value='客服'>客服</option>
+										<option value='其他房产职位'>其他房产职位</option>
+								
+									</select>
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label>工作年限</label>
+									<select id="workperiod" class="mui-btn mui-btn-block" style="float:left;width:50%">
+										<option value="0-1" selected="selected">1年以内</option>
+										<option value="1-3">1-3年</option>
+										<option value="3-5">3-5年</option>
+										<option value="5-8">5-8年</option>
+										<option value="8-10">8-10年</option>
+										<option value="10-30">10年以上</option>
+									</select>
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label>学历</label>
+									<select id="education" class="mui-btn mui-btn-block" style="float:left;width:50%">
+										<option value="0" selected="selected">无</option>
+										<option value="1">中专</option>
+										<option value="2">高中</option>
+										<option value="3">大专</option>
+										<option value="4">本科</option>
+										<option value="5">研究生及以上</option>
+									
+									</select>
+								</div>
+							</li>
+							
+							<li id="schoolLi" class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+									<label>学校</label>
+									<input id="schoolinfo" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label>家乡</label>
+									<input id="nativeplace" type="text">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+								<label>芝麻信用</label>
+								<input id="credit" type="text" disabled="disabled">
+								</div>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label>是否有从业证书</label>
+									<div id="certificateFlag" class="mui-switch">
+										<div class="mui-switch-handle"></div>
+									</div>
+								</div>
+							</li>
+							
+							<li id="certificateNoLi" class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+									<label>从业证书编号</label>
+									<input id="certificateNo" type="text">
+								</div>
+							</li>
+							
+							
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<div style="height:40px">
+										<div class="col-xs-12">
+											<label style="padding-left:0px;">个人亮点</label>
+											<!--<label class="mui-text-right">编辑</h5>-->
+										</div>
+									</div>
+									
+									<div id="skillResult" class="show" style="clear:both;padding-left: 15px;">已选技能:
+											
+									</div>
+									
+									<div id="addSkillDiv" class="show" style="clear:both;height:150px; margin:10px 15px;border: 1px solid #F0AD4E;">
+										<div style="margin: 10px 15px;">
+											<h5 class="">热门亮点</h5>	
+											
+											<span class="recommend">会英文</span>	
+											<span class="recommend">私车接送</span>	
+											<span class="recommend">免费打扫</span>
+											<span class="recommend">24小时在线</span>
+											<div>
+												<div class="col-xs-7" style="padding-left: 0px;">
+													<input id="skill" style="border-radius:5px;" type="text" placeholder="最多10个汉字">
+												</div>
+												
+												<div class="col-xs-5">
+													<button id='addSkillBtn' class="mui-btn mui-btn-block" type='button' style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;border-radius:10px;">增加</button>
+												</div>
+											</div>
+										
+										</div>
+							
+										
+									</div>
+								</div>
+							</li>
+							
+							<li id="districtLi" class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<div style="height:40px;margin-bottom: 15px;">
+										<div class="col-xs-5" >
+											<label style="padding-left:0px;width: 100%;">主营小区</label>
+										</div>
+										<div class="col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+											<button id='showDistrictPicker' class="mui-btn mui-btn-block" type='button' style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;">点击选择（可多选）</button>
+										</div>
+									</div>
+									
+									<div id='districtResult' class="" style="clear:both;padding-left: 15px;margin-bottom: 15px;"></div>
+								</div>
+							</li>
+							
+							<!--<li class="mui-table-view-cell mui-hidden">
+								<div class="mui-input-row">
+									<label>推送城市</label>
+									<input id="city" type="text">
+								</div>
+							</li>-->
+							
+						</ul>
+					</div>
+					
+				</div>
+			</div>	
+			
+		</div>
+		
+		<div id="popup">
+			<header class="mui-bar mui-bar-nav">
+				<button id="closePopup" class="mui-btn mui-btn-link mui-btn-nav mui-pull-left">取消</button>
+				<h1 class="mui-title"><input type="text" id="keywords" placeholder="请输入小区名称" oninput="getDistrictMatch()"></h1>
+			</header>
+			
+			<div class="mui-content">
+				<div id="district">
+				</div>
+			</div>
+		</div>
+		
+		<div id="popupSchool">
+			<header class="mui-bar mui-bar-nav">
+				<button id="closePopupSchool" class="mui-btn mui-btn-link mui-btn-nav mui-pull-left">取消</button>
+				<h1 class="mui-title"><input type="text" id="keywordsSchool" placeholder="请输入学校名称" oninput="getSchoolMatch()"></h1>
+			</header>
+			
+			<div class="mui-content">
+				<div id="school">
+				</div>
+			</div>
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/ajax.js"></script>
+		<script src="../../js/commonAjax.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/area.js"></script>
+		<script src="../../js/city.data.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/mui.picker.js"></script>
+		<script src="../../js/mui.poppicker.js"></script>
+		<script src="../../js/PicUpload/dist/lrz.bundle.js"></script>
+		<!--<script src="../js/Expert/common/expertData.js?v=0.01"></script>-->
+	<!--	<script src="../js/wxShare.js"></script>-->
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var businesscard;
+			var selectAreaFlag = 0;
+			var resultValueArray = new Array();
+			var resultTextArray = new Array();
+			var districtArray = new Array();
+			var skillArray = new Array();
+			var user;
+			var city = "上海市";//经纪所在业务城市 默认上海市
+			var cityPicker3 = new mui.PopPicker({
+					layer: 3
+				});
+			var Hpic,Bpic;
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				$('#bq label').each(function(index){
+					$(this).css('background-image','url(\'../../img/bq/'+(index+1)+'.jpg\')');
+				})
+				initUserInfo();
+				
+				//初始化业务城市选择器
+				initCityPicker();
+				//初始化家乡城市选择器
+				initNativePlacePicker();
+				//初始化微信分享
+				//wxShare();
+				
+			});
+			
+			 //增加保存个人信息按钮事件
+			document.querySelector('#saveUserInfo').addEventListener('tap', function() {
+				// console.log('saveUserInfo click');
+				
+				saveUserDetailInfo();
+				
+			}, false);
+			
+			//增加下一步按钮事件
+			document.querySelector('#nextStep').addEventListener('tap', function() {
+				// console.log('nextStep click');
+				$("#baseInfoLink").removeClass('mui-active');
+				$("#baseInfo").removeClass('mui-active');
+				
+				$("#detailInfoLink").addClass('mui-active');
+				$("#detailInfo").addClass('mui-active');
+				$("#nextStep").addClass('mui-hidden');
+				$("#saveUserInfo").removeClass("mui-hidden");
+				
+			}, false);
+			
+			//基本信息link事件
+			document.querySelector('#baseInfoLink').addEventListener('tap', function() {
+				// console.log('baseInfoLink click');
+				
+				$("#detailInfoLink").removeClass('mui-active');
+				$("#detailInfo").removeClass('mui-active');
+				
+				$("#baseInfoLink").addClass('mui-active');
+				$("#baseInfo").addClass('mui-active');
+				
+				
+				$("#nextStep").removeClass('mui-hidden');
+				$("#saveUserInfo").addClass("mui-hidden");
+				
+			}, false);
+			
+			//详细信息link事件
+			document.querySelector('#detailInfoLink').addEventListener('tap', function() {
+				// console.log('detailInfoLink click');
+				
+				$("#baseInfoLink").removeClass('mui-active');
+				$("#baseInfo").removeClass('mui-active');
+				
+				$("#detailInfoLink").addClass('mui-active');
+				$("#detailInfo").addClass('mui-active');
+				
+				$("#nextStep").addClass('mui-hidden');
+				$("#saveUserInfo").removeClass("mui-hidden");
+				
+			}, false);
+			
+			$('#showDistrictPicker').on('tap',function(){	
+				if(districtArray.length >=3)
+				{
+					mui.toast('您最多可选3个小区，请删除后再操作！');
+				}
+				else
+				{
+					$('#popup').addClass('active');document.body.style.overflow='hidden';$('#keywords').focus();$('#keywords').trigger('tap');
+//					mui.scrollTo(0,1,function(){$('#popup').addClass('active');document.body.style.overflow='hidden';$('#keywords').focus();$('#keywords').trigger('tap');});
+					
+				}
+				
+			});
+			
+			$('#closePopup').on('tap',function(){
+				$('#popup').removeClass('active');
+				document.body.style.overflow='';
+			});
+			
+			$('#schoolinfo').on('tap',function(){	
+				$('#popupSchool').addClass('active');
+				document.body.style.overflow='hidden';
+				$('#keywordsSchool').focus();
+				$('#keywordsSchool').trigger('tap');
+			});
+			
+			$('#closePopupSchool').on('tap',function(){
+				$('#popupSchool').removeClass('active');
+				document.body.style.overflow='';
+			});
+			
+			
+			$('#certificateFlag').on('tap',function(){
+				if($('#certificateFlag').hasClass('mui-active'))
+				{
+					$('#certificateNoLi').removeClass('mui-hidden');
+					$('#certificateNo')[0].focus();
+				}
+				else
+				{
+					$('#certificateNoLi').addClass('mui-hidden');
+				}
+				
+			});
+			
+			$("#education").change(function()
+			{
+    			//$(this).css("background-color","#FFFFCC");
+    			var edu = $("#education").val();
+    			// console.log('education change edu:'+edu);
+    			if(edu < 3)
+    			{
+    				//隐藏学校信息
+    				$("#schoolLi").addClass("mui-hidden");
+    			}
+    			else
+    			{
+    				//显示学校信息
+    				$("#schoolLi").removeClass("mui-hidden");
+    			}
+    			
+  			});
+			
+			mui('#district').on('tap','li',function(){
+			    var Name = this.getAttribute("data-name");
+			    var Id = this.getAttribute("data-id");
+			    // console.log(Name);
+			    // console.log(Id);
+				$('#popup').removeClass('active');
+				//$('#districtName').val(Name);
+				//$('#districtId').val(Id);
+				for (i in districtArray){
+					if(Id == districtArray[i].districtid){
+						mui.toast('该小区已存在！');
+						document.body.style.overflow='';
+						return;
+					}
+				}
+				districtArray.push({districtname:Name,districtid:Id});
+				showDistrictResult();
+				document.body.style.overflow='';
+			});
+			
+			mui('#school').on('tap','li',function(){
+			    var Name = this.getAttribute("data-name");
+			    var Id = this.getAttribute("data-id");
+			    // console.log(Name);
+			    // console.log(Id);
+				$('#popupSchool').removeClass('active');
+				$('#schoolinfo').val(Name);
+				
+				
+				document.body.style.overflow='';
+			});
+			
+			$('#addSkillBtn').on('tap',function(){	
+				if(skillArray.length >=3)
+				{
+					mui.toast('您最多可以有3个亮点，请删除后再操作！');
+				}
+				else 
+				{
+					var skill =  byId("skill").value;
+					//alert(skill);
+					if(!skill)
+					{
+						mui.toast('请输入有效字符');
+						return;
+					}
+					
+					if(getByteLen(skill) > 10)
+					{
+						mui.toast('最多输入10个字符');
+						return;
+					}
+					
+					for (i in skillArray){
+						if(skill == skillArray[i]){
+							mui.toast('该亮点已存在');
+							return;
+						}
+					}
+					
+					skillArray.push(skill);
+					showSkillResult();
+					byId("skill").value = '';
+				}
+				
+			});
+			
+			$('.recommend').on('tap',function(){	
+				var skill =  $(this).text();
+			
+				if($(this).hasClass('active'))
+				{
+					for (i in skillArray){
+						if(skill == skillArray[i]){
+							skillArray.splice(i,1);
+						}
+					}
+					showSkillResult();
+					$(this).removeClass('active');
+				}
+				else
+				{
+					if(skillArray.length >=3)
+					{
+						mui.toast('您最多可以有3个亮点，请删除后再操作！');
+						return;
+					}
+					//alert(skill);
+					for (i in skillArray){
+						if(skill == skillArray[i]){
+							mui.toast('该亮点已存在');
+							return;
+						}
+					}
+					
+					skillArray.push(skill);
+					showSkillResult();
+					$(this).addClass('active');
+				}
+				
+			});
+			
+			function initUserInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				user = JSON.parse(data);
+				
+				var options = new Object();
+				//options.userid = user.id;
+				options.id = user.id;
+				ajax_to_server(getAgentDetailUrl,options,getAgentDetailSuc,getAgentDetailFailed);
+			}
+	
+			function getAgentDetailSuc(data)
+			{
+				console.log('获取经纪人信息成功');
+				if(data)
+				{
+					$('#headpic .pick-button').css('background-image','url('+user.picture+')')
+					byId("nickName").value = data.nickname;
+					byId("phone").value = data.phone;
+				
+					byId("email").value = data.email;
+					//byId("sex").value = user.sex;
+					initSelectElementByValue('sex',data.sex);
+					byId("city").value = data.city;
+					city = data.city;
+					byId("identityCard").value = data.identitycard;
+					//byId("realName").value = data.realname;
+					initSelectedRegion(data.activeregion);
+					
+					if(data.tags && data.tags != '')
+					{
+						var split = data.tags.split(',');
+						// console.log('split len:'+split.length);
+						var tags='';
+						for(i in split){
+							console.log(split[i]);
+							var index = split[i]-1;
+							$('input[name=checkbox1]').eq(index).prop('checked',true);
+							$('input[name=checkbox1]').eq(index).parent('label').css('background-image','url(\'../../img/bq/'+(index+1)+'_a.jpg\')');
+						}
+					}
+					
+					if(data.agentflag == '0')
+					{
+						//经纪人相关的几个字段 不显示
+						byId("identityCardLi").classList.add('mui-hidden');
+						//byId("realNameLi").classList.add('mui-hidden');
+						byId("regionLi").classList.add('mui-hidden');	
+					}
+					
+					//经纪人详细信息
+					byId("organization").value = data.organization;
+					byId("storeinfo").value = data.storeinfo;
+					initSelectElementByValue('workperiod',data.workperiod);
+					businesscard = data.businesscard;
+					if(data.businesscard && data.businesscard!=''){
+						$("#businessCardPic .pick-button").css('background-image', 'url('+data.businesscard+')');
+					}
+					initSelectElementByValue('education',data.education);
+					byId("schoolinfo").value = data.schoolinfo;
+					if(data.education >= 3)
+					{
+    					//显示学校信息
+    					$("#schoolLi").addClass("mui-hidden");
+					}
+					
+					initSelectElementByValue('position',data.position);
+					
+					byId("nativeplace").value = data.nativeplace;
+					byId("credit").value = data.zmcredit;
+					if(data.certificateflag == 1)
+					{
+						$('#certificateFlag').addClass('mui-active');
+						byId("certificateNo").value = data.certificateno;
+						$('#certificateNoLi').removeClass('mui-hidden');
+					}
+					
+					//byId("skill").value = data.skill;
+					if(data.skill)
+					{
+						skillArray = data.skill.split('#');
+						showSkillResult();
+					}
+					
+					//byId("addedService").value = data.addedservice;
+					if(data.majordistricts && data.majordistricts.length > 0)
+					{
+						districtArray = data.majordistricts;
+						showDistrictResult();
+					}
+					byId("city").value = data.city;	
+					
+					//初始化区域
+					initAreaControl();
+				}
+			}
+	
+			function getAgentDetailFailed(data)
+			{
+				console.log('getAgentDetailFailed data.'+JSON.stringify(data));
+			}
+
+			$('input[type="checkbox"]').on('change',function(){
+				var index = $(this).parent().parent('.bqlist').index() + 1;
+				// console.log(index)
+				if($(this).is(':checked')){
+					if($('input[name="checkbox1"]:checked').length >4){
+						$(this).prop('checked',false);
+						mui.toast('标签最多只能选中4个');
+					}else{
+						$(this).parent('label').css('background-image','url(\'../../img/bq/'+index+'_a.jpg\')');
+					}
+				}else{
+					$(this).parent('label').css('background-image','url(\'../../img/bq/'+index+'.jpg\')');
+				}
+				
+			})
+			function saveUserDetailInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				var options = new Object();
+				options.userid = user.id;
+				
+				//增加基本信息开始
+				options.nickname = byId("nickName").value;
+				options.phone = byId("phone").value;
+				
+				options.email = byId("email").value;
+				
+				var index = byId("sex").selectedIndex;
+				options.sex = byId("sex").options[index].value;
+
+				options.city = byId("city").value;
+				//options.realname = byId("realName").value;	
+				options.realname = options.nickname;
+				options.identitycard = byId("identityCard").value;
+				options.agentflag = user.agentflag;
+				options.activeregion = resultValueArray.join();
+				if(getByteLen(options.nickname.trim()) < 2)
+				{
+					mui.toast('请输入真实姓名');
+					return ;
+				}
+				if(hasNumber(options.nickname))
+				{
+					mui.toast('姓名中不能包含数字');
+					return ;
+				}
+				if(hasSpecialChar(options.nickname))
+				{
+					mui.toast('含有特殊字符，姓名只能由汉字或字母组成');
+					return ;
+				}
+				
+				if(resultValueArray.length == 0)
+				{
+					mui.toast('为了更好的推送房源或需求信息，请选择活动区域');
+					return ;
+				}
+				
+				var chk_value = [];
+					$('input[name="checkbox1"]:checked').each(function(index){
+						chk_value.push($('input[name="checkbox1"]:checked')[index].value); 
+					});
+				if(chk_value.length == 0 && options.agentflag == 1){
+					mui.toast('请至少选择一个标签')
+					return;
+				}
+				if(chk_value.length > 4 && options.agentflag == 1){
+					mui.toast('标签最多只能选中4个')
+					return;
+				}
+				options.select = chk_value;
+				//增加基本信息结束
+				
+				options.organization = byId("organization").value;
+				if(options.organization.trim() == '')
+				{
+					mui.toast('所属公司不能为空');
+					return;
+				}
+				
+				options.storeinfo = byId("storeinfo").value;
+				
+				var index = byId("position").selectedIndex;
+				options.position = byId("position").options[index].value;
+				
+				index = byId("workperiod").selectedIndex;
+				options.workperiod = byId("workperiod").options[index].value;
+				
+				index = byId("education").selectedIndex;
+				options.education = byId("education").options[index].value;
+				options.schoolinfo = byId("schoolinfo").value;
+				if(options.education >= 3 && (!options.schoolinfo || options.schoolinfo == ''))
+				{
+					mui.toast("请选择毕业院校");
+					return;
+				}
+				
+				options.nativeplace = byId("nativeplace").value;
+				options.certificateflag = $('#certificateFlag').hasClass('mui-active')?'1':'0';
+				
+				if($('#certificateFlag').hasClass('mui-active'))
+				{
+					var no = $("#certificateNo").val().trim();
+					if(!no)
+					{
+						mui.toast('请填写经纪人证书编号');
+						return;
+					}
+					options.certificateno = no;
+				}
+				else
+				{
+					options.certificateno = '';
+				}
+				
+				options.skill = skillArray.join('#');
+				//options.addedservice = byId("addedService").value;
+				options.addedservice = byId("skill").value;
+				
+				if(districtArray.length > 0)
+				{
+					var str='';
+					for(var i=0;i<districtArray.length;i++)
+					{
+						str += districtArray[i].districtid;
+						// console.log('districtArray :'+JSON.stringify(districtArray[i]));
+						if(i < districtArray.length - 1)
+						{
+							str += ',';
+						}
+					}
+					options.majordistrict = str;
+				}
+				else
+				{
+					options.majordistrict = '';
+					mui.toast('请选择主营小区');
+					return;
+				}
+				options.picture = user.picture;
+				if(!Hpic){
+				}else{
+					uploadPic(Hpic);
+					if(result){
+						mui.toast('头像已上传');
+						options.picture = picname;
+					}else{
+						mui.toast('头像上传失败了！');
+						return;
+					}
+				}
+				options.businesscard = businesscard;
+				if(!Bpic){
+				}else{
+					uploadPic(Bpic);
+					if(result){
+						mui.toast('名片已上传');
+						options.businesscard = picname;
+					}else{
+						mui.toast('名片上传失败了！');
+						return;
+					}
+				}
+
+				options.pushcity = '';
+				
+				// console.log('options data:'+JSON.stringify(options));
+				
+				ajax_to_server(modifyAgentUrl,options,modifyAgentSuc,modifyAgentFailed);
+			}
+			
+			function modifyAgentSuc(data)
+			{
+				// console.log('modifyAgentSuc data.'+JSON.stringify(data));
+				
+				if(data && data.rscode == 0)
+				{
+					mui.toast('修改经纪人详细信息成功');
+					mui.back();
+					//alert('modify userinfo suc');
+					//如果头像文件修改过则上传图片文件
+					// mui.back();
+				}
+				else
+				{
+					mui.toast("您的修改提交失败，错误提示:"+JSON.stringify(data));
+				}
+			}
+			
+			function modifyAgentFailed(data)
+			{
+				console.log('modifyAgentFailed data.'+JSON.stringify(data));
+			}
+			
+			function initSelectElementByValue(id,value)
+            {
+                // console.log("initSelectElementByValue:id "+id+" value:"+value);
+                var selectElement=byId(id);
+                for(var i=0;i<selectElement.options.length;i++)
+                {
+                    // console.log('value:'+selectElement.options[i].value);
+                    if(selectElement.options[i].value == value)
+                    {
+                        selectElement.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+			function initAreaControl()
+			{
+				
+				var regionData = new Array();
+				regionData.push(getAreaDataByCityName(city));
+				//cityPicker3.setData(areaData3);
+				cityPicker3.setData(regionData);
+				
+				var showCityPickerButton = document.getElementById('showRegionPicker');
+				var cityResult3 = document.getElementById('regionResult');
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					if(resultValueArray.length>0){
+						// console.log(resultValueArray[0].slice(0,2));
+						switch(resultValueArray[0].slice(0,2)){
+							case '11':
+								//cityPicker3.setData([areaData3[0]]);
+								break;
+							case '12':
+								// cityPicker3.setData([areaData3[1]]);
+								break;
+							case '13':
+								cityPicker3.setData(regionData);
+								break;
+						}
+					}
+					cityPicker3.show(function(items) {
+						if(resultValueArray.length >2){
+							mui.toast('您最多可选3个区域，请删除后再操作！');
+							return;
+						}
+						
+						for (i in resultValueArray){
+							if(items[2].value == resultValueArray[i]){
+								mui.toast('该区域已存在！');
+								return;
+							}
+							if(items[2].value.slice(0,2) !=resultValueArray[i].slice(0,2)){
+								mui.toast('非法的选取选项');
+								return;
+							}
+
+						}
+						
+						resultValueArray.push(items[2].value);
+						resultTextArray.push(items[1].text+items[2].text);
+						// console.log(resultValueArray);
+
+						cityPicker3.innerHTML = "你选择的区域是:";
+						regionResult.innerHTML = '';
+						for (i in resultTextArray){
+							regionResult.innerHTML += '<span data="'+resultValueArray[i]+'" class="item mui-badge mui-badge-success">' +resultTextArray[i] + ' x</span>';
+						}
+						$('.item').on('tap', function() {
+							$(this).remove();
+							for(var i =0;i<resultValueArray.length;i++){  
+		            			if(resultValueArray[i]==$(this).attr('data')){
+		           	        		resultValueArray.splice(i,1);
+		           	        		resultTextArray.splice(i,1);
+		        	    		}
+     						}
+     						if(!resultValueArray.length){
+     							regionResult.innerHTML ='';
+     							cityPicker3.setData(regionData);
+     							selectAreaFlag = 0;
+     						}
+						});
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					    
+					    selectAreaFlag = 1;//add by chail on 20160714
+					     
+					});
+				}, false);
+			}
+
+			function initSelectedRegion(data)
+			{
+				//console.log('initSelectedRegion:'+data);
+				if(!data)
+				{
+					return;
+				}
+				var regionarray=data.split(",");
+				//console.log('regionarray length:' +regionarray.length);
+				var str = '';
+				var cityResult3 = byId('regionResult');
+				if(regionarray.length > 0)
+				{
+					for(var i=0;i<regionarray.length;i++)
+					{
+						resultValueArray.push(regionarray[i]);
+						resultTextArray.push(getAreaText(regionarray[i]));
+					}
+					selectAreaFlag = 1;//
+					showRegionResult();
+				}
+			
+				
+			}
+			
+			function showRegionResult()
+			{
+				var regionResult = byId('regionResult');
+				regionResult.innerHTML = "您选择的区域是:";
+				regionResult.classList.add("show");
+				
+				for (i in resultTextArray)
+				{
+					regionResult.innerHTML += '<span data="'+resultValueArray[i]+'" class="item mui-badge mui-badge-success">' +resultTextArray[i] + ' x</span>';
+				}
+				
+				
+				$('.item').on('tap', function() {
+					$(this).remove();
+					for(var i =0;i<resultValueArray.length;i++){  
+						if(resultValueArray[i]==$(this).attr('data')){
+			        		resultValueArray.splice(i,1);
+			        		resultTextArray.splice(i,1);
+			    		}
+					}
+					if(!resultValueArray.length){
+						regionResult.innerHTML ='';
+						cityPicker3.setData(regionData);
+						selectAreaFlag = 0;
+						regionResult.classList.remove("show");
+					}
+				});
+			}
+			
+			function getDistrictMatch()
+			{
+				//alert(keys);
+				var keys = $("#keywords").val().trim();
+				if(!keys){
+					$('#district').html('<li class="mui-table-view-cell mui-media">如无小区，请公众号内留言小区名称</li>');
+					return;
+				}
+				ajax_get_district_match(
+					{
+							keys: keys
+					}
+				);
+				
+			}
+
+			function getDistrictMathSuccess(data){
+				var district=$('#district');
+				var str = '';
+				for(var i in data)
+				{
+					var datas = fillDistrictList(data[i]);
+					// console.log('\n districtid:'+districtid);
+					str += datas;
+				}
+				var promoInfo = fillPromoInfo();
+				str += promoInfo;
+				district.html(str);
+			}
+
+			function fillDistrictList(data){
+					var did = data.districtid;
+					var dname = data.districtname;
+					var address = data.address;
+
+					var liContent = '<li class="mui-table-view-cell mui-media" data-id="'+did+'" data-name="'+dname+'"">';
+					liContent += dname;
+					liContent += '(';
+					liContent += address;
+					liContent += ')';
+					
+					return liContent;
+			}
+
+			function fillPromoInfo()
+			{
+				var liContent = '<li class="mui-table-view-cell mui-media">';
+				liContent += '如无小区，请公众号内留言小区名称';
+				liContent += '</li>';
+				return liContent;
+			}
+			
+			function getSchoolMatch()
+			{
+				//alert(keys);
+				var keys = $("#keywordsSchool").val().trim();
+				if(!keys){
+					$('#district').html('<li class="mui-table-view-cell mui-media">如无学校，请公众号内留言学校名称</li>');
+					return;
+				}
+				
+				ajax_to_server(getSchoolMatchUrl,{keys: keys},getSchoolSuccess,getSchoolFailed);
+			}
+
+			function getSchoolSuccess(data){
+				var school=$('#school');
+				var str = '';
+				for(var i in data)
+				{
+					var datas = fillSchoolList(data[i]);
+					// console.log('\n districtid:'+districtid);
+					str += datas;
+				}
+				var promoInfo = fillPromoInfoSchool();
+				str += promoInfo;
+				school.html(str);
+			}
+			
+			function getSchoolFailed(data)
+			{
+				console.log('getSchoolFailed data:'+JSON.stringify(data));
+			}
+
+			function fillSchoolList(data){
+					var did = data.id;
+					var dname = data.name;
+					var place = data.place;
+
+					var liContent = '<li class="mui-table-view-cell mui-media" data-id="'+did+'" data-name="'+dname+'"">';
+					liContent += dname;
+					liContent += '(';
+					liContent += place;
+					liContent += ')';
+					
+					return liContent;
+			}
+
+			function fillPromoInfoSchool()
+			{
+				var liContent = '<li class="mui-table-view-cell mui-media">';
+				liContent += '如无学校，请公众号内留言学校名称';
+				liContent += '</li>';
+				return liContent;
+			}
+			
+			function showDistrictResult()
+			{
+				var districtResult = byId('districtResult');
+				districtResult.innerHTML = "您的主营小区:";
+				districtResult.classList.add("show");
+				
+				for (i in districtArray)
+				{
+					districtResult.innerHTML += '<span data="'+districtArray[i].districtid+'" class="item mui-badge mui-badge-success">' +districtArray[i].districtname + ' x</span>';
+				}
+				
+				
+				$('.item').on('tap', function() {
+					$(this).remove();
+					for(var i =0;i<districtArray.length;i++){  
+						if(districtArray[i].districtid==$(this).attr('data')){
+			        		districtArray.splice(i,1);
+			    		}
+					}
+					if(!districtArray.length){
+						districtResult.innerHTML ='';
+						districtResult.classList.remove("show");
+					}
+				});
+			}
+			
+			//初始化籍贯按钮
+			function initNativePlacePicker()
+			{
+				//级联示例
+				var cityPicker = new mui.PopPicker({
+					layer: 2
+				});
+				cityPicker.setData(cityData);
+				var showCityPickerButton = document.getElementById('nativeplace');
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker.show(function(items) {
+						
+						console.log("你选择的城市是:" + items[0].text + " " + items[1].text);
+						showCityPickerButton.value = items[0].text + " " + items[1].text;
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+			}
+			
+			//初始化籍贯按钮
+			function initCityPicker()
+			{
+				//级联示例
+				var cityPicker = new mui.PopPicker({
+					layer: 1
+				});
+				cityPicker.setData(openedCityData);
+				var showCityPickerButton = document.getElementById('city');
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					
+					mui.toast('业务城市不能更改');
+					return;
+					cityPicker.show(function(items) {
+						
+						console.log("你选择的城市是:" + items[0].text);
+						showCityPickerButton.value = items[0].text;
+						
+						if(items[0].text == city)
+						{
+							//alert('城市没有变');
+						}
+						else
+						{
+							//alert('城市改变');
+							//初始化活动区域
+							regionResult.innerHTML = '';
+							resultValueArray = [];
+							resultTextArray = [];
+							city = items[0].text;
+							initAreaControl();
+							
+						}
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+			}
+			
+
+			function showSkillResult()
+			{
+				var skillResult = byId('skillResult');
+				skillResult.innerHTML = "已填写的亮点:";
+				skillResult.classList.add("show");
+				console.log('skillArray length:'+skillArray.length);
+				for (i in skillArray)
+				{
+					skillResult.innerHTML += '<span data="'+skillArray[i]+'" class="item mui-badge mui-badge-success">' +skillArray[i] + ' x</span>';
+				}
+				
+				
+				$('.item').on('tap', function() {
+					$(this).remove();
+					for(var i =0;i<skillArray.length;i++){  
+						if(skillArray[i]==$(this).attr('data')){
+			        		skillArray.splice(i,1);
+			    		}
+					}
+					if(!skillArray.length){
+						skillResult.innerHTML ='';
+						skillResult.classList.remove("show");
+					}
+				});
+			}
+			// 图片渲染
+			$('.imgUpload').on('change',function(){
+				var that = $(this);
+				var width;
+				var nodeName = that.parent().parent().attr('id');
+				if(nodeName == 'headpic'){
+					$(this).next('label').html('<div class="imgpath"><img src="../../js/PicUpload/loading.gif" width="80" height="80" /><span></span></div>');
+					width = 128;
+				}else{
+					$(this).next('label').html('<div class="imgpath"><img src="../../js/PicUpload/loading.gif" width="150" height="80" /><span></span></div>');
+					width = 400;
+				}
+				lrz(this.files[0], {width: width})
+				.then(function (rst) {
+					var img = new Image();
+					img.src = rst.base64;
+					img.onload = function () {
+						that.next('label').children('.imgpath').children('img').attr('src',rst.base64)
+					};
+					if(nodeName == 'headpic'){
+						Hpic = rst.base64
+					}else{
+						Bpic = rst.base64
+					}
+					
+				})
+			
+			})
+			// 图片上传
+			function uploadPic(pic) {
+				if(!pic){
+					result = true;
+					return;
+				}
+				$.ajax({
+					url: 'http://www.zmzfang.com/?r=user/headpic-upload',
+					data: {base64:pic},
+					async: false,
+					type: 'POST',
+					dataType:"json",
+					beforeSend: function(){
+						$('.imgpath').children('span').addClass('active');
+						$('.imgpath').children('span').css('background-color','#007aff;');
+						$('.imgpath').children('span').text('上传中');
+					},
+					success: function (data) {
+						if(data.status > 0){
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#073');
+							$('.imgpath').children('span').text('ok');
+							// mui.toast('头像已上传');
+							picname = "http://www.zmzfang.com/weixin/img/headpic/"+data.picname;
+							result = true;
+						}else{
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#c00');
+							$('.imgpath').children('span').text('fail');
+							result = false;
+						}
+						
+					},error:function (){
+						$('.imgpath').removeClass('active');
+						$('.imgpath').children('span').css('background-color','#c00');
+						$('.imgpath').children('span').text('fail');
+						result = false;
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

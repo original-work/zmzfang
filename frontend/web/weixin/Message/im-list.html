@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"> 
+		<META HTTP-EQUIV="Expires" CONTENT="0"> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<style type="text/css">
+
+			.mui-table-view .mui-media-object{
+				width:45px;
+			}
+			.upperImg{
+				position: absolute;
+				top: 2px;
+				left: 48px;
+				font-size: 12px;
+				background: #c00;
+				display: block;
+				line-height: 1;
+				padding: 3px 5px;
+				color: #fff;
+				border-radius: 50%;
+			}
+			.new{
+				position: absolute;
+				top: 8px;
+				left: 52px;
+				background: #c00;
+				display: block;
+				line-height: 1;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+			}
+			.sendtime{
+				position: absolute;
+				top: 15px;
+				right: 2px;
+				font-size: 12px;
+				line-height: 1;
+				color:#aaa;
+			}
+			.mui-content{
+				margin-bottom: 60px;
+			}
+		</style>
+		<script type="text/javascript" src="../js/head.js"></script>
+		<title>芝麻找房</title>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">消息中心</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div id="linkDiv" style="padding: 0px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a id="userMsgsLink" class="mui-control-item mui-active" href="">个人</a>
+					<a id="expertMsgsLink" class="mui-control-item" href="">专家</a>
+				</div>
+			</div>
+			<div id="userMsgsDiv">
+				<ul id='sj-list' class="mui-table-view"><li class="mui-table-view-cell mui-media"><img class="mui-media-object mui-pull-left" src="http://www.zmzfang.com/weixin/img/favicon.ico" /><div class="mui-media-body"><span class="nickname">升级小助手</span><p class="mui-ellipsis"></p></div></li></ul>
+				<ul id='system-list' class="mui-table-view"></ul>
+				<ul id='msg-list' class="mui-table-view"></ul>
+			</div>
+			<div id="expertMsgsDiv" class="mui-hidden">
+				<ul id="emsg-list" class="mui-table-view"></ul>
+			</div>
+		</div>
+
+	<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+	<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/auth.js"></script>
+	<script type="text/javascript">
+		var picJson = [];
+		var userArr = [];
+		var newPush;
+		mui.ready(function() {
+			$('#msgLink').addClass('mui-active');
+			$('.mui-content').Auth({'wechat':false});
+			if(loginUser){
+					var me =loginUser.id;
+			}else{
+					return;
+					// mui.toast('您尚未登陆，5S后自动尝试登陆');
+					// setTimeout(window.location.href='http://www.zmzfang.com/?r=door/scope&view=Message/im-list',5000);
+			}
+			
+			// 初始化变量 foot.js 已提供初始化
+	//		var config = {
+	//		  syncURL: "https://sickeeer.wilddogio.com"
+	//		};
+	//		wilddog.initializeApp(config);
+	//		var ref = wilddog.sync().ref();
+			
+			// 升级助手
+			if(parseFloat(localStorage.getItem('version')) > 0.01){
+
+			}else{
+				$('#sj-list img').after('<span class="new"></span>');
+			}
+			$('#sj-list p.mui-ellipsis').text('17.6.21 新增经纪人用户功能：求职招聘，行业内推，效率更高，赶紧去体验吧！')
+			$("#sj-list li").on('tap',function(){
+					window.location.href='./update.html'
+			})
+			$("#userMsgsLink").on("tap", function(){
+				//alert($(this).text());
+				$('#expertMsgsDiv').addClass('mui-hidden');
+				$('#userMsgsDiv').removeClass('mui-hidden');
+			});
+			$("#expertMsgsLink").on("tap", function(){
+				//alert($(this).text());
+				$('#expertMsgsDiv').removeClass('mui-hidden');
+				$('#userMsgsDiv').addClass('mui-hidden');
+			});
+			initList()
+		});
+
+		// 初始化列表
+		function initList(){
+			ref.child('list/'+me).orderByKey().once('value', function(snapshot,error) {
+				console.log('start 初始化')
+				if (error == null) {
+					if(!snapshot.exists()){
+						return;
+					}
+					var messageArr= [];
+					snapshot.forEach(function(data) {
+						var user = data.key();
+						var item = data.val();
+						var orgtime = item.time;
+						var time = formatStringyyyyMMddToTimeAgo(orgtime);
+	//					var time = orgtime.substr(4, 2) + '-' + orgtime.substr(6, 2) + ' ' + orgtime.substr(8,2)+ ':'+orgtime.substr(10,2) + ':'+ orgtime.substr(12,2);
+						var unlook = item.unlook?'<span class="upperImg">'+item.unlook+'</span>':'';
+						var orgimg = user=="zmzs"?"http://www.zmzfang.com/weixin/img/favicon.ico":"";
+						var orgname = user=="zmzs"?"芝麻小助手":user
+						var message = '<li class="mui-table-view-cell mui-media" id="snap'+user+'"><img class="mui-media-object mui-pull-left" src="'+orgimg+'" />'+unlook+'<div class="mui-media-body"><span class="nickname">'+orgname+'</span><p class="mui-ellipsis">'+item.content+'</p><p class="sendtime">'+time+'</p></div></li>';
+						
+						if(user != 'zmzs'){
+							userArr.push(user);
+						}
+						var pushObj = new Object;
+						pushObj.content = message;
+						pushObj.time = orgtime;
+						pushObj.user = user;
+						messageArr.push(pushObj);
+					});
+
+					var snapshotsort = messageArr.sort(compare('time'));
+					var count = snapshotsort.length;
+					var listStrs ='';
+					var elistStrs ='';
+					for (var i = count - 1; i >= 0; i--) {
+						if(snapshotsort[i].user < 5000){
+							elistStrs+=snapshotsort[i].content;
+						}else if(snapshotsort[i].user == 'zmzs'){
+							$('#system-list').append(snapshotsort[i].content);
+						}else{
+							listStrs+=snapshotsort[i].content;
+						}
+					}
+					$('#msg-list').append(listStrs);
+					$('#emsg-list').append(elistStrs);
+					getHeadpic(true);
+					Urlto()
+					listenList()
+				} else {
+					console.log(error);
+				}
+				
+			});
+		}
+		//获取头像
+		function getHeadpic(isInit){
+			if(!isInit){
+				// console.log(picJson);
+				for(i in picJson){
+					//实际上仅需判断是否是新增节点即可，该处是否优化还需斟酌 暂时还无法加上added 监听会导致二次初始化
+					if(picJson[i].id == newPush){
+						$('#snap'+picJson[i].id).children('img').attr('src',imgpath(picJson[i].picture));
+						$('#snap'+picJson[i].id).find('.nickname').html(picJson[i].nickname);
+						return;
+					}
+				}
+				userArr = [];
+				userArr.push(newPush);
+			}
+			if(userArr.length == 0){
+				return;
+			}
+			$.ajax({
+					'url':'http://www.zmzfang.com/index.php?r=user/user-infos',
+					data:{'users':userArr},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					success:function(data){
+						if(isInit){
+							picJson = data;
+						}else{
+							picJson.push(data);
+							// console.log(picJson);
+						}
+						
+						for(i in data){
+							$('#snap'+data[i].id).children('img').attr('src',data[i].picture);
+							$('#snap'+data[i].id).find('.nickname').html(data[i].nickname);
+						}
+						
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						mui.toast('对不起，头像抓取失败了！')
+					}
+				});
+		}
+		//监听列表set
+		function listenList(){
+			ref.child('list/'+me).on('child_changed', function(snapshot,error)
+			{
+				console.log('start 监听')
+				if($("#snap"+snapshot.key()).length > 0){
+					$("#snap"+snapshot.key()).remove();
+				}
+				var user = snapshot.key();
+				newPush = user;
+				// console.log(newPush);
+				var item = snapshot.val();
+				var orgtime = item.time;
+				var time = formatStringyyyyMMddToTimeAgo(orgtime);
+	//			var time = orgtime.substr(4, 2) + '-' + orgtime.substr(6, 2) + ' ' + orgtime.substr(8,2)+ ':'+orgtime.substr(10,2) + ':'+ orgtime.substr(12,2);
+				var unlook = item.unlook?'<span class="upperImg">'+item.unlook+'</span>':'';
+				var orgimg = user=="zmzs"?"http://www.zmzfang.com/weixin/img/favicon.ico":"";
+				switch(user){
+					case 'zmzs':
+						var orgname = '芝麻小助手';
+					break;
+					case 'ywzs':
+						var orgname = '业务小助手';
+					break;
+					case 'sjzs':
+						var orgname = '升级小助手';
+					break;
+					default:
+						var orgname = user
+				}
+				
+				var list = '<li class="mui-table-view-cell mui-media" id="snap'+user+'"><img class="mui-media-object mui-pull-left" src="'+orgimg+'" />'+unlook+'<div class="mui-media-body"><span class="nickname">'+orgname+'</span><p class="mui-ellipsis">'+item.content+'</p><p class="sendtime">'+time+'</p></div></li>';
+				if(user<5000){
+					$('#emsg-list').prepend(list);
+				}else if(user == 'zmzs'){
+					$('#system-list').prepend(list);
+				}else if(user == 'sjzs'){
+					$('#system-list').prepend(list);
+				}else{
+					$('#msg-list').prepend(list);
+				}
+				if(user != 'zmzs'){
+					getHeadpic(false)
+				}
+				Urlto()
+			});
+		}
+		// 数组对象按子属性排序
+		function compare(property){
+			return function(a,b){
+				var value1 = a[property];
+				var value2 = b[property];
+				return value1 - value2;
+			}
+		}
+		// 系统消息监听
+//		ref.child('system/'+me).orderByKey().limitToLast(1).on('child_added', function(snapshot) {
+//			var item = snapshot.val();
+//			var orgtime = snapshot.key();
+//			var time = orgtime.substr(4, 2) + '-' + orgtime.substr(6, 2) + ' ' + orgtime.substr(8,2)+ ':'+orgtime.substr(10,2) + ':'+ orgtime.substr(12,2);
+//			var message = '<p id="system">系统消息 最后回复：'+ time+' '+item.content + '</p>';
+//			$('#system-list').html(message);
+//		});
+		// 消息内页跳转
+		function Urlto(){
+			$('#msg-list li').off('tap');
+			$('#emsg-list li').off('tap');
+			$('#system-list li').on('tap');
+			$('#msg-list li').on('tap',function(){
+				var id = $(this).attr('id').substr(4);
+				window.location.href='./im-chat.html?id='+id
+			})
+			$('#system-list li').on('tap',function(){
+				var id = $(this).attr('id').substr(4);
+				window.location.href='./system.html?id='+id;
+			})
+			$("#emsg-list li").on('tap',function(){
+				var id = $(this).attr('id').substr(4);
+				window.location.href='./im-chat.html?id='+id
+			})
+		}
+		
+	</script>
+</body>
+</html>

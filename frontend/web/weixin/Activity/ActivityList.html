@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			.mui-scroll-wrapper{
+				top: 44px;
+				bottom: 0px
+			}
+			.left-div
+			{
+				width: 100px;
+				height: 80px;
+			}
+			.right-div
+			{
+				margin-left: 110px;
+			}
+			#activityPic
+			{
+				width: 100px;
+				height: 80px;
+			}
+			.mui-table-view .mui-media-object
+			{
+				max-width: 120px;
+			}
+			#publishUserPosition
+			{
+				margin-left: 0px;
+			}
+			
+			#publishUserName,#activitySubject,#activityDate,#personCnt
+			{
+				color:#000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" style="right:80px;">活动列表</h1>
+			<a id="activityMgrBtn" class="mui-pull-right" style="color: #007aff;padding-top:10px;">我的活动</a>
+		</header>
+		
+		<div class="mui-content">
+			 <div id="activity" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="activityUl" class="mui-table-view">
+						<!--<li class="mui-table-view-cell mui-media">
+							<div id="activityBrief" class="activity-brief" publishuser-id="" activity-id="">
+								<div class="left-div">
+									<img id="activityPic" class="mui-media-object" src="http://www.zmzfang.com/assets/topic/170618102457.jpg" alt="活动背景头像" />
+								</div>
+								<div class="right-div">
+									<p>主题：<span id="activitySubject">培训xxx</span></p>
+									<p>发布人：<span id="publishUserName">王经理</span><span id="publishUserPosition" style="font-size:9px">(我爱我家销售总监)</span></p>
+									<p>时间：<span id="activityDate">2017-06-02</span></p>
+									<p>人数：<span id="personCnt">10人</span></p>
+								</div>
+								
+							</div>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/Activity/common/common.js?v=0.01"></script>
+		<script src="../js/Activity/ActivityList.js?v=0.02"></script>
+		
+	</body>
+
+</html>

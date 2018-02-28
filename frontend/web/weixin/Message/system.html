@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<script type="text/javascript" src="../js/head.js"></script>
+		<title>芝麻找房</title>
+		<style>
+			.msg-item{
+				padding: 8px;
+				clear: both;
+			}
+			.msg-item .msg-content {
+				border-radius: 5px;
+				border: solid 1px #d3d3d3;
+				background-color: #FFFFFF;
+				color: #333;
+				padding: 15px;
+				font-size: 15px;
+				margin: 0px 8px;
+			}
+			.msg-content h4 {
+				color: #000;
+				font-weight: 400;
+				margin-bottom:15px;
+			}
+			.msg-content img {
+				position: absolute;
+			}
+			.msg-content p {
+				margin-left: 60px;
+			}
+			.time {
+				display: block;
+				margin: 0 auto;
+				margin-bottom: 8px;
+				font-size: .75rem;
+				color: #fff;
+				text-align: center;
+				background: rgba(0,0,0,.15);
+				border-radius: 5px;
+				width: 85px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="subject" class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+			<div id='msg-list'>
+			</div>
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="../js/common.js?v=0.04"></script>
+		<script src="../js/commonAjax.js?v=0.04"></script>
+		<script type="text/javascript">
+			// 初始化变量
+			var config = {
+			  syncURL: "https://sickeeer.wilddogio.com"
+			};
+			wilddog.initializeApp(config);
+			var ref = wilddog.sync().ref();
+			var user = getQueryStrFromUrl("id");
+			switch(user){
+				case 'zmzs':
+				$('#subject').text('芝麻小助手')
+				break;
+				case 'ywzs':
+				$('#subject').text('业务小助手')
+				break;
+				case 'sjzs':
+				$('#subject').text('升级小助手')
+				break;
+			}
+			var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+			if(loginUser){
+				var me =loginUser.id;
+			}else{
+				mui.toast('您尚未登陆，5S后自动尝试登陆');
+				setTimeout(window.location.href='http://www.zmzfang.com/?r=door/scope&view=Message/list',5000);
+			}
+			
+			var unlook;
+			var meChild = "list/"+me+"/"+user;
+			
+			// 自身列表未读数置零 初始化读取一次
+			ref.child(meChild).once('value', function(snapshot,error) {
+				if (error == null) {
+					if(snapshot.exists()){
+						ref.child(meChild).update({
+							'unlook':0
+						})
+					}
+				}
+			})
+			
+			// 监听聊天内容
+			ref.child('system/'+user+'/'+me).orderByKey().limitToLast(30).on('child_added', function(snapshot) {
+				var item = snapshot.val();
+				var orgtime = snapshot.key();
+				var t = orgtime.substr(4, 2) + orgtime.substr(6, 2) + orgtime.substr(8,2)+ orgtime.substr(10,2);
+				var list = '';
+				var time = orgtime.substr(4, 2) + '-' + orgtime.substr(6, 2) + ' ' + orgtime.substr(8,2)+ ':'+orgtime.substr(10,2);
+				list += '<div class="msg-item">';
+				if($('#t'+t).length>0){
+				}else{
+					list += '<span class="time" id="t'+t+'">'+time+'</span>'	
+				}
+				list += 	'<div class="msg-content">'
+								+'<div class="msg-content-inner">'
+									+'<a href="'+item.template.url+'">'
+										+'<h4>'+item.template.title+'</h4>'
+										+'<img src="'+item.template.imgsrc+'"  width="40" height="40" />'
+										+'<p>'+item.content+'</p>'
+									+'</a>'
+								+'</div>'
+							+'</div>'
+							+'<div class="mui-item-clear"></div>'
+						+'</div>';
+				$('#msg-list').append(list);
+				window.scrollTo(0,document.body.scrollHeight);
+			});
+			
+		</script>
+	</body>
+
+</html>

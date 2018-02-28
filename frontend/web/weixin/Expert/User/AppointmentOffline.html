@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			#prompt {
+				margin-top: 5px;
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+		
+			#detailDiv {
+				margin-top: 0px;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 5px;
+			}
+		
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">线下约见</h1>
+		
+		</header>
+		
+		<div class="mui-content">		
+			<section>
+				<div class="mui-input-row" id="prompt">
+					<p>
+						约见说明：请详尽描述你的问题，专家在确认后，方可支付，支付成功后双方可约定见面时间地点等细节。
+					</p>
+				</div>
+			
+				<div class="mui-input-row" id="detailDiv">
+					<textarea id="detail" rows="5" placeholder="请输入您的问题详情，字数200内" ></textarea>
+				</div>
+				
+				<div class="mui-input-row">
+					<span style="padding-left:20px">收费提示：</span>
+					<span id="fee">200</span>元每次
+				</div>		
+				<div style="text-align: center;padding-top: 5px;">
+					<button id="commit" type="button" class="mui-btn" style="width: 90%;height: 40px;background-color: #4cd964;color: #fff;">
+						提交
+					</button>
+				</div>
+			</section>	
+		</div>
+
+
+	    
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/User/AppointmentOffline.js?v=0.01"></script>
+	</body>
+</html>

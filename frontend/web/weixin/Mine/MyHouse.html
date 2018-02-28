@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的房源</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="houselist">
+				<ul id="houseUl" class="mui-table-view">
+					<li id="promptDivLi" class="mui-table-view-cell mui-media mui-hidden">
+						<div id="promptDiv" class="prompt-div" style="text-align: center; margin-top: 1px;">
+							<span style="color: gray; font-size: 0.9em;">无房源</span>
+							<br />
+							<div id='publishHouse' class="submit-btn btn-green">发布房源</div>
+						</div>
+					</li>
+					
+			    </ul>
+			
+			</div>	
+			
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/house.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false
+			});
+			
+			var user;
+			mui.back = function(){
+				mui.openWindow({
+					url: '../mine.html'
+				});
+			};
+			
+	        mui.ready(function() {
+				$('#mineLink').addClass('mui-active')
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				user = JSON.parse(data);
+				var userid = user.id;
+				
+				ajax_to_server(getHouseListByCityUrl,{userid:userid},getHouseListSuccess,null);
+				//获取
+				
+				//初始化微信分享
+				wxShare();
+			});
+			
+			function getHouseListSuccess(data)
+			{
+				console.log('getHouseListSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					showPromptInfo();
+					initReferralInfo();
+					return;
+				}
+				
+				var houseUl=document.getElementById('houseUl');
+				var firstFrag = document.createDocumentFragment();
+				
+				for(var i in data)
+				{
+					var houseid=data[i].houseid;
+					console.log('\n houseid:'+houseid);
+					firstFrag.appendChild(fillHouseListLi(data[i]));
+				}
+				
+				//houseUl.innerHTML = "";
+				houseUl.appendChild(firstFrag);
+				initReferralInfo();
+			}
+	
+	        //增加房源列表中tap事件
+			mui('#houseUl').on('tap', '.house-brief', function() {
+				var houseId = this.getAttribute('house-id');
+				console.log('houseId:'+houseId);
+				localStorage.setItem("houseId", houseId);
+				
+				var dstUrl = './MyHouseDetail.html?houseId='+houseId+'&city='+user.city;
+				mui.openWindow({
+					url: dstUrl,
+					id: './MyHouseDetail.html'
+				});
+			});
+			
+			function showPromptInfo()
+			{
+				$('#promptDivLi').removeClass('mui-hidden');
+				//增加投标 tap事件
+				document.querySelector('#publishHouse').addEventListener('tap', function() {
+					console.log('publishHouse click');
+					//发布房源
+					mui.openWindow({
+						url: "../Publish/HousePublish1.html"
+					});
+				},false);
+			}
+			
+			function initReferralInfo()
+	        {
+	        	var options = new Object();
+				options.userid = loginUser.id;
+				
+				ajax_to_server(getHouseReferralListByUseridUrl,options,getReferralHouseByUserIdSuccess,getReferralHouseByUserIdFailed);
+	        }
+	        
+	        //获取需求列表成功后的处理方法，新建li元素
+			function getReferralHouseByUserIdSuccess(data)
+			{
+				console.log('getReferralHouseByUserIdSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					
+					return;
+				}
+
+				var houseUl=document.getElementById('houseUl');
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data.data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillMyReferralHouseListLi(data.data[i]));
+				}
+				
+				houseUl.appendChild(firstFrag);
+
+				mui('#houseUl').on('tap', '.referral-brief', function() {
+					var houseId = this.getAttribute('house-id');
+					console.log('houseId:'+houseId);
+					
+					var dstUrl = '../Referral/MyHouseDetailReferral.html?houseId='+houseId;
+					mui.openWindow({
+						url: dstUrl
+					});
+				});
+			}
+
+	
+			function getReferralHouseByUserIdFailed(data)
+			{
+				console.log('getReferralHouseByUserIdFailed data:'+JSON.stringify(data));
+				mui.toast('获取求助需求列表失败:'+JSON.stringify(data));
+			}
+	        
+	         //创建我的需求列表li元素
+			function fillMyReferralHouseListLi(data) 
+			{	
+				var ele = document.createElement("li");
+				ele.className = "mui-table-view-cell mui-media ";
+			
+				console.log('date:'+data.publishdate);
+				var publishdate = data.publishdate;
+				var timearray=publishdate.split(" ");
+				var newupdatetime=timearray[0];
+				
+				var subject = data.region + data.districtname;
+				
+				var housetype = data.roomcnt + '室'+ data.hallcnt + '厅' + data.bathroomcnt + '卫';
+				
+				var liContent = '';
+				
+				liContent += '<div id="houseBrief" class="referral-brief" house-id="'+data.houseid+'">';
+				liContent += '<img id="housePic" class="mui-media-object mui-media-large  mui-pull-left" style="margin-top: 5px;" data-lazyload-id="0" src="../img/muwu.jpg">';
+				liContent += '<div class="mui-media-body">';
+				liContent += '<h4 id="districtName" class="mui-ellipsis" style="margin-left: 0px;overflow: visible;">'+subject+'</h4>';
+				liContent += '<h5 style="margin-left: 0px;"> <span id="houseType">'+housetype+'</span> <span id="price" style="margin-left:10px;">'+data.expectsaleprice+'万</span></h5>';
+				liContent += '<h5>面积:<span id="buildingArea">'+data.buildingarea+' 平米</span>  <span style="float:right;margin-right: 0px;">'+newupdatetime+'</span> </h5>	';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				
+				
+				ele.innerHTML = liContent;
+				return ele;
+			}
+		</script>
+	</body>
+
+</html>

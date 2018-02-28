@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+		    
+		    /*hxj*/
+			#popup {
+				position: absolute;
+			    left: 0;
+			    top: 0;
+			    width: 100%;
+			    height: 100%;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translate3d(-100%,0,0);
+			    transform: translate3d(-100%,0,0);
+			    -webkit-transition: -webkit-transform .2s ease;
+			    transition: transform .2s ease;
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    opacity: 0;
+			    z-index: -1;
+			}
+			#popup.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			}
+			@-webkit-keyframes niceIn {
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@keyframes niceIn {
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@-o-keyframes niceIn{
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@-moz-keyframes niceIn{
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			.niceIn {
+				opacity: 0;
+    			filter: Alpha(opacity=0);
+   				-moz-opacity:0;
+				position: absolute;
+				margin-left: -20px;
+				bottom: 10px;
+				animation: niceIn 0.5s;
+                -moz-animation: niceIn 0.5s;
+   				-webkit-animation: niceIn 0.5s;
+   				-o-animation: niceIn 0.5s;
+   				color:#333;			
+   			}
+			#topic-title,.count{
+				text-align: center;
+			    color: #fff;
+			    font-size: 20px;
+			    font-weight: 700;
+			    padding: 20px 10px;
+			    background: rgba(0,0,0,.4);
+			    margin: 0 15px;
+			    line-height: 1.5;
+			}
+			.count{
+				font-size: 16px;
+			}
+			#topic-title{
+				margin-bottom: 10px
+			}	
+			.wrap{
+				padding:54px 0px 30px;
+				
+			}
+			#topic-desc{
+				padding:0 10px;
+				color:#666;
+			}
+			.card{
+				padding:10px;
+			}
+			#submitTopic{
+				padding:7px 0;
+				border:1px solid #ccc;
+				background:#5EDA73;
+				text-align:center;
+				width:80%;
+				margin:0 auto;
+			}
+			h3,h4{
+				font-weight: 400;
+			}
+			#recommend li,#new li{
+				position: relative;
+			}
+			#recommend,#new{
+				list-style: none;
+				margin: 0;
+			}
+			.mui-table-view .mui-media-object{
+				height:45px;
+				width: 45px;
+			}
+			.mui-table-view-chevron .mui-table-view-cell{
+				padding-right:10px;
+			}
+			.dp{
+				border-top:1px solid #ddd;padding-top:8px;width:100%;color: #777;position: relative;
+			}
+			.dp .zan,.dp .cai,.dp .pl{
+				width:33%;
+				display: inline-block;
+				text-align:center;
+				font-size:16px;
+			}
+			.dp i{
+				font-size:.8rem;position: absolute;top:10px;
+			}
+			.dp .zan,.dp .cai{
+				/*border-right: 1px solid #ccc*/
+			}
+			.zan i,.cai i{
+				margin-left:2px; 
+				font-size:.8rem;
+			}
+			.pub-faces span {
+				text-align: center;
+				width: 14.28%;
+				float: left;
+				display: block;
+				margin:3px 0;
+			}
+			#topic-source-count{
+				font-size: 12px;
+			}
+			.mui-table-view .mui-media, .mui-table-view .mui-media-body{
+				overflow: inherit!important
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img{width:auto;}
+			.mui-table-view:after{height:0;}
+			#topic-desc img{display: block;max-width: 100%;height: auto;}
+			.inner-href img{width:100%;display: block}
+			#topic-title, .count {
+			    text-align: center;
+			}
+			.mui-scroll-wrapper{bottom:50px;}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-transparent" >
+			<a href="../HomePage/index.html" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="topicTitle"></h1>
+			<a href="./list.html" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">行业观点</a>
+		</header>
+		
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<img id="background" src="11.jpg" style="width: 100%;max-height:200px;position: absolute;z-index:-1;" />
+					<div class="wrap">
+						<h3 id='topic-title'></h3>
+					</div>
+					
+					<div class="card">
+
+						<p id='topic-source-count'>
+							<span id="topic-source"></span>
+							<span>
+						    	<svg class="icon" style="font-size:12px; width:15px; height:15px;">
+									<use xlink:href="#icon-views"></use>
+								</svg>
+								<span id="topic-count"></span>
+							</span>
+						</p>
+						<a class="inner-href" data-href='../HomePage/index.html'"><img src="../img/ads1.jpg" /></a>
+						<p id='topic-desc'></p>
+						<!-- <div id='submitTopic'><a style="color:#fff;">参与话题</a></div> -->
+					</div>
+					<a class="inner-href" data-href='../Recruit/index.html'"><img style="margin-bottom: 8px;" src="../img/ads2.jpg" /></a>
+					<!-- <div class="card"><p id="topic-count" style="float:right;color:#808080;font-size:13px;"></p></div> -->
+					<div class="card">
+						<h4>热门资讯<a style="float:right" class="inner-href" data-href="./list.html"><small>更多</small></a></h4>
+						<ul id="hot" class="mui-table-view mui-table-view-chevron">
+						</ul>
+					</div>
+					<div class="card">
+						<h4>热门动态</h4>
+						<ul id="recommend" class="mui-table-view mui-table-view-chevron">
+						</ul>
+					</div>
+					<div class="card" style="padding-bottom:0;margin-bottom:0">
+						<h4>最新动态</h4>
+							<!--数据列表-->
+							<ul id="new" class="mui-table-view mui-table-view-chevron">
+							</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<nav id="mainBar" class="mui-bar mui-bar-tab">
+			<a id="submitTopic" class="mui-tab-item-own mui-active" style="padding: 7px 0;border: 1px solid #ccc;background: #5EDA73;text-align: center;width: 80%;margin: 20px auto 0;color:#fff;">参与话题</a>
+		</nav>
+		<div id="popup">
+		<header class="mui-bar mui-bar-nav" >
+			<h1 class="mui-title" id="topicTitle">发布观点</h1>
+			<a id="submit" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">发布</a>
+		</header>
+		
+		<div class="mui-content" style="background: #fff;">
+			<div class="ui-page">
+				<div class="mui-input-row">
+					<textarea id="content" rows="5"></textarea>
+				</div>
+			</div>
+			<div class="pub-faces" id="slider">
+			</div>
+			<div style="text-align: center;">
+				<button id="closePopup">取消</button>
+			</div>
+		</div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.qqFace.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			var page = 1;
+			var end = 0;
+			var topicId;
+			var source;
+			var count="0人阅读";
+			mui.init({
+				swipeBack: false,
+				pullRefresh: {
+					container: '#pullrefresh',
+					// down: {
+					// 	callback: pulldownRefresh
+					// },
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+			mui.ready(function() {
+				//初始化
+				//处理从发布页面2返回到发布页面1的情况
+				initUrlParam();
+				initTopicInfo();
+				getTopicCList();
+				intReadTimes();
+				//初始化微信分享
+				readup();
+				hot();
+				mui('.mui-slider').slider();
+			});
+			$('.inner-href').on('tap',function(){
+				location.href = $(this).attr('data-href');
+			})
+			function readup(){
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=topic/readup",
+					url:getInterfaceUrl()+"?r=topic/readup",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1
+					},
+					success: function(data){
+						console.log('read +1');
+					},
+					 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+				});
+			}
+
+			function initTopicInfo(){
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=topic/content",
+					url:getInterfaceUrl()+"?r=topic/content",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1
+					},
+					success: function(data){
+						$("#topic-title").html(data.title);
+						$("#topic-desc").html(data.describe);
+						// source=data.source;
+						// source_count=source+"  "+count+"人阅读";
+						$("#topic-source").html(data.source);
+						if(data.picture){
+							$("#background").attr('src','http://www.zmzfang.com/assets/topic/'+data.picture);
+						}
+						
+
+						wxShare({"title":data.title,"desc":data.describe.replace(/<\/?.+?>/g, ''),"imgUrl":data.picture?'http://www.zmzfang.com/assets/topic/'+data.picture:'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg','link':window.document.location.href});
+					},
+					 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+				});
+			}
+			function getTopicCList(){
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=topic/content-list",
+					url:getInterfaceUrl()+"?r=topic/content-list",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1,
+						page : page
+					},
+					success: function(res){
+						var recommendHtml='',topicList='';
+						if(page == 1){
+							for (i in res.recommend){
+								if(res.recommend[i].user_id == -1){
+									res.recommend[i].nickname = '匿名';
+									res.recommend[i].picture = '../img/favicon.ico';
+								}
+								
+								recommendHtml+='<li class="mui-table-view-cell mui-media" id="'+res.recommend[i].id+'"><div id="requirementBrief" class="requirement-brief"><div style="width:42px; height:42px;border-radius:21px;overflow:hidden;float:left;margin-right:8px;"><img class="mui-media-object" src="'+res.recommend[i].picture+'" alt="个人头像"></div></div><div style="float:left;padding-left: 10px;width:80%;overflow:hidden;"><p class="requirement-subject" style="margin-left: 0px;color:#000;">'+res.recommend[i].nickname+'</p>'+
+								'</div><p class="publish-date" style="position:absolute;right:3px;">'+getTimeAgo(res.recommend[i].time)+'</p></div>'
+								+'<div style="clear:both;"></div><div style="margin:15px 0;word-wrap:break-word;word-break:break-all">'+replace_em(res.recommend[i].describe)+'</div><div class="dp"><div class="zan"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-zan"></use></svg><i>'+res.recommend[i].zan+'</i></div><div class="cai"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-cai"></use></svg><i>'+res.recommend[i].cai+'</i></div><div class="pl"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-comment"></use></svg><i>'+res.recommend[i].count+'</i></div><div style="clear:both;"></div></div></li>';
+							}
+							recommendHtml = (recommendHtml=='')?'<li style="text-align:center;padding:8px;color:#999">暂无评论	</li>':recommendHtml
+							$("#recommend").html(recommendHtml)
+						}
+						if(res.data.length < 10){
+							end = 1;
+						}
+						for (j in res.data){
+							if(res.data[j].user_id == -1){
+								res.data[j].nickname = '匿名';
+								res.data[j].picture = '../img/favicon.ico';
+							}
+							topicList+='<li class="mui-table-view-cell mui-media" id="'+res.data[j].id+'"><div id="requirementBrief" class="requirement-brief"><div style="width:42px; height:42px;border-radius:21px;overflow:hidden;float:left;margin-right:8px;"><img class="mui-media-object" src="'+res.data[j].picture+'" alt="个人头像"></div></div><div style="float:left;padding-left: 10px;width:80%;overflow:hidden;"><p class="requirement-subject" style="margin-left: 0px;color:#000;">'+res.data[j].nickname+'</p>'+
+								'<p class="requirement-subject" style="margin-left: 0px;color:#000;"></p></div><p class="publish-date" style="position:absolute;right:3px;">'+getTimeAgo(res.data[j].time)+'</p></div>'
+								+'<div style="clear:both;"></div><div style="margin:15px 0;word-wrap:break-word;word-break:break-all">'+replace_em(res.data[j].describe)+'</div><div class="dp"><div class="zan"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-zan"></use></svg><i>'+res.data[j].zan+'</i></div><div class="cai"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-cai"></use></svg><i>'+res.data[j].cai+'</i></div><div class="pl"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-comment"></use></svg><i>'+res.data[j].count+'</i></div><div style="clear:both;"></div></div></li>';
+						}
+						topicList = (topicList=='' && page == 1)?'<li style="text-align:center;padding:8px;color:#999">暂无评论	</li>':topicList
+						$("#new").append(topicList);
+						$('.zan').off('tap');
+						$('.cai').off('tap');
+						$('.zan').on('tap',{type:'zan'},dp);
+						$('.cai').on('tap',{type:'cai'},dp);
+						$('.pl').off('tap');
+						$('.pl').on('tap',pl);
+						page++;
+					},
+					 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+				});
+			}
+			function hot(){
+				ajax_to_server('http://www.zmzfang.com/?r=topic/top-read-content','',hotSuc)
+			}
+			function hotSuc(res){
+				var html = '';
+				for(i in res){
+					html += '<li style="list-style: none;margin: 0;padding: 0;font-size: .8rem;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;color:#999" tid="'+res[i].id+'">● '+res[i].title+'</li>'
+				}
+				$('#hot').html(html)
+				$('#hot li').on('tap',function(){
+					var tid = $(this).attr('tid');
+					window.location.href = './index.html?tid='+tid
+				})
+			}
+			function pl(){
+				var id = $(this).parent().parent().attr('id');
+				var tid = topicId?topicId:1;
+				window.location = 'http://www.zmzfang.com/weixin/Topic/topicList.html?id='+id+'&tid='+tid;
+			}
+			$('#submitTopic').on('tap',function(){
+				$('#popup').addClass('active');
+				mui.scrollTo(0,50,function(){$('#content').focus();$('#content').trigger('tap');});
+				document.body.style.overflow='hidden';
+			});
+			$('#closePopup').on('tap',function(){
+				$('#popup').removeClass('active');
+				document.body.style.overflow='';
+			});
+			$('#submit').on('touchend',function(event){
+				if($("#content").val().trim() == ''){
+					mui.toast('请先填写评论哦')
+					return false;
+				}
+
+				$('#popup').removeClass('active');
+				document.body.style.overflow='';
+				if(loginUser){
+					userid = loginUser.id;
+					picture = loginUser.picture;
+					nickname = loginUser.nickname;
+				}else{
+					userid = -1;
+					picture = '../img/favicon.ico';
+					nickname = '匿名';
+				}
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=topic/add-topic",
+					url:getInterfaceUrl()+"?r=topic/add-topic",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1,
+						// userid :loginUser.userid,
+						userid : userid,
+						describe : $("#content").val()
+					},
+					success: function(res){
+						var lastHtml;
+						if(res.code == 1){
+							
+							// mui('#pullrefresh').scroll().scrollTo(0,-1085,100);
+							mui.toast("发表话题成功！");
+							lastHtml =
+							'<li class="mui-table-view-cell mui-media" id="'+res.newId+'"><div id="requirementBrief" class="requirement-brief"><div style="width:42px; height:42px;border-radius:21px;overflow:hidden;float:left;margin-right:8px;"><img class="mui-media-object" src="'+picture+'" alt="个人头像"></div></div><div style="float:left;padding-left: 10px;width:80%;overflow:hidden;"><p class="requirement-subject" style="margin-left: 0px;color:#000;">'+nickname+'</p>'+
+								'<p class="requirement-subject" style="margin-left: 0px;color:#000;"></p></div><p class="publish-date" style="position:absolute;right:3px;">刚刚</p></div>'
+								+'<div style="clear:both;"></div><div style="margin:15px 0;word-wrap:break-word;word-break:break-all">'+replace_em($("#content").val())+'</div><div class="dp"><div class="zan"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-zan"></use></svg><i>0</i></div><div class="cai"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-cai"></use></svg><i>0</i></div><div class="pl"><svg class="icon" aria-hidden="true" style=""><use xlink:href="#icon-comment"></use></svg><i>0</i></div><div style="clear:both;"></div></div></li>';
+							$("#new").prepend(lastHtml);
+							$('.zan').off('tap');
+							$('.cai').off('tap');
+							$('.zan').on('tap',{type:'zan'},dp);
+							$('.cai').on('tap',{type:'cai'},dp);
+							$('.pl').off('tap');
+							$('.pl').on('tap',pl);
+							$('#content').val('');
+						}else{
+							mui.toast("发表话题失败，请稍后重试！");
+						}
+					},
+					 error: function(jqXHR){
+						mui.toast("发表话题发生错误"+ jqXHR.status);
+					}
+				});
+				event.preventDefault();
+			});
+			function dp(e){
+				// console.log(e);
+				var id = $(this).parent().parent().attr('id');
+				var dom = $(this).find('i');
+				var html = '+1';
+				if($(this).parent().hasClass('active')){
+					mui.toast('您已点评过了！');
+					return;
+				}
+				$(this).parent().addClass('active');
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=topic/dp",
+					url:getInterfaceUrl()+"?r=topic/dp",
+					dataType:"json",
+					data:{
+						topic : topicId?topicId:1,
+						id : id,
+						type: e.data.type
+					},
+					success: function(res){
+						if(res.code == 1){
+							// alert(id+"被"+e.data.type);
+							var adddom = dom.after('<span class="niceIn">'+html+'</span>');
+							setTimeout(function(){
+								dom.siblings('.niceIn').remove();
+								var value = dom.text()
+								dom.text(parseInt(value)+1);
+							},500);
+						}
+					},
+					 error: function(jqXHR){
+						mui.toast("点评发生错误"+ jqXHR.status);
+					}
+				});
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(end===1); //参数为true代表没有更多数据了。
+					getTopicCList();
+				}, 1500);
+			}
+
+			//替换表情
+			function replace_em(str){
+				str = str.replace(/\</g,'&lt;');
+				str = str.replace(/\>/g,'&gt;');
+				str = str.replace(/\n/g,'<br/>');
+				str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
+				return str;
+			}
+			function getTimeAgo(time){
+				var timestamp = Date.parse(new Date());
+				// console.log(timestamp);
+				var timeago = timestamp/1000 - time;
+				// console.log(timeago);
+				if (timeago < 20){
+					return '刚刚';
+				}
+				if (timeago < 60){
+					return timeago + '秒前';
+				}
+				if (timeago < 3600){
+					return Math.floor(timeago/60) + '分钟前'
+				}
+				if (timeago < 86400){
+					return Math.floor(timeago/3600) + '小时前'
+				}
+				if (timeago < 604800){
+					return Math.floor(timeago/86400) + '天前'
+				}
+				if (timeago < 31536000){
+					return Math.floor(timeago/604800) + '周前'
+				}else{
+					return '1年前'
+				}
+			}
+			function initUrlParam(){
+				urlString = String(window.document.location.href);
+				var tid = getQueryStrFromUrl("tid");
+				if(tid && tid != ' '){
+					sessionStorage.setItem('tid',tid)
+				}
+				if(tid==9){
+					window.location.href='./shuoshuo.html';
+				}
+				topicId = sessionStorage.getItem('tid')
+			}
+
+
+			function intReadTimes(){
+				var user = new Object();
+				if(!topicId){
+					console.log('intReadTimes 没有获取阅读次数');
+					$("#topic-count").html("0");
+					return;
+				}
+				user.id = topicId;
+				ajax_get_read_times(user,getReadTimesSuc,getReadTimesFailed);
+			}
+			
+
+			function getReadTimesSuc(data)
+			{
+				console.log('getReadTimesSuc data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					console.log('没有获取阅读次数');
+					$("#topic-count").html(data.read);
+					return;
+				}else{
+					$("#topic-count").html(data.read);
+				}
+			}
+
+			function getReadTimesFailed(data)
+			{
+				console.log('getReadTimesFailed data:'+JSON.stringify(data));
+			}
+
+
+		</script>
+	</body>
+
+</html>

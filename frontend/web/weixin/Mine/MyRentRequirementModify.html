@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+	
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">求租需求修改页面</h1>
+		
+		</header>
+        
+		
+		<div class="mui-content">
+			<section id='requirement-info' class="requirement-info">
+				<ul id="addressInfoList" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>区域</label>
+							<input id="area" type="text" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>总价</label>
+							<select id="budget">
+							  <option value="0-999">1000以内</option>
+							  <option value="1000-1999">1000到2000</option>
+							  <option value="2000-3999">2000到4000</option>
+							  <option value="4000-5999">4000到6000</option>
+							  <option value="6000-7999">6000到8000</option>
+							  <option value="8000-11999">8000到12000</option>
+							  <option value="12000-90000">12000以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>户型</label>
+							<select id="houseType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1室</option>
+								<option value="2" selected="selected">2室</option>
+								<option value="3">3室</option>
+								<option value="4-10">4室及以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>楼层</label>
+							<select id="storey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0-300">不限</option>
+								<option value="1-2">1-2楼</option>
+								<option value="3-4">3-4楼</option>
+								<option value="5-6">5-6楼</option>
+								<option value="7-10">7-10楼</option>
+								<option value="11-15">11-15楼</option>
+								<option value="16-20">16-20楼</option>
+								<option value="21-25">21-25楼</option>
+								<option value="26-30">26-30楼</option>
+								<option value="31-300">30楼以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>类型</label>
+							<select id="buildingType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">住宅</option>
+								<option value="2">商住</option>
+								<option value="3">办公</option>
+								<option value="4">商铺</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row" style="margin: 10px 0px;">
+							<label>具体描述</label>
+							<div>
+							    <textarea id="detail" rows="5" placeholder="请输入您的具体需求描述" style="margin: 0px 10px ;"></textarea>
+						    </div>
+						</div>
+					</li>				
+				</ul>
+				<div id='commitRequirementModify' class="submit-btn btn-green">提交</div>
+			</section>
+
+<!-- 			<p><button id="btn1">触发输入域的 focus 事件</button></p>
+			<p><button id="btn2">触发输入域的 blur 事件</button></p> -->
+	
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/wxShare.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			mui.init({
+				swipeBack: false
+			});
+			var loginUser;
+			var requirementId;
+			var requirementCity;
+			
+			mui.ready(function() {
+				loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+				//初始化需求详细信息
+				initRequirementDetail();
+				//初始化微信分享
+				wxShare();
+			});
+
+		     //增加需求发布按钮事件
+			document.querySelector('#commitRequirementModify').addEventListener('tap', function() {
+				console.log('commitRequirementModify click');
+				
+				var data = localStorage.getItem("zmzfangMyRentRequirement");
+	        	console.log('MyRequirementModify data:'+data);
+	        	var myRequirement = JSON.parse(data);
+	        	requirementCity = myRequirement.city;
+				//获取界面输入元素内容
+				
+				requirementId = myRequirement.id;
+				var budget = getSelectElementValue('budget');
+				var housetype = getSelectElementValue("houseType");
+				var storey = getSelectElementValue("storey");
+				var buildingtype = getSelectElementText("buildingType");
+				var detail = byId("detail").value;
+
+                //检查发布信息中的描述
+				if(!checkPublishInfo())
+				{
+					return;
+				}
+				
+				var options = new Object();
+				options.publishuserid = loginUser.id;
+				options.rentid = requirementId;
+				options.budget = budget;
+				options.housetype = housetype;
+				options.storey = storey;
+				options.buildingtype = buildingtype;
+				options.detail = detail;
+				
+				
+				var updateRentUrl = getInterfaceUrlByCity(requirementCity) + '?r=rent/update-rent';
+				
+				ajax_to_server(updateRentUrl,options,modifyRequirementSuccess,modifyRequirementFailed);
+				
+			}, false);
+			
+			//初始化需求详细信息
+			function initRequirementDetail()
+			{
+				var data = localStorage.getItem("zmzfangMyRentRequirement");
+	        	console.log('MyRequirementModify data:'+ data);
+	        	var myRequirement = JSON.parse(data);
+	        	
+	        	byId("area").value = myRequirement.subject;
+	        	console.log('area :'+byId("area").value);
+	        	
+	        	initSelectElementByValue("budget",myRequirement.budget);
+	        	initSelectElementByValue("houseType",myRequirement.housetype);
+	        	initSelectElementByValue("storey",myRequirement.storey);
+	        	initSelectElementByText("buildingType",myRequirement.buildingtype);
+	        	
+	        	byId("detail").value = myRequirement.detail;
+	
+				window.scrollTo(0,document.body.scrollHeight);
+			}
+			
+			function checkPublishInfo()
+		    {
+		    	var detail = byId("detail").value;
+		    	if(detail == null || detail == '')
+		    	{
+		    		mui.toast("具体描述不能为空，请至少输入5个汉字");
+				    return false;
+		    	}
+		    	var detailLen = getByteLen(detail.trim());
+		    	//alert('detailLen:'+detailLen);
+		    	if(detailLen < 10)
+		    	{
+		    		mui.toast("请至少输入5个字符");
+				    return false;
+		    	}	
+		    	if(detailLen > 200)
+		    	{
+		    		mui.toast("字符超长，限100汉字");
+				    return false;
+		    	}	
+		    	return true;
+		    }
+		    
+			function modifyRequirementSuccess(data)
+			{
+				var toastMSG = '需求修改成功！';
+				mui.toast(toastMSG);
+				var dstUrl = './MyRentRequirementDetail.html?requirementId='+requirementId+'&city='+requirementCity;
+				mui.openWindow({
+					url: dstUrl
+				});
+			}
+			
+			function modifyRequirementFailed(data)
+			{
+				mui.toast('修改需求失败.'+JSON.stringify(data));
+			}
+			
+			
+		</script>
+	</body>
+
+</html>

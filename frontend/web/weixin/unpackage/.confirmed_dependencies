@@ -1,0 +1,16 @@
+{
+	"index.html": {
+		"resources": [
+			"barItemHtml/homepage.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"barItemHtml/homepage.html",
+			"barItemHtml/message.html",
+			"barItemHtml/publish.html",
+			"barItemHtml/setting.html"
+		]
+	}
+}

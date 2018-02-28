@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="./css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="./css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">发布</h1>
+		
+		</header>
+		
+		<div class="mui-content">
+			
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv" class="display-after-login">
+				<div style="text-align: center;padding-top: 100px;">
+					<button id="requirement-publish" type="button" class="mui-btn" style="width: 200px;height: 50px;background-color: #4cd964;color: #fff;">
+						我要买房
+					</button>
+				</div>
+				
+				<div style="text-align: center;padding-top: 20px;">
+					<button id="house-publish" type="button" class="mui-btn" style="width: 200px;height: 50px;background-color: #4cd964;color: #fff;">
+						我要卖房
+					</button>
+				</div>
+			</div>
+	    </div>
+	    
+
+	    <script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+        <script src="./js/mui.min.js" charset="UTF-8"></script>
+        <script src="./js/ajax.js"></script>
+		<script src="./js/loginCheck.js"></script>
+		<script src="./js/jquery.min.js"></script>
+		<script src="./js/wxShare.js"></script>
+		<script src="./js/user.js?v=0.01"></script>
+
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			jQuery(window).unbind('beforeunload');
+			 window.onbeforeunload = null;
+			var user = null;
+			
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				$('#flashLink').addClass('mui-active');
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				console.log(JSON.stringify(data));
+				if(!!data){
+					user = JSON.parse(data);
+					userid = user.id;
+					ajax_get_user_limit({
+						userid:userid
+					});
+				}
+				
+				initPublishBtn();
+				initImListen();
+				//初始化微信分享
+				wxShare();
+			});
+					
+			function getUserLimitSuccess(data){
+				console.log("UserLimit="+JSON.stringify(data));
+				localStorage.setItem("zmzfangUserLimit",JSON.stringify(data));
+			}
+				
+	        function initPublishBtn() {
+				console.log('initPublishBtn');
+				//获取用户id
+				//userid = localStorage.getItem('userid');
+				
+				initCheckView();
+				
+				//增加需求发布按钮事件
+				document.querySelector('#requirement-publish').addEventListener('tap', function() {
+					console.log('requirement-publish click');
+					//增加条数限制管理
+					/*
+					var userLimit=localStorage.getItem("zmzfangUserLimit");
+					if(user)
+					{
+						//用户信息存在，但是获取不到用户已经发布信息
+						if(!userLimit){
+							mui.toast("网络不畅，请稍后重试！");
+							return;
+						}
+						userLimit=JSON.parse(userLimit);
+						if(userLimit.max_requirement <= userLimit.user_require_count){
+							mui.toast("您已达到最大发布需求量，暂不能再发布需求");
+							return;
+						}
+					}
+					*/
+					//增加登陆信息的检查
+					//如果没有用户信息，则跳转到微信绑定页面；
+					//如果有用户信息，则检查用户手机号是否存在
+					//手机号存在，直接进入相关页面
+					//手机号不存在，弹出注册绑定手机号页面
+					
+				    var noUserInfoJumpFlag = 2;
+	            	var noLoginUserInfoBindUrl = 'http://www.zmzfang.com/?r=door/scope&view=Publish/RequirementPublish1';
+	            	var hasPhoneJumpUrl = "./Publish/RequirementPublish1.html";;
+	            	var noPhoneRegAfterJumpUrl = "../Publish/RequirementPublish1.html" ;
+					
+	        		checkLoginUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl,noUserInfoJumpFlag,noLoginUserInfoBindUrl);
+
+
+				}, false);
+				
+				//增加房源发布按钮事件
+				document.querySelector('#house-publish').addEventListener('tap', function() {
+					console.log('house-publish click');
+					//增加条数显示管理
+					/*
+					var userLimit=localStorage.getItem("zmzfangUserLimit");
+					if(user)
+					{
+						if(!userLimit){
+							mui.toast("网络不畅，请稍后重试！");
+							return;
+						}
+						userLimit=JSON.parse(userLimit);
+						if(userLimit.max_supplyment <= userLimit.user_supply_count){
+							mui.toast("您已达到最大发布房源量，暂不能再发布房源");
+							return;
+						}
+					}
+					*/
+					
+					
+					//增加登陆信息的检查
+  					//如果没有用户信息，则跳转到微信绑定页面；
+					//如果有用户信息，则检查用户手机号是否存在
+					//手机号存在，直接进入相关页面
+					//手机号不存在，弹出注册绑定手机号页面
+					var noUserInfoJumpFlag = 2;
+	            	var noLoginUserInfoBindUrl = 'http://www.zmzfang.com/?r=door/scope&view=Publish/HousePublish1';
+	            	var hasPhoneJumpUrl = "./Publish/HousePublish1.html";;
+	            	var noPhoneRegAfterJumpUrl = "../Publish/HousePublish1.html" ;
+					
+	        		checkLoginUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl,noUserInfoJumpFlag,noLoginUserInfoBindUrl);	        		
+				}, false);				
+			}
+	        
+	        function initImListen()
+            {
+
+            }
+
+
+            
+		</script>
+	</body>
+</html>

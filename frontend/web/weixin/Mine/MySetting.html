@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人中心</h1>
+			<a id="modifyUserInfo" class="mui-icon mui-icon-compose mui-pull-right" style="color: #999;"></a>
+		</header>
+		
+		<div class="mui-content">
+			
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:40px;">
+								    <img id="headPic" style="width:80px; height:80px; " src="" alt="个人头像" />
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>昵称<span id="nickName" class="mui-pull-right"></span></a>
+							</li>
+							
+						</ul>
+						<ul class="mui-table-view">
+						
+							<li class="mui-table-view-cell">
+								<a>手机号<span id="phone" class="mui-pull-right"></span></a>
+							</li>
+							<!-- <li class="mui-table-view-cell">
+								<a>邮箱地址<span id="email" class="mui-pull-right"></span></a>
+							</li> -->
+							<li class="mui-table-view-cell">
+								<a>性别<span id="sex" class="mui-pull-right"></span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>城市<span id="city" class="mui-pull-right"></span></a>
+							</li>
+							<li id="realNameLi"  class="mui-table-view-cell mui-hidden">
+								<a>姓名<span id="realName" class="mui-pull-right"></span></a>
+							</li>
+							
+							<li id="identityLi"  class="mui-table-view-cell mui-hidden">
+								<a>身份证号码<span id="identity" class="mui-pull-right"></span></a>
+							</li>
+							
+							<li id="regionLi"  class="mui-table-view-cell mui-hidden">
+								<a>活动区域<span id="region" class="mui-pull-right"></span></a>
+							</li>
+							
+							<li class="mui-table-view-cell">
+								<a>标签<span id="tags" class="mui-pull-right"></span></a>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+		    </div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/expertData.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var selectedRegionValueArray = new Array();
+			var selectedRegionTextArray = new Array();
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				initUserInfo();
+				//初始化微信分享
+				wxShare();
+			});
+			
+			 //增加修改个人信息按钮事件
+			document.querySelector('#modifyUserInfo').addEventListener('tap', function() {
+				console.log('modifyUserInfo click');
+				mui.openWindow({
+					url: './MySettingModify.html'
+				});
+			}, false);
+			
+			function initUserInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				
+				ajax_get_user_info({
+					userid: user.id
+				});
+			}
+	
+			function getUserInfoSuccess(data)
+			{
+				localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+				
+				byId("headPic").src = data.picture;
+				byId("nickName").innerText = data.nickname;
+				byId("phone").innerText = data.phone;
+				if("1" == data.agentflag){
+					byId("identity").innerText = data.identitycard;
+					byId("identityLi").classList.remove("mui-hidden");
+					
+					byId("realName").innerText = data.realname;
+					byId("realNameLi").classList.remove("mui-hidden");
+					
+					byId("regionLi").classList.remove("mui-hidden");
+					
+					initSelectedRegion(data.activeregion);
+				}
+				
+				// byId("email").innerText = data.email;
+				if(data.sex == "1")
+				{
+					byId("sex").innerText = '男';
+				}
+				else
+				{
+					byId("sex").innerText = '女';
+				}
+				
+				byId("city").innerText = data.city;
+				
+				var split = data.tags.split(',');
+				var tags='';
+				var s='';
+				for(i in split){
+					switch(split[i]){
+						case '1001':
+						s ='刚需';
+						break;
+						case '1002':
+						s ='置换';
+						break;
+						case '1003':
+						s ='投资';
+						break;	
+						case '1004':
+						s ='观望';
+						break;
+						case '1005':
+						s ='首套';
+						break;					
+					}
+					if(i==0){
+						tags+= s
+					}else{
+						tags+= ','+s
+					}
+					
+				}
+
+				byId("tags").innerText = tags;
+			}
+			
+			function initSelectedRegion(data)
+			{
+				var regionarray=data.split(",");
+				//console.log(regionarray.length);
+				var r1,r2,r3;
+				var result;
+				
+				var regionResult = byId('region');
+				if(regionarray.length > 0)
+				{
+					for(var i=0;i<regionarray.length;i++)
+					{
+						//getRegionStr(regionarray[i]);
+						r1 = regionarray[i].substr(0,2);
+						r2 = regionarray[i].substr(2,2);
+						r3 = regionarray[i].substr(4,2);
+						//console.log('r1:'+r1);
+						//console.log('r2:'+r2);
+						//console.log('r3:'+r3);
+						result = getArea(r1,r2,r3);
+						var text = result.father + result.text;
+						
+						//console.log('getArea result:'+result.value+' text:'+result.text);
+						regionResult.innerHTML += ' <span data="'+regionarray[i]+'" class="item mui-badge mui-badge-success">' +text+ ' </span> ';
+					}
+					
+				}
+			}
+
+		</script>
+	</body>
+
+</html>

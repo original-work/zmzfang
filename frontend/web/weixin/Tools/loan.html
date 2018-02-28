@@ -1,0 +1,203 @@
+	<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+    	<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+    	<style type="text/css">
+    		.mui-radio{font-size:.9rem;}
+    		.mui-radio label{margin-left: 8px}
+    		.mui-input-group .mui-input-row{color:#333;}
+    	</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+			<h1 class="mui-title" id="title">贷款计算器</h1>
+			
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group" name="calc2">
+				<div class="mui-input-row">
+			        <label>货款类别</label>
+			        <select onchange="exc_zuhe(this.form,this.value);" name="type" class="fl">
+			    		<option selected="" value="1">商业贷款</option>
+			    		<option value="2">公积金</option>
+			    		<option value="3">组合型</option>
+			    	</select>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>计算方法</label>   
+			    </div>
+			    <div class="mui-input-row  mui-radio">
+			    	<label for="calc2_radio1">根据面积、单价计算</label>
+			        <input class="radio" id="calc2_radio1" type="radio" checked="true" onclick="exc_js(this.form,1);" value="1" name="jisuan_radio">
+			    </div>
+			    <div class="mui-input-row  mui-radio">
+			    	<label for="calc2_radio2">根据贷款总额计算</label>
+			        <input class="radio" id="calc2_radio2" type="radio" onclick="exc_js(this.form,2);" value="2" name="jisuan_radio">
+			    </div>
+			    <div id="calc2_js_div1" style="display: block;">
+				    <div class="mui-input-row">
+				        <label>单价(元/㎡)</label>
+				        <input type="text" value="" name="price">
+				    </div>
+				    <div class="mui-input-row">
+				        <label>面积(㎡)</label>
+				        <input type="text" value="" name="sqm">
+				    </div>
+				    <div class="mui-input-row">
+				        <label>按揭成数</label>
+				        <select name="anjie" size="1">
+						    <option value="9">9成</option>
+						    <option value="8">8成</option>
+						    <option value="7" selected="">7成</option>
+						    <option value="6">6成</option>
+						    <option value="5">5成</option>
+						    <option value="4">4成</option>
+						    <option value="3">3成</option>
+						    <option value="2">2成</option>
+					    </select>
+				    </div>
+				</div>
+			    
+			    <div id="calc2_js_div2" style="display: none;">
+			    	<div class="mui-input-row">
+				        <label>贷款额(万)</label>
+				        <input type="text" value="" name="daikuan_total000">
+				    </div>
+			    </div>
+			    <div  id="calc2_zuhe" style="display: none;">
+				    <div class="mui-input-row">
+					       <label>商业性(万)</label>
+					       <input class="fl txt" type="text" value="" name="total_sy">
+					</div>
+					<div class="mui-input-row">
+					       <label>公积金(万)</label>
+					       <input class="fl txt" type="text" value="" name="total_gjj">
+					</div>
+			    </div>
+			    <div class="mui-input-row">
+					<label>按揭年数</label>
+					<select name="years" size="1" id="years" class="fl">
+					    <option value="1">1年（12期）</option>
+					    <option value="2">2年（24期）</option>
+					    <option value="3">3年（36期）</option>
+					    <option value="4">4年（48期）</option>
+					    <option value="5">5年（60期）</option>
+					    <option value="6">6年（72期）</option>
+					    <option value="7">7年（84期）</option>
+					    <option value="8">8年（96期）</option>
+					    <option value="9">9年（108期）</option>
+					    <option value="10">10年（120期）</option>
+					    <option value="11">11年（132期）</option>
+					    <option value="12">12年（124期）</option>
+					    <option value="13">13年（156期）</option>
+					    <option value="14">14年（168期）</option>
+					    <option value="15">15年（180期）</option>
+					    <option value="16">16年（192期）</option>
+					    <option value="17">17年（204期）</option>
+					    <option value="18">18年（216期）</option>
+					    <option value="19">19年（228期）</option>
+					    <option value="20" selected="">20年（240期）</option>
+					    <option value="25">25年（300期）</option>
+					    <option value="30">30年（360期）</option>
+				    </select>
+				</div>
+				<div class="mui-input-row">
+					<label>银行利率</label>
+					<select class="fl" name="lilv">
+					    <option value="11.70">最新基准利率（70折）</option>
+					    <option value="11.80">最新基准利率（80折）</option>
+					    <option value="11.83">最新基准利率（83折）</option>
+					    <option value="11.85">最新基准利率（85折）</option>
+					    <option value="11.88">最新基准利率（88折）</option>
+					    <option value="11.90">最新基准利率（90折）</option>
+					    <option value="11.95">最新基准利率（95折）</option>
+					    <option value="11.100">最新基准利率</option>
+					    <option value="11.105">最新基准利率（1.05倍）</option>
+					    <option value="11.110">最新基准利率（1.1倍）</option>
+					    <option value="11.120">最新基准利率（1.2倍）</option>
+					    <option value="11.130">最新基准利率（1.3倍）</option>
+					</select>
+				</div>
+			    <div class="mui-input-row">
+			        <label>还贷方式</label>   
+			    </div>
+			    <div class="mui-input-row mui-radio">
+			    	<label for="hdfs1" class="fl">等额本息还款法</label>
+			    	<input id="hdfs1" name="htype" value="0" checked="checked"  type="radio"  onclick="showR(1)">
+			    </div>
+			    <div class="mui-input-row mui-radio">
+			    	<label class="fl" for="hdfs2">等额本金还款法</label>
+			        <input type="radio" onclick="showR(2)" name="htype" id="hdfs2">
+			    </div>
+				<div class="mui-button-row">
+						<button type="button" class="mui-btn mui-btn-primary" onclick="ext_total(document.calc2); return false;">开始计算</button>&nbsp;&nbsp;
+						<button type="reset" class="mui-btn mui-btn-danger" id="reset" onclick="exc_js(document.calc2,1);">重置</button>
+				</div>
+			</form>
+			<fieldset class="border" style="display:none;"> 
+				<div class="re fl">
+					<h2>计算结果<span>(&nbsp;&nbsp;计算结果仅供参考&nbsp;&nbsp;)</span></h2>
+					<div class="re_in re_dk" id="divr1" style="display: none;">
+						<span class="sj"></span>
+						<p>房屋总价：<span id="fangkuan_total1"></span>元</p>
+						<p>贷款总额：<span id="daikuan_total1"></span>元</p>
+						<p>还款总额：<span id="all_total1"></span>元</p>
+						<p>支付利息：<span id="accrual1"></span>元</p>
+						<p>首期付款：<span id="money_first1"></span>元</p>
+						<p>贷款月数：<span id="month1"></span>元</p>
+						<p class="no_br"><b>月均还款：</b><span id="month_money1"></span>元</p>
+					</div>
+					<div class="re_in" id="divr2" style="display: block;">
+						<span class="sj"></span>
+						<p>房款总价：<span id="fangkuan_total2"></span>元</p>
+						<p>贷款总额：<span id="daikuan_total2"></span>元</p>
+						<p>还款总额：<span id="all_total2"></span>元</p>
+						<p>支付利息：<span id="accrual2"></span>元</p>
+						<p>首期付款：<span id="money_first2"></span>元</p>
+						<p>贷款月数：<span id="month2"></span>元</p>
+						<div class="text_area">每月还款：<textarea id="month_money2" name="month_money2"></textarea></div>
+					</div>
+				</div>
+				<p><a href="javascript:void(0)" onclick="backToCal()" class="mui-btn mui-btn-success mui-btn-block">重新计算</a></p>
+			</fieldset>
+		</div>
+		<div class="bottom">
+			<h4>贷款计算器</h4>
+			<p>1.公积金贷款最高额度为80万元;</p>
+			<p>2.对已贷款购买一套住房但人均面积低于当地平均水平，再申请购买第二套普通自住房的居民，比照执行首次贷款购买普通自住房的优惠政策。</p>
+		</div>
+
+    <script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+    <script src="../js/loan.js" charset="UTF-8"></script>
+    <script language="JavaScript">
+		var fangkuan_total1=document.getElementById("fangkuan_total1");
+		var daikuan_total1=document.getElementById("daikuan_total1");
+		var _all_total1=document.getElementById("all_total1");
+		var accrual1=document.getElementById("accrual1");
+		var money_first1=document.getElementById("money_first1");
+		var month1=document.getElementById("month1");
+		var _month_money1=document.getElementById("month_money1");
+		var daikuan_total2=document.getElementById("daikuan_total2");
+		var _all_total2=document.getElementById("all_total2");
+		var fangkuan_total2=document.getElementById("fangkuan_total2");
+		var accrual2=document.getElementById("accrual2");
+		var money_first2=document.getElementById("money_first2");
+		var month2=document.getElementById("month2");
+		var _month_money2=document.getElementById("month_money2");
+		function backToCal(){
+		  		$('form').show();
+				$('fieldset').hide();
+				$("#result").html('');
+		  }
+	</script>
+</body>
+</html>

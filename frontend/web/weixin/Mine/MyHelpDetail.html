@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+			}
+			#bidlist {
+				padding-top: 10px;
+			}
+			.clear {
+				clear:left;
+			}
+			#bid {
+				width: 100%;
+				border-right: 1px solid #EFEFF4;
+				right: 0px;
+				left:0px;
+				float: left;
+				position:relative;
+			}
+			#sendMsg {
+				width: 100%;
+				right: 0px;
+				left:0px;
+				position:relative;
+			}
+			.no-active {
+				background-color:#eeeeff;
+			}
+			.mui-bar{
+				padding:0;
+			}
+			
+			#follow{
+				position: absolute;
+    			right: 10px;
+    			top: 90px;
+    			font-size: 12px;
+			}
+			#favorite{
+				color: #FFD306;
+			}
+			.not-allow{
+				color: #999;
+			    position: absolute;
+			    top: 33px;
+			    right: 8px;
+			    border: 1px solid #ccc;
+			    padding: 6px 8px;
+			    font-size: .8rem;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			}
+			.allow{
+				color: #fff;
+			    position: absolute;
+			    top: 33px;
+			    right: 8px;
+			    border: 1px solid #ccc;
+			    padding: 6px 8px;
+			    font-size: .8rem;
+			    cursor: pointer;
+			    font-weight: 400;
+			    background: #4cd964;
+			}
+			.head-row{
+				padding:0;
+				margin:0 1%;
+			}
+			.head-row .col-xs-2{
+				padding-right: 2%;
+   				padding-left: 2%;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+			.icon {
+		       width: 1em; height: 1em;
+		       fill: currentColor;
+		       overflow: hidden;
+		    }
+		    .mui-card-footer{
+		    	font-size: .9rem;
+		    	margin-bottom: 10px
+		    }
+		    .mui-card-footer .mui-card-link, .mui-card-header .mui-card-link{
+		    	height:38px;
+		    	line-height: 38px
+		    }
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="javascript:void(0)"></a>
+			<h1 class="mui-title" id="requirementTitle">求助详情</h1>
+			
+		</header>
+		
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv" class="display-after-login">
+				<div id="userInfo" class="card" user-id="1">
+					<div class="user-info" style="border-bottom:1px solid #ddd;margin-bottom:20px;">
+						<div style="width:40px; height:40px;overflow:hidden;float:left;">
+							<img id="userPic" width="40" height="40px" data-lazyload-id="0" src="../img/shuijiao.jpg">
+						</div>
+				       	<div class="user-info-content" style="float:left;margin-left: 0px;padding-left: 10px;">
+				        <p class="mui-ellipsis requirement-user-nickname" style="font-size:1.2rem;margin-bottom:5px;"> 
+								<span id="userName" ></span>&nbsp;
+								<span id="userType" class="mui-hidden" style="font-size:0.3rem;color:green;">经纪人</span>
+								<span id="agentIcon" class="mui-icon mui-icon-contact mui-hidden" style="color: royalblue;" ></span>
+						</p>
+						<p>
+							<span>最近登录时间</span> <span id="loginTime"> </span>
+							<a id="follow" class="mui-hidden" href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd">关注芝麻找房</a>
+						</p>
+						
+						</div>
+
+				    	<div class="mui-clearfix"></div>
+				   	</div>
+				    
+				    <div id="requirementInfo" class="requirement-info" requirement-id="1">
+				    	<ul class="row">
+				    		<li class="col-xs-12">
+				    			<p style="color:#000;font-size:1.1rem;" id="requiremenSubject"></p>
+				    		</li>
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+					           		<li class="col-xs-12">
+						    			<p style="font-weight:700;color:#fc6000;font-size:1.1rem;" id="rewardfee"></p>
+						    		</li>
+									<p>详情描述：</p>
+									<div>
+									    <textarea id="detail" rows="5" placeholder="" disabled="disabled" style="margin-bottom: 0px"></textarea>
+									</div>
+							        <li class="col-xs-6">
+							            <p><span style="color:#999;">发布时间：</span><span id="updatetime"></span></p>
+							        </li>
+									<li class="col-xs-6">
+							            <p><span style="color:#999;">响应时间：</span><span id="level"></span></p>
+							        </li>
+								</div>
+					        </li>
+					    </ul>
+					    <div class="mui-clearfix"></div>		
+					</div>
+				</div>	
+
+				<div class="reply-info card">
+					<p class="mui-ellipsis" style="font-size:.9rem;color:#000;">
+						<svg class="icon" aria-hidden="true">
+				            <use xlink:href="#icon-best"></use>
+				        </svg>
+						最佳回答
+					</p>	
+					<div id="bestReply">
+						<ul class="row">
+							<li class="col-xs-12">
+								<p style="text-align:center;">暂无最佳评论;</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="reply-otherinfo card">
+					<p class="mui-ellipsis" style="font-size:.9rem;color:#000;">
+						所有回答
+					</p>
+					<div id="otherReply">
+						<ul class="row">
+							<li class="col-xs-12">
+								<p style="text-align:center;">暂无评论;</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+            </div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/dom.create.js"></script>
+
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/requirement.js"></script>
+		<script src="../js/user.js"></script>
+		<script src="../js/bid.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/common.js"></script>
+
+		<script type="text/javascript" charset="UTF-8">
+
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var userimg = '';
+		    var requirementUserId;
+		    var loginUser = null;
+		    var bidFlag = 0;// 0 表示未投标，1表示用户已经投标
+		    var subject;
+		    var urlString;
+		    var regions;
+		    var userId = 0;
+		    var page = 0;
+		    var startSn = 0;
+		    var hasBestAnswer = false;
+		    
+		    //初始化url参数来获取需求id和用户id,如果没有继续执行
+		    initUrlParam();
+			mui.init({
+				swipeBack: false
+			});
+
+			mui.back = function(){
+				mui.openWindow({
+					url: '../MyRequirement.html'
+				});
+			};
+			
+			mui.ready(function() {
+				initLoginUserInfo();
+				initRequirmentInfo();//不需要登陆
+				//初始化需求发布人用户信息
+				//初始化需求详情信息
+				
+				initWxShareBackUrl();//分享后的返回键处理
+			});
+			
+			//在头像上增加增加用户信息 tap事件
+			document.querySelector('#userPic').addEventListener('tap', function() {
+				//用户未登陆，则无法看到
+				var userid = $("#userInfo").attr("user-id");
+				var type = 1;//1需求页中点击 2 房源页中点击
+				var dstUrl = '../Mine/User.html?userId='+userid+'&type='+type;
+				mui.openWindow({
+					url: dstUrl,
+					id: 'User.html'
+				});
+			}, false);
+
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 urlString = String(window.document.location.href);
+				 helpId = getQueryStr("helpId");
+			}
+
+			
+			//增加微信分享处理
+			function initWxShare(imgsrc)
+			{
+				var link = 'http://www.zmzfang.com/weixin/HomePage/HelpDetail.html?helpId='+helpId;
+				var imgUrl = imgsrc;
+				var param = new Object();
+				
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				
+				// imgUrl = $('userPic').attr('src');
+				
+				param.title = subject;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+			
+			
+			//填充需求信息
+	        function fillRequiementInfo(data)
+	        {
+	        	console.log('fillRequiementInfo '+JSON.stringify(data));
+	        	var updatetime = data.updatetime;
+				updatetime = updatetime.replace(/-/g,'/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
+				var date = new Date(updatetime);
+				var time = getTimeAgo(date.getTime());
+				console.log('date is'+date)
+				subject = data.forhelpsubject;
+	        	regions = data.regions;
+	        	//将他人的需求详情存储到缓存中
+	        	var content;
+
+	        	switch(parseInt(data.level)){
+	        		case 1:
+	        			content="立即";
+	        			break;
+	        		case 2:
+	        			content="一天内";
+	        			break;
+	        		case 3:
+	        			content="一周内";
+	        			break;
+	        		case 4:
+	        			content="一月内";
+	        			break;
+	        		case 5:
+	        			content="三月内";
+	        			break;
+	        		default:
+	        			console.log("data.level is "+data.level);
+	        			break;
+	        	}
+	        					
+		        byId("requirementTitle").innerText = subject;
+	        	byId("requiremenSubject").innerText = subject;
+	        	if(parseInt(data.rewardfee)){
+	        		byId("rewardfee").innerText = '红包'+ data.rewardfee+'元';
+	        	}
+	        	
+	        	byId("detail").innerText = data.forhelpdetail;
+	        	byId("updatetime").innerText = time;
+	        	byId("level").innerText = content;
+	        	
+	        	userId = data.publishuserid;
+	        	requirementUserId = data.publishuserid;
+	        	console.log(data.picture);
+	        	//获取其他信息成功后，再初始化分享消息
+	        	initWxShare(data.picture);
+	        	initUserInfo();
+	        	if(data.adoptedreplyid){
+	        		hasBestAnswer = true;
+	        	}
+	        	getReplyList();
+	        	 
+	        	
+	        }
+	        
+	        function initUserInfo()
+	        {
+	        	ajax_get_user_info({
+					userid: userId
+				});
+	        }
+	        function initBestAnswer(){
+	        	ajax_get_best_reply({'helpid':getQueryStr('helpId')},getBestReplySuc,getBestReplyFailed);
+	        }
+	        function getBestReplySuc(data){
+				$('#bestReply').html(fillBestReplyLi(data));
+				if(data){
+					hasBestAnswer = true;
+				}
+				
+	        }
+	        function getBestReplyFailed(){
+	        	mui.toast('获取最佳答案失败')
+	        }
+	        function initRequirmentInfo()
+	        {
+	        	var reqInfo = new Object();
+				reqInfo.helpid = getQueryStr('helpId');
+				// byId("requirementInfo").setAttribute("requirement-id",requirementId);
+				ajax_get_help_detail(reqInfo,fillRequiementInfo,getHelpByIdFailed);
+			}
+			function getHelpByIdFailed(data,options){
+				console.log(JSON.stringify(data));
+				toastMSG = '获取求助详情失败';
+				mui.toast(toastMSG);
+			}
+	        
+	        //填充用户信息
+	        function getUserInfoSuccess(data)
+	        {
+	        	if(data.agentflag=="1"){
+	        		//经纪人
+	        		//byId("agentIcon").classList.remove("mui-hidden");//暂不显示图像
+	        		//byId("userType").innerText = "经纪人";
+	        		byId("userType").classList.remove("mui-hidden");
+	        	}
+	        	userimg = data.picture;
+	        	byId("userPic").src = data.picture;
+	        	byId("userName").innerText = data.nickname;
+	        
+	        	var logintime = data.logintime;
+				var timearray=logintime.split(" ");
+		
+	        	byId("loginTime").innerText = timearray[0];
+	        	$("#userInfo").attr("user-id",data.id);
+	        	
+	        }
+
+	        function isUserLogin()
+	        {
+	        	return true;
+	        }
+	        
+			function getQueryStr(str) {
+				var rs = new RegExp("(^|)" + str + "=([^&]*)(&|$)", "gi").exec(urlString), tmp;
+				if (tmp = rs) {
+				return tmp[2];
+				}
+				// parameter cannot be found
+				return "";
+			}
+			function initLoginUserInfo(){
+
+				var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+				 
+				loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				// console.log('info'+user.wxunionid);
+						
+				if(loginUser == null || loginUser.wxunionid.length < 1){
+					var helpId=getQueryStr('helpId');
+					if(mui.os.wechat){
+					   	window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=HomePage/HelpDetail&helpId='+helpId;
+					}
+					$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+					$('#follow').removeClass("mui-hidden");
+					$('#myNickname').text('登陆异常');
+					$('#publish').attr('disabled','disabled');
+				}else{
+					$('#myPic').attr('src',loginUser.picture);
+					$('#myNickname').text(loginUser.nickname);
+					$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+				}
+			}
+
+		
+
+			//其他回答
+			function getReplyList(){
+				ajax_get_reply_list({'helpid':getQueryStr('helpId')},getReplyListSuc,getReplyListFailed);
+			}
+			
+			function getReplyListSuc(data) {
+				console.log('获取其他答案成功'+JSON.stringify(data));
+				var otherReplyUl=$('#otherReply');
+				if(!data){
+					return ;
+				}
+
+				var firstFrag ='';
+				for(var i in data)
+				{
+					firstFrag +=fillGetBestReplyLi(data[i]);
+				}
+				startSn += data.length;
+				console.log(startSn);
+				
+				otherReplyUl.html(firstFrag);
+				if(hasBestAnswer){
+					$('.good').remove();
+					initBestAnswer();
+				}else{
+				mui('.mui-card-footer').on('tap', 'a.good', function() {
+					console.log('replyid is '+$(this).attr('replyid'));
+					
+					//console.log('replyuserid:'+$(this).attr('replyuserid'));
+					if(loginUser.id === $(this).attr('replyuserid'))
+					{
+						mui.toast('不能采纳自己的答复');	
+						return;
+					}
+					
+					var options = new Object();
+					
+					options.helpid = getQueryStr("helpId");
+					options.userid = requirementUserId;
+					options.replyid = $(this).attr('replyid');
+					options.adoptuserid = $(this).attr('replyuserid');
+
+					ajax_accept_help_reply(options,acceptHelpReplySuccess,acceptHelpReplyFailed);
+
+					ajax_reply_fee(options,replyFeeSuccess,replyFeeFailed);
+
+		        	var dstUrl = './MyHelpDetail.html?helpId='+getQueryStr('helpId');
+	        		mui.openWindow({
+						url: dstUrl,
+						id: 'MyHelpDetail.html'
+					});
+				});
+				}
+				
+			}
+			function getReplyListFailed(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '获取其他答案失败';
+				mui.toast(toastMSG);
+			}
+			function acceptHelpReplySuccess(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '采纳答案成功';
+				$('.good').remove();
+				mui.toast(toastMSG);
+			}
+			function acceptHelpReplyFailed(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '采纳答案失败';
+				mui.toast(toastMSG);
+			}
+
+			function replyFeeSuccess(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '钱已到您账户';
+				mui.toast(toastMSG);
+			}
+			function replyFeeFailed(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '转账失败';
+				mui.toast(toastMSG);
+			}
+
+
+		</script>
+	</body>
+
+</html>

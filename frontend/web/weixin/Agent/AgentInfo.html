@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.Absolute-Center {  
+				text-align:center; 
+			}
+			.icon {
+				width: 1em; height: 1em;
+				vertical-align: -0.15em;
+				fill: currentColor;
+				overflow: hidden;
+			}
+			.mui-table-view-cell:after{
+				left:0;
+			}
+			#starBox em {
+			    float: left;
+			    left: 30%;
+    			position: relative;
+    			margin-top: 15px;
+    			margin-bottom: 15px;
+			    width: 26px;
+			    height: 20px;
+			    background: url(http://www.zmzfang.com/weixin/pic/star.png) 0 -20px no-repeat;
+			}
+			#mydiv{
+				border: 1px solid red;
+				display:inline-block;
+			}
+			p.big {line-height: 180%}
+			element.style {
+				margin-top: 5px;
+			}
+			.mui-bar-footer
+			{
+				background:#4cd964;
+			}
+			.fakepic{
+				border:1px solid #ccc;
+				border-radius: 5px;
+				padding: 10px;
+				width: 2.9rem;
+				height: 2.9rem;
+				text-align: center;
+				font-size: 12px;
+    			line-height: 12px;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人详情</h1>
+		</header>
+		
+		<footer class="mui-bar mui-bar-footer">
+        	<h1 class="mui-title" id='chatBtn' style="color:#fff">联系他</h1>
+        </footer>
+        
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+				
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+				
+			<div id="displayAfterLoginDiv" class="mui-page-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div id="subscribeDiv" class="mui-hidden" style="margin-bottom: 10px;text-align: center;padding-top: 5px;">
+							<h5 style="font-size:.75rem;">请先关注公众号</h5>
+							
+							<a id="subscribe" class="subscribe" href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd">芝麻找房</a>
+							<hr/>
+						</div>
+						<div class="mydiv" style="top:10px; float:left; width:62px; height:62px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:10px;">
+						    <img id="headPic" width="62px" height="62px" style="margin-right: 10px; " src="" alt="个人头像" />
+						</div>
+						<div style="float:left; margin-left:10px">
+							<p class="big">
+								<span id="nickname"></span>
+								<!-- <span id="Authenticate" class="mui-hidden">
+							    	<svg class="icon" aria-hidden="true">
+										<use xlink:href="#xicon-renzheng"></use>
+									</svg>
+								</span> -->
+							</p>
+						    <p id=company_position class="big">
+						    	<!-- <span id="company"></span>
+						    	<span id="position"></span> -->
+						    </p>
+						    <p class="big">
+						    	<span id="Years-of-Working"></span>
+						    	<span id="education"></span>
+						    </p>
+						</div>
+						<div style="float:right;">
+							<img id="company-pic" class="mui-media-object mui-hidden" src="">
+							<div id="fake1" class="fakepic mui-hidden">
+								创远地产
+							</div>
+						</div>
+						<div class="col-xs-12 mui-text-left" style="float:left; padding-left: 0px;">
+							<p id="diqu" class="mui-hidden big">地区：<span id="district"></span> 电话：<span id="mobile"> - </span></p>
+							<p id="jiaxiang" class="mui-hidden big">家乡：<span id="hometown"></span></p>
+							<p id="skill" class="mui-hidden big">个人亮点：<span id="bright-spot" class="mui-hidden"></span></p>
+						</div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="col-xs-12" style="float:left;">
+						</div>
+						<div class="col-xs-12 mui-text-left" style="float:left; padding-left: 0px;">
+							<p class="big"><span id="business"></span></p>
+							<p class="big">主营板块：<span id="activeregion">未填写</span></p>
+							<p class="big">主营小区：<span id="majordistricts">未填写</span></p>
+						</div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="colleague1">
+						<div class="col-xs-12" style="padding-left: 0px;">
+							<div id="comp1" class="col-xs-3 mui-text-left" style="float:left;padding-left: 0px;
+							padding-right: 0px;width: 52px;">
+								<img id="company-pic1" class="mui-media-object mui-hidden" src="">
+								<div id="fake2" class="fakepic mui-hidden">
+									创远地产
+								</div>
+							</div>
+							<div class="col-xs-9">
+								<div id="comp2" class="mui-text-left mui-hidden" style="">
+									<p id="company1" class="big"></p>
+								</div>
+								<div id="storeinfo_ch" class="mui-text-left mui-hidden" style="">
+									<p class="big">
+										<span id="storeinfo" class="big"></span>
+									</p>
+								</div>
+								<div class="mui-text-left">
+									<span class="big" style="font-size: 14px;color: #8f8f94;">他的同事</span>
+  									<span id="headNav" style="position: relative;position: relative;left: 25px;bottom: 5px;font-size: 1rem;" class="mui-icon mui-push-right">
+										
+									</span>
+								</div>
+								<div id="nearbyColleague" style="">
+		<!-- 						<img id="headPic" class="mui-media-object" src="" alt="个人头像"/>
+								    <img id="headPic" class="mui-media-object" src="" alt="个人头像"/>
+								    <img id="headPic" class="mui-media-object" src="" alt="个人头像" /> -->
+								    <span id="colleague_ch" class="mui-hidden" style="font-size: 14px;color: #8f8f94;">附近同事
+								    	<span id="colleague" style="font-size: 14px;color: #8f8f94;"></span>
+								    </span>
+								</div>
+						
+							</div>
+							
+							
+						
+						</div>
+						
+					</li>
+					<li class="mui-table-view-cell">
+						<div id="behaviourU">
+							<p class="big">
+								<span>他的动态</span>
+								<span id="dynamic" class="mui-pull-right"></span>
+							</p>
+						</div>
+					
+					</li>
+
+					<div style="padding: 10px 10px;">
+						<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+							<a id="historyLink" class="mui-control-item mui-active" href="#item1">
+								他的房源
+							</a>
+							<a id="commentLink" class="mui-control-item" href="#item2">
+								他的需求
+							</a>
+						</div>
+					</div>
+					<div>
+						<div id="item1" class="mui-control-content mui-active">
+							<ul class="mui-table-view" id="supplyments">
+							
+							</ul>
+						</div>
+						<div id="item2" class="mui-control-content">
+							<ul class="mui-table-view" id="requirements">
+								
+							</ul>
+						</div>
+					</div>
+				</ul>
+		    </div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/expertData.js"></script>
+		<script src="../js/dom.create.js"></script>
+		<script src="../js/loginCheck.js"></script>
+				
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var activity;
+			var openness;
+			var service;
+			var professional;
+			var userInfo;
+			// var startSn = 0;
+			var count = 0;
+			var resultValueArray = new Array();
+			var resultTextArray = new Array();
+			var user = new Object();
+			var share = getQueryStrFromUrl("share");
+			if(share){
+				$('#subscribeDiv').removeClass('mui-hidden');
+			}
+			var id = getQueryStrFromUrl("userid");
+			id = id.split("?");
+			user.id = id[0];
+			var userId = id[0];
+			var loginUser = null;
+			loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				var homeUrl = "../HomePage/index.html";
+				var regUrl = "../Mine/reg.html";
+				
+				initCheckView(homeUrl,regUrl);
+				initUserInfo();
+				initAgentInfo();
+				initFollowMe();
+				intColleague();
+				initAgentBehaviour();
+				initChatBtnInfo();
+				//初始化微信分享
+				
+			});
+
+			var dom = document.getElementById("container");
+
+			//增加房源列表中tap事件
+			mui('#supplyments').on('tap', '.house-brief', function() {
+				var houseId = this.getAttribute('house-id');
+				console.log('houseId:'+houseId);
+				var dstUrl = '../HomePage/HouseDetail.html?houseid='+houseId;
+				mui.openWindow({
+					url: dstUrl
+				});
+			});
+			
+			 //增加需求列表中tap事件
+			mui('#requirements').on('tap', '.requirement-brief', function() {
+				var requirementId = this.getAttribute('requirement-id');
+				console.log('requirementId:'+requirementId);
+				localStorage.setItem("requirementId", requirementId);
+				var dstUrl = '../HomePage/RequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + userInfo.id;
+				mui.openWindow({
+					url: dstUrl
+				});
+			});
+			
+			byId("colleague1").addEventListener('tap', function(event) {
+					var company_url = "http://www.zmzfang.com/weixin/Agent/Mine/Colleagues.html?type=1&userId="+userId;
+					mui.openWindow({
+							url: company_url
+					});	
+					
+				}, false);
+				
+			function initChatBtnInfo()
+			{
+				var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+				
+				if(loginUser == null || loginUser.wxunionid.length < 1)
+				{
+					if(mui.os.wechat){
+					   	window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=Agent/AgentInfo&userId='+userId;
+					}
+					$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+					$('#chatBtn').on('tap',function(){
+						
+						showLoginDiv();
+						//window.location.href = "http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd";
+					});
+				}
+				else
+				{
+					$('#chatBtn').on('tap',initChatBtnEvent);
+				}
+			}
+			//联系他 tap事件
+			function initChatBtnEvent()
+			{
+				if(loginUser)
+				{
+					//没有用户手机号时的处理方式
+					var noPhoneRegAfterJumpUrl = 'http://www.zmzfang.com/?r=door/scope&view=Agent/AgentInfo&userId='+userId;
+					var hasPhoneJumpUrl = null;
+					checkUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl);
+					
+					console.log('loginUser.id:'+loginUser.id);
+					console.log('userId:'+userId);
+					
+					if(loginUser.id == userId)
+					{
+						mui.toast('您不能联系自己');
+					}
+					else if((loginUser.phone && loginUser.phone.length != 11) || (!loginUser.phone))
+					{
+						mui.toast('请先绑定微信，注册手机号');
+					}
+					else
+					{
+						var nickName = byId('nickname').innerText;
+						window.location.href = '../Message/im-chat.html?id='+userId+'&nickname='+nickName;	 
+					}
+				}
+				else
+				{
+					mui.toast('您还没有绑定微信');
+				}
+			}
+			
+			function initUserInfo()
+			{
+				// var data = localStorage.getItem('zmzfangLoginUserInfo');
+				// var user = JSON.parse(data);
+				var loginUserId = null;
+				if(user)
+				{
+					loginUserId = user.id;
+				}
+				ajax_get_user_info({
+					userid: user.id,
+					loginuserid:user.id
+					// loginuserid:loginUserId
+				});
+			}
+	
+			function getUserInfoSuccess(data)
+			{
+				userInfo = data;
+
+				//获取历史发布需求
+	        	ajax_get_publish_history({
+					userid:user.id
+				});
+				//获取历史发布房源
+				ajax_get_houselist({
+					userid:user.id
+				});
+			}
+
+			function initAgentInfo()
+			{
+				ajax_get_agent_detail(user,getAgentDetailSuc,getAgentDetailFailed);
+			}
+
+			function initFollowMe()
+			{
+				var options = new Object();
+				options.id = id;
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var loginuser = JSON.parse(data);
+				if(loginuser)
+				{
+					options.loginuserid=loginuser.id;
+					ajax_get_agent_detail(options,FollowMeSuc,FollowMeFailed);
+				}
+				
+			}
+
+			function FollowMeSuc(data)
+			{
+				console.log('FollowMeSuc data:'+JSON.stringify(data));
+			}
+
+			function FollowMeFailed(data)
+			{
+				console.log('FollowMeFailed data:'+JSON.stringify(data));
+			}
+
+			function initAgentBehaviour()
+			{
+				ajax_get_agent_behaviour(user,getAgentBehaviourSuc,getAgentBehaviourFailed);
+			}
+
+			function getAgentBehaviourSuc(data)
+			{
+				console.log('getAgentBehaviourSuc data:'+JSON.stringify(data));
+				var behaviourUl=$('#behaviourU');
+				var firstFrag ='';
+				if(!data){
+					mui.toast('未能获取到更多数据');
+					firstFrag='暂无动态';
+					behaviourUl.append(firstFrag);
+					return ;
+				}
+
+				for(var i in data)
+				{
+					firstFrag +=fillBehaviourListLi(data[i]);
+					count++;
+					if(count>4){
+						break;
+					}
+				}
+				// startSn += data.length;
+				// console.log(startSn);
+				
+				behaviourUl.append(firstFrag);
+			}
+
+			function getAgentBehaviourFailed(data)
+			{
+				console.log('getAgentBehaviourFailed data:'+JSON.stringify(data));
+			}
+	
+			var Unicode = {
+				stringify: function (str) {
+					var res = [],
+					len = str.length;
+					for (var i = 0; i < len; ++i) {
+						res[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
+					}
+					return str ? "\\u" + res.join("\\u") : "";
+				},
+				parse: function (str) {
+					str = str.replace(/\\/g, "%");
+					return unescape(str);
+				}
+			};
+
+
+			/**
+			 * 替换字符串的连接符号
+			 * @param str
+			 * @param oldSymbol
+			 * @param newSymbol
+			 * @returns {String}
+			 */
+			function replaceSymbol(str, oldSymbol, newSymbol){
+				var returnString = "";
+				if(str != null && $.trim(str) != ""){
+					var arrayStr =str.split(oldSymbol);
+					if(arrayStr != null && arrayStr.length > 0){
+						for(var i=0; i<arrayStr.length; i++){
+							if(arrayStr[i] != null && $.trim(arrayStr[i]) != ""){
+								returnString += $.trim(arrayStr[i]) + newSymbol;
+							}
+						}
+					}
+				}
+				if(returnString.indexOf(newSymbol) > -1){
+					returnString = returnString.substring(0, returnString.length - 1);
+			    }
+				return returnString;
+			};
+
+
+
+			function getAgentDetailSuc(data)
+			{
+				var $organization = data.organization?data.organization:'某中介公司'
+				var $position = data.position?data.position:'经纪人'
+				console.log('getAgentDetailSuc data:'+JSON.stringify(data));
+				wxShare({"title":'这是'+data.nickname+'的名片',"desc":'公司：'+$organization+' 职位：'+$position,"imgUrl":data.picture,'link':window.document.location.href});
+				var rating;
+				byId("headPic").src = data.picture;
+				byId("nickname").innerHTML=data.nickname;
+				// if(loginUser && loginUser.phone.length == 11){
+					byId("mobile").innerHTML=data.phone;
+				// }
+				if(data.skill){
+					console.log('data.skill.length is:'+data.skill.length);
+					byId("bright-spot").innerHTML=replaceSymbol(data.skill,'#',' ');
+					$('#bright-spot').removeClass('mui-hidden');
+					$('#skill').removeClass('mui-hidden');
+				}
+				
+				if(data.tags){
+					var split = data.tags.split(',');
+					console.log('split is:'+split);
+					var business='';
+					for(i in split){
+						console.log('tag is:'+split[i]);
+				        switch (split[i]) {
+			            	case '1':
+			            		business+='二手房租售 ';
+			            		break;
+			            	case '2':
+			            		business+='一手房代理 ';
+			            		break;
+			            	case '3':
+			            		business+='商业办公 ';
+			            		break;
+			            	case '4':
+			            		business+='厂房土地 ';
+			            		break;
+						}
+						business+=',';
+					}
+					business=business.substring(0,business.length-1);
+					byId("business").innerHTML=business;
+				}
+				
+				if(data.workperiod){
+					byId("Years-of-Working").innerHTML='工作'+data.workperiod+'年';
+				}
+
+				if(data.education==3){
+					byId("education").innerHTML='大专';
+				}else if(data.education==4){
+					byId("education").innerHTML='本科';
+				}
+
+				if(data.organization){
+					var company_position=$('#company_position');
+					var firstFrag = document.createDocumentFragment();
+
+					if(data.organization.length<=9){
+						firstFrag='<span id="company"></span><span id="position"></span>'
+					}else{
+						firstFrag='<span id="company"></span></p><p><span id="position"></span></p>'
+					}
+					console.log("firstFrag is "+JSON.stringify(firstFrag));
+					company_position.append(firstFrag);
+
+					byId("company").innerHTML=data.organization;
+					byId("company1").innerHTML=data.organization;
+					console.log('data.organization is '+data.organization);
+					console.log('data.organization code is '+Unicode.stringify(data.organization));
+
+					// $('#comp1').removeClass('mui-hidden');
+					$('#comp2').removeClass('mui-hidden');
+					
+					if(data.organizationlogo)
+					{
+						byId("company-pic").src=data.organizationlogo;
+						byId("company-pic1").src=data.organizationlogo;
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}
+					else
+					{
+						byId("fake1").innerText=data.organization.substr(0,4);
+						byId("fake2").innerText=data.organization.substr(0,4);
+						$('#fake1').removeClass('mui-hidden');
+						$('#fake2').removeClass('mui-hidden');
+					}
+					
+					/**
+					if(data.organization.indexOf("链家")>=0){
+						byId("company-pic").src="../pic/链家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/链家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中原")>=0){
+						byId("company-pic").src="../pic/中原地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中原地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("爱屋吉屋")>=0){
+						byId("company-pic").src="../pic/爱屋吉屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/爱屋吉屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("满懿")>=0){
+						byId("company-pic").src="../pic/爱屋吉屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/爱屋吉屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("21世纪")>=0){
+						byId("company-pic").src="../pic/21世纪不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/21世纪不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("Q房网")>=0){
+						byId("company-pic").src="../pic/Q房网.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/Q房网.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("汉宇")>=0){
+						byId("company-pic").src="../pic/汉宇地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/汉宇地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("创林")>=0){
+						byId("company-pic").src="../pic/创林地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/创林地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房天下")>=0){
+						byId("company-pic").src="../pic/房天下.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房天下.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("福美来")>=0){
+						byId("company-pic").src="../pic/福美来.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/福美来.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("好年华")>=0){
+						byId("company-pic").src="../pic/好年华房地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/好年华房地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("沪联")>=0){
+						byId("company-pic").src="../pic/沪联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/沪联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("慧邦")>=0){
+						byId("company-pic").src="../pic/慧邦地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/慧邦地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("吉家")>=0){
+						byId("company-pic").src="../pic/吉家地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/吉家地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("菁英")>=0){
+						byId("company-pic").src="../pic/菁英地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/菁英地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("瑞阳")>=0){
+						byId("company-pic").src="../pic/瑞阳不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/瑞阳不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("太平洋")>=0){
+						byId("company-pic").src="../pic/太平洋房屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/太平洋房屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("易居臣信")>=0){
+						byId("company-pic").src="../pic/易居臣信房屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/易居臣信房屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("志远")>=0){
+						byId("company-pic").src="../pic/志远地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/志远地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中联")>=0){
+						byId("company-pic").src="../pic/中联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("住商")>=0){
+						byId("company-pic").src="../pic/住商不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/住商不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("爱上租")>=0){
+						byId("company-pic").src="../pic/爱上租.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/爱上租.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("保源")>=0){
+						byId("company-pic").src="../pic/保源地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/保源地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("创盈")>=0){
+						byId("company-pic").src="../pic/创盈不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/创盈不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("春翔")>=0){
+						byId("company-pic").src="../pic/春翔房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/春翔房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("鼎铭")>=0){
+						byId("company-pic").src="../pic/鼎铭房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/鼎铭房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房多多")>=0){
+						byId("company-pic").src="../pic/房多多.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房多多.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房好多")>=0){
+						byId("company-pic").src="../pic/房好多.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房好多.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房友")>=0){
+						byId("company-pic").src="../pic/房友.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房友.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("福人居")>=0){
+						byId("company-pic").src="../pic/福人居.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/福人居.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("合富")>=0){
+						byId("company-pic").src="../pic/合富置业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/合富置业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("华义")>=0){
+						byId("company-pic").src="../pic/华义地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/华义地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金丰易居")>=0){
+						byId("company-pic").src="../pic/金丰易居.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金丰易居.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金色家园")>=0){
+						byId("company-pic").src="../pic/金色家园网.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金色家园网.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("锦明")>=0){
+						byId("company-pic").src="../pic/锦明房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/锦明房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("九间伴")>=0){
+						byId("company-pic").src="../pic/九间伴.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/九间伴.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("聚家")>=0){
+						byId("company-pic").src="../pic/聚家地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/聚家地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("丽兹行")>=0){
+						byId("company-pic").src="../pic/丽兹行房地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/丽兹行房地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("玛雅")>=0){
+						byId("company-pic").src="../pic/玛雅房屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/玛雅房屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("美联")>=0){
+						byId("company-pic").src="../pic/美联物业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/美联物业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("品信")>=0){
+						byId("company-pic").src="../pic/品信地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/品信地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("瑞鹏")>=0){
+						byId("company-pic").src="../pic/瑞鹏地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/瑞鹏地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("申康")>=0){
+						byId("company-pic").src="../pic/申康房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/申康房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("顺昌")>=0){
+						byId("company-pic").src="../pic/顺昌房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/顺昌房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("信义")>=0){
+						byId("company-pic").src="../pic/信义房屋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/信义房屋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("易轩")>=0){
+						byId("company-pic").src="../pic/易轩地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/易轩地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("永轩")>=0){
+						byId("company-pic").src="../pic/永轩地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/永轩地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("远景")>=0){
+						byId("company-pic").src="../pic/远景地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/远景地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("智恒")>=0){
+						byId("company-pic").src="../pic/智恒房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/智恒房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中正")>=0){
+						byId("company-pic").src="../pic/中正地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中正地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("众佑")>=0){
+						byId("company-pic").src="../pic/众佑地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/众佑地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("我爱我家")>=0){
+						byId("company-pic").src="../pic/我爱我家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/我爱我家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("佳歆")>=0){
+						byId("company-pic").src="../pic/佳歆地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/佳歆地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("京科")>=0){
+						byId("company-pic").src="../pic/京科地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/京科地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("云房")>=0){
+						byId("company-pic").src="../pic/云房数据.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/云房数据.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("云燕")>=0){
+						byId("company-pic").src="../pic/云燕安家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/云燕安家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("独立")>=0){
+						byId("company-pic").src="../pic/独立经纪人.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/独立经纪人.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("悟空")>=0){
+						byId("company-pic").src="../pic/悟空找房.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/悟空找房.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("华知居")>=0){
+						byId("company-pic").src="../pic/华知居地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/华知居地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("拓客多")>=0){
+						byId("company-pic").src="../pic/拓客多地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/拓客多地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("伟叠")>=0){
+						byId("company-pic").src="../pic/伟叠房地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/伟叠房地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("开宏")>=0){
+						byId("company-pic").src="../pic/开宏不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/开宏不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("第一别墅")>=0){
+						byId("company-pic").src="../pic/第一别墅.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/第一别墅.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("富顺")>=0){
+						byId("company-pic").src="../pic/富顺地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/富顺地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("杰尚")>=0){
+						byId("company-pic").src="../pic/杰尚地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/杰尚地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金管家")>=0){
+						byId("company-pic").src="../pic/金管家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金管家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("立好信")>=0){
+						byId("company-pic").src="../pic/立好信房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/立好信房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("六星")>=0){
+						byId("company-pic").src="../pic/六星地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/六星地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("明明")>=0){
+						byId("company-pic").src="../pic/明明房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/明明房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("平安好房")>=0){
+						byId("company-pic").src="../pic/平安好房.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/平安好房.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("先原")>=0){
+						byId("company-pic").src="../pic/先原房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/先原房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("宅福")>=0){
+						byId("company-pic").src="../pic/宅福地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/宅福地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("彰荣")>=0){
+						byId("company-pic").src="../pic/彰荣地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/彰荣地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中居")>=0){
+						byId("company-pic").src="../pic/中居锦明.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中居锦明.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中佑")>=0){
+						byId("company-pic").src="../pic/中佑地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中佑地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("锦锐")>=0){
+						byId("company-pic").src="../pic/锦锐地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/锦锐地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("一墅")>=0){
+						byId("company-pic").src="../pic/第一别墅.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/第一别墅.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("安瑞居")>=0){
+						byId("company-pic").src="../pic/安瑞居房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/安瑞居房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("常盈")>=0){
+						byId("company-pic").src="../pic/常盈房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/常盈房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("公恒")>=0){
+						byId("company-pic").src="../pic/公恒地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/公恒地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("禾旭")>=0){
+						byId("company-pic").src="../pic/禾旭地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/禾旭地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("家园网")>=0){
+						byId("company-pic").src="../pic/家园网.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/家园网.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("胜宇")>=0){
+						byId("company-pic").src="../pic/胜宇地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/胜宇地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("逾升")>=0){
+						byId("company-pic").src="../pic/逾升地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/逾升地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("裕丰")>=0){
+						byId("company-pic").src="../pic/裕丰地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/裕丰地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("豪宅天下")>=0){
+						byId("company-pic").src="../pic/豪宅天下.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/豪宅天下.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("和谐置家")>=0){
+						byId("company-pic").src="../pic/和谐置家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/和谐置家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("华鼎联行")>=0){
+						byId("company-pic").src="../pic/华鼎联行.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/华鼎联行.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("家家顺")>=0){
+						byId("company-pic").src="../pic/家家顺地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/家家顺地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金色时光")>=0){
+						byId("company-pic").src="../pic/金色时光.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金色时光.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("墅生活")>=0){
+						byId("company-pic").src="../pic/墅生活.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/墅生活.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("永台")>=0){
+						byId("company-pic").src="../pic/永台地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/永台地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("置富行")>=0){
+						byId("company-pic").src="../pic/置富行地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/置富行地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中联置家")>=0){
+						byId("company-pic").src="../pic/中联置家.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中联置家.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("麦田")>=0){
+						byId("company-pic").src="../pic/麦田房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/麦田房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("天地神通")>=0){
+						byId("company-pic").src="../pic/天地神通.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/天地神通.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("易合房产")>=0){
+						byId("company-pic").src="../pic/易合房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/易合房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("优墅地产")>=0){
+						byId("company-pic").src="../pic/优墅地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/优墅地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("合策")>=0){
+						byId("company-pic").src="../pic/合策房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/合策房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("华熙")>=0){
+						byId("company-pic").src="../pic/华熙房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/华熙房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("汇通百家")>=0){
+						byId("company-pic").src="../pic/汇通百家地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/汇通百家地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("汇鑫伟业")>=0){
+						byId("company-pic").src="../pic/汇鑫伟业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/汇鑫伟业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("吉永达")>=0){
+						byId("company-pic").src="../pic/吉永达.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/吉永达.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("龙筑")>=0){
+						byId("company-pic").src="../pic/龙筑地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/龙筑地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("森泽")>=0){
+						byId("company-pic").src="../pic/森泽地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/森泽地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("兴商")>=0){
+						byId("company-pic").src="../pic/兴商地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/兴商地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("优巢")>=0){
+						byId("company-pic").src="../pic/优巢房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/优巢房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("百胜佳业")>=0){
+						byId("company-pic").src="../pic/百胜佳业房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/百胜佳业房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("博阳")>=0){
+						byId("company-pic").src="../pic/博阳房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/博阳房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("传恒")>=0){
+						byId("company-pic").src="../pic/传恒房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/传恒房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("德佑")>=0){
+						byId("company-pic").src="../pic/德佑地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/德佑地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("典尚")>=0){
+						byId("company-pic").src="../pic/典尚房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/典尚房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房当当")>=0){
+						byId("company-pic").src="../pic/房当当.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房当当.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房点赞")>=0){
+						byId("company-pic").src="../pic/房点赞.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房点赞.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房尚房")>=0){
+						byId("company-pic").src="../pic/房尚房.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房尚房.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("阜康基业")>=0){
+						byId("company-pic").src="../pic/阜康基业房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/阜康基业房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("古格")>=0){
+						byId("company-pic").src="../pic/古格地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/古格地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("好秀缘")>=0){
+						byId("company-pic").src="../pic/好秀缘.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/好秀缘.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("恒丰")>=0){
+						byId("company-pic").src="../pic/恒丰房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/恒丰房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("恒锐")>=0){
+						byId("company-pic").src="../pic/恒锐地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/恒锐地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("红中")>=0){
+						byId("company-pic").src="../pic/红中地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/红中地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("花轩")>=0){
+						byId("company-pic").src="../pic/花轩房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/花轩房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("华江置业")>=0){
+						byId("company-pic").src="../pic/华江置业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/华江置业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("吉庆")>=0){
+						byId("company-pic").src="../pic/吉庆房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/吉庆房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("江山")>=0){
+						byId("company-pic").src="../pic/江山地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/江山地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金城阜业")>=0){
+						byId("company-pic").src="../pic/金城阜业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金城阜业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("金基")>=0){
+						byId("company-pic").src="../pic/金基房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/金基房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("隆迈投资")>=0){
+						byId("company-pic").src="../pic/隆迈投资.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/隆迈投资.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("满意何")>=0){
+						byId("company-pic").src="../pic/满意何.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/满意何.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("其易房网")>=0){
+						byId("company-pic").src="../pic/其易房网.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/其易房网.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("仁丰")>=0){
+						byId("company-pic").src="../pic/仁丰地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/仁丰地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("三千石")>=0){
+						byId("company-pic").src="../pic/三千石.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/三千石.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("升华")>=0){
+						byId("company-pic").src="../pic/升华地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/升华地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("天盟")>=0){
+						byId("company-pic").src="../pic/天盟房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/天盟房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("万福")>=0){
+						byId("company-pic").src="../pic/万福地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/万福地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("微地产")>=0){
+						byId("company-pic").src="../pic/微地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/微地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("小桔灯")>=0){
+						byId("company-pic").src="../pic/小桔灯.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/小桔灯.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("鑫麦")>=0){
+						byId("company-pic").src="../pic/鑫麦房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/鑫麦房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("鑫亿")>=0){
+						byId("company-pic").src="../pic/鑫亿地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/鑫亿地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("鑫圆")>=0){
+						byId("company-pic").src="../pic/鑫圆地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/鑫圆地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("有家")>=0){
+						byId("company-pic").src="../pic/有家房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/有家房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("云联")>=0){
+						byId("company-pic").src="../pic/云联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/云联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("置怡")>=0){
+						byId("company-pic").src="../pic/置怡不动产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/置怡不动产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("众房")>=0){
+						byId("company-pic").src="../pic/众房房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/众房房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("E家房盟")>=0){
+						byId("company-pic").src="../pic/E家房盟.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/E家房盟.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("帮胜")>=0){
+						byId("company-pic").src="../pic/帮胜物业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/帮胜物业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("春佳")>=0){
+						byId("company-pic").src="../pic/春佳房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/春佳房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("泛联")>=0){
+						byId("company-pic").src="../pic/泛联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/泛联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("房临门")>=0){
+						byId("company-pic").src="../pic/房临门.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/房临门.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("翰友")>=0){
+						byId("company-pic").src="../pic/翰友地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/翰友地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("觉囊")>=0){
+						byId("company-pic").src="../pic/觉囊房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/觉囊房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("群联")>=0){
+						byId("company-pic").src="../pic/群联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/群联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("松茂")>=0){
+						byId("company-pic").src="../pic/松茂地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/松茂地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("天正")>=0){
+						byId("company-pic").src="../pic/天正地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/天正地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("万联")>=0){
+						byId("company-pic").src="../pic/万联地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/万联地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("信而誉")>=0){
+						byId("company-pic").src="../pic/信而誉.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/信而誉.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("信义联")>=0){
+						byId("company-pic").src="../pic/信义联.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/信义联.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("直航")>=0){
+						byId("company-pic").src="../pic/直航地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/直航地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("志文冲锋")>=0){
+						byId("company-pic").src="../pic/志文冲锋.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/志文冲锋.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中部")>=0){
+						byId("company-pic").src="../pic/中部地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中部地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中深")>=0){
+						byId("company-pic").src="../pic/中深房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中深房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("众信盛世")>=0){
+						byId("company-pic").src="../pic/众信盛世.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/众信盛世.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("博客")>=0){
+						byId("company-pic").src="../pic/博客地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/博客地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("鹏基伟业")>=0){
+						byId("company-pic").src="../pic/鹏基伟业.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/鹏基伟业.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("豫章")>=0){
+						byId("company-pic").src="../pic/豫章地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/豫章地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("贞一")>=0){
+						byId("company-pic").src="../pic/贞一房产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/贞一房产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("置基")>=0){
+						byId("company-pic").src="../pic/置基地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/置基地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else if(data.organization.indexOf("中祈")>=0){
+						byId("company-pic").src="../pic/中祈地产.jpg?"+Math.random();
+						byId("company-pic1").src="../pic/中祈地产.jpg?"+Math.random();
+						$('#company-pic').removeClass('mui-hidden');
+						$('#company-pic1').removeClass('mui-hidden');
+					}else{
+						byId("fake1").innerText=data.organization.substr(0,4);
+						byId("fake2").innerText=data.organization.substr(0,4);
+						$('#fake1').removeClass('mui-hidden');
+						$('#fake2').removeClass('mui-hidden');
+					}
+					**/
+
+				}				
+
+				if(data.organization&data.position&data.workperiod&data.businesscard){
+					console.log("Authenticate");
+					$('#Authenticate').removeClass('mui-hidden');
+				}
+
+				if(data.position && data.organization)
+				{
+					byId("position").innerHTML=data.position;	
+				}
+
+				if(data.majordistricts){
+					var districts='';
+				for (var i=0;i<data.majordistricts.length;i++){
+						districts+=data.majordistricts[i].districtname;
+						console.log('i is '+i+' districts is '+districts);
+						districts+=',';
+					}
+					console.log('districts.length is '+districts.length);
+					districts=districts.substring(0,districts.length-1);
+					console.log('districts is '+districts);
+					byId("majordistricts").innerHTML=districts;
+				}
+
+				if(data.activeregion)
+				{
+					var regionarray=data.activeregion.split(",");
+					var str = '';
+					if(regionarray)
+					{
+						for(var i=0;i<regionarray.length;i++)
+						{
+							console.log('regionarray['+i+'] is '+regionarray[i]);
+							resultValueArray.push(regionarray[i]);
+							//str+=getAreaTextOnly(regionarray[i]);
+							str+=getAreaText(regionarray[i]);
+							str+=',';
+						}
+						str=str.substring(0,str.length-1);
+						byId("activeregion").innerHTML=str;
+					}
+				}
+
+				if(data.storeinfo){
+					byId("storeinfo").innerHTML=data.storeinfo;
+					$('#storeinfo_ch').removeClass('mui-hidden');
+				}
+
+				if(data.nativeplace){
+					byId("hometown").innerHTML=data.nativeplace;
+					$('#jiaxiang').removeClass('mui-hidden');
+				}
+
+				if(data.city){
+					byId("district").innerHTML=data.city;
+					$('#diqu').removeClass('mui-hidden');
+				}
+			}
+
+			function getAgentDetailFailed(data)
+			{
+				console.log("getAgentDetailFailed");
+			}
+
+			// byId("erweima").addEventListener('tap', function(event) {
+			// 	mui.openWindow({
+			// 			url: 'http://www.zmzfang.com/weixin/Agent/erweima.html?web=AgentInfo.html&userid='+user.id	
+			// 	});
+			// }, false);
+
+
+			function getPublishHistorySuccess(data)
+	        {
+	        	console.log('getPublishHistorySuccess data:'+JSON.stringify(data));
+	        	if(!data || data.length == 0)
+				{
+					console.log('没有发布过需求');
+					return;
+				}else{
+					var requirements=document.getElementById('requirements');
+	        	
+					var firstFrag = document.createDocumentFragment();
+					for(var i in data)
+					{
+						console.log('\n i:'+i);
+						firstFrag.appendChild(fillHistoryRequirementListLi(data[i],userInfo));
+					}
+					
+					requirements.appendChild(firstFrag);
+				}
+	        }
+	        
+	        function getPublishHistoryFail(data)
+	        {
+	        	console.log('getPublishHistoryFail');
+	        }
+
+
+	        function getHouseListSuccess(data)
+			{
+				console.log('getHouseListSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					console.log('没有发布过房源');
+					return;
+				}else{
+					var houseUl=document.getElementById('supplyments');
+					var firstFrag = document.createDocumentFragment();
+					
+					for(var i in data)
+					{
+						var houseid=data[i].houseid;
+						console.log('\n houseid:'+houseid);
+						firstFrag.appendChild(fillHouseListLi(data[i]));
+					}
+					
+					houseUl.appendChild(firstFrag);
+				}
+			}
+
+			function intColleague(){
+				ajax_get_near_colleague(user,getNearColleagueSuc,getNearColleagueFailed);
+			}
+			
+
+			function getNearColleagueSuc(data)
+			{
+				console.log('getNearColleagueSuc data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					console.log('没有获取到周围的同事');
+					document.getElementById('colleague').innerHTML='0人';
+					return;
+				}else{
+					var nearbyColleagueUl=document.getElementById('nearbyColleague');
+					var firstFrag = '';
+					
+					for(var i in data)
+					{
+						firstFrag.appendChild(fillColleagueListLi(data[i]));
+					}
+					
+					houseUl.appendChild(firstFrag);
+					
+					document.getElementById('colleague').innerHTML=JSONLength(data)+'人';
+					$('#colleague').removeClass('mui-hidden');
+				}
+			}
+
+			function getNearColleagueFailed(data)
+			{
+				console.log('getNearColleagueFailed data:'+JSON.stringify(data));
+			}
+
+			function JSONLength(obj) {
+				var size = 0, key;
+				for (key in obj) {
+					if (obj.hasOwnProperty(key)) size++;
+				}
+				return size;
+			};
+
+		</script>
+	</body>
+
+</html>

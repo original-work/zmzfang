@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			#workCity,#homeCity,#age,#workPeriod
+			{
+				width:65%;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			#headpic{
+				width:80px;
+				height:80px;
+				border-radius:50%;
+				overflow:hidden;
+				margin:30px auto 25px;
+			}
+			h5{
+				margin:15px 0;
+			}
+		/*picupload start*/
+			/*picupload base*/
+			.pick-button{width: 80px;height: 80px;background-image:  url(../../img/iconfont-tianjia.png);position:relative;display:inline-block;background-size:80px 80px;}
+			.pick-button label{position:absolute;width:80px;height:80px;color:#fff;font-size:2rem;}
+			#file{position: absolute;clip: rect(1px 1px 1px 1px);}
+			.imgpath{display:inline-block;margin-right:10px;position: relative;}
+			.imgpath span{
+				display: block;
+	    		background-color: transparent;
+	    		height:20px;
+	    		position:absolute;
+	    		bottom:0px;
+	    		font-size:.5rem ;
+	    		width: 100%;
+	    		text-align: center;
+	    		color:#fff;
+	    	}
+	    	/*picupload 进度条*/
+	    	.imgpath.active span{
+	    		animation:   reverse progress-bar-stripes 0.80s linear infinite;
+	    		-webkit-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		-o-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		background-image: linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -o-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-size: 20px 20px;
+			    -webkit-background-size: 20px 20px;
+	    	}
+	    	@-webkit-keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+			@keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+		/*picupload end*/
+		
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">新增基本信息</h1>
+			<a id="saveBasicInfo" class="mui-pull-right" style="color: #007aff;padding-top:10px;">保存</a>
+		</header>
+		
+		<div class="mui-content">
+			 <div class="mui-page-content">
+				<ul class="mui-table-view">
+					
+					<li class="mui-table-view-cell">
+						<div id="headpic">
+							<div class="pick-button"> 
+								<input id="file" type="file" accept="image/*" />
+								<label for="file"></label>
+							</div>
+						</div>
+						<p style="text-align: center">点击图片进行修改</p>
+					</li>
+							
+					<!--<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>个人照片</label>
+						<input id="headPic" type="text" placeholder="请填写公司名称">
+						</div>
+					</li>-->
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>姓名</label>
+						<input id="realName" type="text" placeholder="请填写真实姓名">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>现工作单位</label>
+						<input id="organization" type="text" placeholder="请填写当前所在单位名称">
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>现工作城市</label>
+						<button id='workCity' class="btn mui-btn mui-btn-block">无</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>籍贯</label>
+						<button id='homeCity' class="btn mui-btn mui-btn-block">上海</button>
+						
+						</div>
+					</li>
+					
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>出生年月</label>
+						<button id='age' class="btn mui-btn mui-btn-block">2000-10</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>工作年限</label>
+						<button id='workPeriod' class="btn mui-btn mui-btn-block">无</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>联系方式</label>
+						<input id="phone" type="text" placeholder="联系方式">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>最高学历</label>
+							<select id="education" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0" selected="selected">无</option>
+								<option value="1">中专</option>
+								<option value="2">高中</option>
+								<option value="3">大专</option>
+								<option value="4">本科</option>
+								<option value="5">研究生及以上</option>								
+							</select>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>目标职位</label>
+							<select id="position" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value='业务员'>业务员</option>
+								<option value='置业顾问' selected="selected">置业顾问</option>
+								<option value='客户经理'>客户经理</option>
+								<option value='店长'>店长</option>
+								<option value='案场销售'>案场销售</option>
+								<option value='客户主任'>客户主任</option>
+								<option value='销售总监'>销售总监</option>
+								<option value='行政管理'>行政管理</option>
+								<option value='房产评估师'>房产评估师</option>
+								<option value='客服'>客服</option>
+								<option value='其他房产职位'>其他房产职位</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>求职附言</label>
+						</div>
+						
+						<div class="mui-input-row">
+							<textarea id='resumeDetail' placeholder="求职描述" rows="5" style="margin-left: 15px;">
+								
+							</textarea>
+						</div>
+					</li>
+					
+				</ul>
+				<div id="oprDiv">
+					<div class="col-xs-12" style="margin-top:10px;margin-bottom:20px">
+						<div class="col-xs-6">
+							<button id="deleteBasicInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							取消
+							</button>
+						</div>
+						<div class="col-xs-6">
+							<button id="saveBasicInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							保存
+							</button>
+						</div>
+					</div>
+				</div>
+		    </div>	
+		    
+		    
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/mui.picker.min.js"></script>
+		<script src="../../js/common.js" charset="UTF-8"></script>
+		<script src="../../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../../js/city.data.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Recruit/common/common.js?v=0.01"></script>
+		<script src="../../js/Recruit/ResumeMgr/ResumeBasicInfo.js?v=0.01"></script>
+		<script src="../../js/PicUpload/dist/lrz.bundle.js"></script>
+	</body>
+
+</html>

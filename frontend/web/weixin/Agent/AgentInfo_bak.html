@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			.Absolute-Center {  
+				text-align:center; 
+			}
+			.icon {
+				width: 1em; height: 1em;
+				vertical-align: -0.15em;
+				fill: currentColor;
+				overflow: hidden;
+			}
+			.mui-table-view-cell:after{
+				left:0;
+			}
+			#starBox em {
+			    float: left;
+			    left: 30%;
+    			position: relative;
+    			margin-top: 15px;
+    			margin-bottom: 15px;
+			    width: 26px;
+			    height: 20px;
+			    background: url(http://www.zmzfang.com/weixin/pic/star.png) 0 -20px no-repeat;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人详情</h1>
+			<a id="erweima" style="position: absolute;bottom: 10px;right: 10px; color:black;">
+		    	<svg class="icon mui-pull-right" aria-hidden="true" style="font-size:25px;">
+						<use xlink:href="#icon-QR-code"></use>
+				</svg>
+			</a>
+		</header>
+		
+		<div class="mui-content">
+			
+			<div class="mui-page-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:20px;">
+						    <img id="headPic" style="width:80px; height:80px; " src="" alt="个人头像" />
+						    <!-- <a id="credit-ratings" style="position: absolute;top: 10px;right: 10px; color:black;">信用评级：A+</a>
+						    <a style="position: absolute;bottom: 10px;left: 10px; color:black;">
+						    	<span id="credit-score">720分</span>
+							</a> -->
+						</div>
+						<p id="nickname" class="Absolute-Center">nickname</p>
+					</li>
+					<li class="mui-table-view-cell">
+						<div id="container" style="height: 220px"></div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="col-xs-7 mui-text-left">
+							<p>公司:<span id="company" class="mui-pull-right">中原地产闵行分店</span></p>
+						</div>
+						<div class="col-xs-5 mui-text-right">
+							<p>职务:<span id="position" class="mui-pull-right">区域经理</span></p>
+						</div>
+						<div class="col-xs-5 mui-text-left">
+							<p>业务:<span id="business" class="mui-pull-right">二手房租售</span></p>
+						</div>
+						<div class="col-xs-7 mui-text-right">
+							<p>工作年限:<span id="Years-of-Working" class="mui-pull-right">5年</span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p>个人亮点:<span id="bright-spot" class="mui-pull-right">经纪人资格证 看房私车接送 会英文、日语，可接待境外人士</span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p>主营小区:<span id="residential-area" class="mui-pull-right">汤臣一品</span></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="col-xs-12 mui-text-left">
+							<p>他的动态<span id="dynamic" class="mui-pull-right"></span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p id="content">评级变更<span id="date" class="mui-pull-right">2016.09.09</span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p id="content">发布一个动态<span id="date" class="mui-pull-right">2016.08.09</span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p id="content">回复一个求助信息<span id="date" class="mui-pull-right">2016.08.09</span></p>
+						</div>
+						<div class="col-xs-12 mui-text-left">
+							<p id="content">更新房源<span id="date" class="mui-pull-right">2016.08.08</span></p>
+						</div>
+					</li>
+
+					<div style="padding: 10px 10px;">
+						<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+							<a id="historyLink" class="mui-control-item mui-active" href="#item1">
+								他的房源
+							</a>
+							<a id="commentLink" class="mui-control-item" href="#item2">
+								代理楼盘
+							</a>
+							<a id="commentLink" class="mui-control-item" href="#item3">
+								服务评价
+							</a>
+						</div>
+					</div>
+					<div>
+						<div id="item1" class="mui-control-content mui-active">
+							<ul class="mui-table-view" id="supplyments">
+								<li class="mui-table-view-cell mui-media" id="requirementid-493">
+									<div id="requirementBrief" class="requirement-brief" publishuser-id="5336" requirement-id="493">
+											<div style="width:42px; height:60px;position:relative;overflow:hidden;float:left;">
+													<img class="mui-media-object" src="http://www.zmzfang.com/weixin/img/headpic/5336.jpg" alt="个人头像">
+													<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">Mxiyu</div>
+											</div>
+											<div style="margin-left: 50px;overflow:hidden;">
+													<p class="requirement-subject" style="margin-left: 0px;color:#000;">徐汇区长桥;</p>
+													<p>
+														<span>2室</span> - <span>300-399万</span>
+													</p>
+													<p style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;">对口上海小学，小学学位名额没有使用，可落户口。</p>
+											</div>
+											<p class="mui-badge mui-badge-danger" style="position:absolute;right:3px;top:38px;">佣&nbsp;60000</p>
+											<p class="publish-date" style="position:absolute;right:3px;top:12px">1天前</p>
+									</div>
+									<div class="flag bflag">
+									</div>
+								</li>
+								<li class="mui-table-view-cell mui-media" id="requirementid-511">
+									<div id="requirementBrief" class="requirement-brief" publishuser-id="5349" requirement-id="511">
+											<div style="width:42px; height:60px;position:relative;overflow:hidden;float:left;">
+													<img class="mui-media-object" src="http://www.zmzfang.com/weixin/img/headpic/5349.jpg" alt="个人头像">
+													<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">阿亮</div>
+											</div>
+											<div style="margin-left: 50px;overflow:hidden;">
+													<p class="requirement-subject" style="margin-left: 0px;color:#000;">浦东新区惠南;</p>
+													<p>
+														<span>2室</span> - <span>300-399万</span>
+													</p>
+													<p style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;">4间卧室，适合三代人居住</p>
+											</div>
+											<p class="mui-badge mui-badge-danger" style="position:absolute;right:3px;top:38px;">佣&nbsp;60000</p>
+											<p class="publish-date" style="position:absolute;right:3px;top:12px">1天前</p>
+									</div>
+									<div class="flag bflag">
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div id="item2" class="mui-control-content">
+							<ul class="mui-table-view" id="agent-realestate">
+								<li id="estateSalesLi" class="mui-table-view-cell mui-media mui-text-center">
+									<div id="estateSalesDiv" class="prompt">
+										<div id="estatePicDiv" estate-id='1' class="mui-slider estate-pic" style="background-image: url('http://www.zmzfang.com/weixin/img/zhuanjia1.jpg');">
+				   			
+			    						</div>
+										<div>
+											<h5 id="estateName" class="estate-name" style="">仁恒河滨花园</h5>
+											<h5 id="estateLocation" class="estate-location" style="">上海.浦东</h5>
+										</div>
+										
+									</div>
+								</li>
+								<li id="estateSalesLi" class="mui-table-view-cell mui-media mui-text-center">
+									<div id="estateSalesDiv" class="prompt">
+										<div id="estatePicDiv" estate-id='1' class="mui-slider estate-pic" style="background-image: url('http://www.zmzfang.com/weixin/img/zhuanjia1.jpg');">
+				   			
+			    						</div>
+										<div>
+											<h5 id="estateName" class="estate-name" style="">万科翡翠公园</h5>
+											<h5 id="estateLocation" class="estate-location" style="">上海.浦东</h5>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div id="item3" class="mui-control-content">
+							<ul class="mui-table-view" id="service-evaluate">
+								<div id="starBox">
+									<em></em>
+									<em></em>
+									<em></em>
+									<em></em>
+									<em></em>
+								</div>
+								<p id="starNotice"></p>
+							</ul>
+						</div>
+					</div>
+
+					<div style="text-align: center;padding-top: 10px;padding-bottom: 20px;">
+						<button id="nextStep" type="button" class="mui-btn" style="width: 80%;height: 40px;background-color: #4cd964;color: #fff;">
+						联系TA
+						</button>
+					</div>
+				</ul>
+		    </div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/expertData.js"></script>
+		<script src="../js/echarts.min.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var credit;
+			var activity;
+			var openness;
+			var service;
+			var professional;
+			var id = getQueryStrFromUrl("userid");
+			var user = new Object();
+			user.id = id;
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				initUserInfo();
+				initAgentInfo();
+				//初始化微信分享
+				wxShare();
+			});
+
+
+			var dom = document.getElementById("container");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+			option = {
+			    title: {
+			        // text: '多雷达图'
+			    },
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        x: 'center',
+			        data:['信用度','活跃度','开放度','服务能力','专业能力']
+			    },
+			    radar: [
+			        {
+			            indicator: [
+			                {text: '信用度', max: 100},
+			                {text: '活跃度', max: 100},
+			                {text: '开放度', max: 100},
+			                {text: '服务能力', max: 100},
+			                {text: '专业能力', max: 100}
+			            ],
+			            center: ['50%','50%'],
+			            radius: 80
+			        }
+			    ],
+			    series: [
+			        {
+			            type: 'radar',
+			             tooltip: {
+			                trigger: 'item'
+			            },
+			            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+			            data: [
+			                {
+			                    value: [60,73,85,50,80],
+			                    // name: '某软件'
+			                }
+			            ]
+			        }
+			    ]
+			};
+			
+			if (option && typeof option === "object") {
+			    myChart.setOption(option, true);
+			}
+			
+			function initUserInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				var loginUserId = null;
+				if(user)
+				{
+					loginUserId = user.id;
+				}
+				ajax_get_user_info({
+					userid: user.id,
+					loginuserid:loginUserId
+				});
+			}
+	
+			function getUserInfoSuccess(data)
+			{
+				localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+				
+				byId("headPic").src = data.picture;
+			}
+
+			window.onload = function(){
+			    var star = document.getElementsByTagName('em');
+			    var oDiv = document.getElementById('starBox');
+			    var temp = 0;
+			     
+			    for(var i = 0, len = star.length; i < len; i++){
+			        star[i].index = i;
+			         
+			        star[i].onmouseover = function(){
+			            clear();
+			            console.log('onmouseover num is '+this.index);
+			            for(var j = 0; j < this.index + 1; j++){
+			                star[j].style.backgroundPosition = '0 0';
+			            }
+			        }
+			         
+			        // star[i].onmouseout = function(){
+			        // 	console.log('onmouseout num is '+this.index);
+			        //     for(var j = 0; j < this.index + 1; j++){
+			        //         star[j].style.backgroundPosition = '0 -20px';
+			        //     }
+			        //     current(temp);
+			        // }
+			         
+			        // star[i].onclick = function(){
+			        // 	console.log('onclick num is '+this.index);
+			        //     temp = this.index + 1;
+			        //     // document.getElementById('starNotice').innerHTML = temp + ' 颗星';
+			        //     current(temp);
+			        // }
+			    }
+
+			    //清除所有
+			    function clear(){
+			        for(var i = 0, len = star.length; i < len; i++){
+			            star[i].style.backgroundPosition = '0 -20px';
+			        }
+			    }
+			    //显示当前第几颗星
+			    // function current(temp){
+			    //     for(var i = 0; i < temp; i++){
+			    //         star[i].style.backgroundPosition = '0 0';
+			    //     }
+			    // }
+			};
+
+
+			function initAgentInfo()
+			{
+				// var data = localStorage.getItem('zmzfangLoginUserInfo');
+				// var user = JSON.parse(data);
+
+				ajax_get_agent_detail(user,getAgentDetailSuc,getAgentDetailFailed);
+			}
+	
+			function getAgentDetailSuc(data)
+			{
+				// localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+				console.log('getAgentDetailSuc data:'+JSON.stringify(data));
+				var rating;
+				byId("headPic").src = data.picture;
+				if(data.zmcredit>800){
+					rating="信用评级：A+";
+				}else if(data.zmcredit>750){
+					rating="信用评级：A";
+				}else if(data.zmcredit>700){
+					rating="信用评级：B+";
+				}else if(data.zmcredit>650){
+					rating="信用评级：B";
+				}else{
+					rating="信用评级：C";
+				}
+				byId("nickname").innerHTML=data.nickname;
+				byId("credit-ratings").innerHTML=rating;
+				byId("credit-score").innerHTML=data.zmcredit+'分';
+				byId("bright-spot").innerHTML=data.skill;
+				byId("business").innerHTML=data.tags;
+				byId("Years-of-Working").innerHTML=data.workperiod;
+				
+				byId("company").innerHTML=data.organization;
+				byId("position").innerHTML=data.position;
+				var districts='';
+				for (var i=0;i<data.majordistricts.length;i++){
+					districts+=data.majordistricts[i].districtname;
+					console.log('i is '+i+' districts is '+districts);
+					districts+=',';
+				}
+				console.log('districts.length is '+districts.length);
+				districts=districts.substring(0,districts.length-1);
+				console.log('districts is '+districts);
+				byId("residential-area").innerHTML=districts;
+				credit=data.zmcredit;
+				// activity=
+				// openness=
+				// service=
+				// professional=
+			}
+
+			function getAgentDetailFailed(data)
+			{
+				console.log("getAgentDetailFailed");
+			}
+
+			byId("erweima").addEventListener('tap', function(event) {
+				mui.openWindow({
+						url: 'http://www.zmzfang.com/weixin/test/erweima.html?web=AgentInfo.html&userid='+user.id	
+				});
+			}, false);
+
+		</script>
+	</body>
+
+</html>

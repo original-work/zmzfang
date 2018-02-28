@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.min.css" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+			}
+			#bidlist {
+				padding-top: 10px;
+			}
+			.clear {
+				clear:left;
+			}
+			#bid {
+				width: 100%;
+				border-right: 1px solid #EFEFF4;
+				right: 0px;
+				left:0px;
+				float: left;
+				position:relative;
+			}
+			#sendMsg {
+				width: 100%;
+				right: 0px;
+				left:0px;
+				position:relative;
+			}
+			.no-active {
+				background-color:#eeeeff;
+			}
+			.mui-bar{
+				padding:0;
+			}
+			
+			#follow{
+				position: absolute;
+    			right: 10px;
+    			top: 90px;
+    			font-size: 12px;
+			}
+			#favorite{
+				color: #FFD306;
+			}
+			.not-allow{
+				color: #999;
+			    position: absolute;
+			    top: 33px;
+			    right: 8px;
+			    border: 1px solid #ccc;
+			    padding: 6px 8px;
+			    font-size: .8rem;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			}
+			.allow{
+				color: #fff;
+			    position: absolute;
+			    top: 33px;
+			    right: 8px;
+			    border: 1px solid #ccc;
+			    padding: 6px 8px;
+			    font-size: .8rem;
+			    cursor: pointer;
+			    font-weight: 400;
+			    background: #4cd964;
+			}
+			.head-row{
+				padding:0;
+				margin:0 1%;
+			}
+			.head-row .col-xs-2{
+				padding-right: 2%;
+   				padding-left: 2%;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+			
+			.swiper-container {
+		        width: 100%;
+		        height: 80px;
+		        margin: 5px auto;
+		    }
+		    .swiper-slide {
+		        text-align: center;
+		        font-size: 1rem;
+		        background: #fff;
+		        
+		        /* Center slide text vertically */
+		       /* display: -webkit-box;
+		        display: -ms-flexbox;
+		        display: -webkit-flex;
+		        display: flex;
+		        -webkit-box-pack: center;
+		        -ms-flex-pack: center;
+		        -webkit-justify-content: center;
+		        justify-content: center;
+		        -webkit-box-align: center;
+		        -ms-flex-align: center;
+		        -webkit-align-items: center;
+		        align-items: center;*/
+		    }
+  
+		    
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="javascript:void(0)"></a>
+			<h1 class="mui-title" id="requirementTitle">求购</h1>
+			
+		</header>
+		
+		<footer class="mui-bar mui-bar-footer" style="background:#4cd964;">
+        	<h1 class="mui-title" id='bid' style="color:#fff;">联系他</h1>
+        </footer>
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv" class="display-after-login">
+				<div id="userInfo" class="card" user-id="1">
+					<div class="user-info" style="border-bottom:1px solid #ddd;margin-bottom:20px;">
+						<div style="width:42px; height:42px;overflow:hidden;float:left;">
+							<img id="userPic" class="circle-img" width="42" height="42px" data-lazyload-id="0" src="../img/shuijiao.jpg">
+						</div>
+				       	<div class="user-info-content" style="float:left;margin-left: 0px;padding-left: 10px;">
+				        <p class="mui-ellipsis requirement-user-nickname" style="font-size:1.2rem;margin-bottom:5px;"> 
+								<span id="userName" ></span>&nbsp;
+								<span id="userType" class="mui-hidden" style="font-size:0.3rem;color:green;">经纪人</span>
+								<span id="agentIcon" class="mui-icon mui-icon-contact mui-hidden" style="color: royalblue;" ></span>
+						</p>
+						<p>
+							<span>最近登录时间</span> <span id="loginTime"> </span>
+							<a id="follow" class="mui-hidden">关注芝麻找房</a>
+						</p>
+						<button id=report type="button" class="mui-btn mui-btn-danger mui-hidden">虚假需求举报</button>
+						</div>
+						<div style="position:absolute;right:20px;" class="mui-hidden">
+							<svg id="favorite"  class="icon" aria-hidden="true"><use xlink:href="#icon-fav-o"></use></svg>
+						</div>
+
+				    	<div class="mui-clearfix"></div>
+				   	</div>
+				    
+				    <div id="requirementInfo" class="requirement-info" requirement-id="1">
+				    	<ul class="row">
+				    		<li class="col-xs-12">
+				    			<p style="color:#000;font-size:1.1rem;"><span id="requiremenSubject"></span><small id="district" class="mui-hidden" style="color:#8f8f94"></small></p>
+				    		</li>
+				    		<li class="col-xs-12">
+				    			<p style="font-weight:700;color:#fc6000;font-size:1.1rem;" id="fee"></p>
+				    		</li>
+					        <li class="col-xs-6">
+					            <p><span style="color:#999;">预算：</span><span id="budget" style="color: #333;"></span><span style="color: #333;">万</span></p>
+					        </li>
+							<li class="col-xs-6">
+					            <p><span style="color:#999;">楼层：</span><span id="storey" style="color: #333;"></span><span style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">户型：</span><span id="housetype" style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">房产类型：</span><span id="buildingType" style="color: #333;"></span></p>
+					        </li>	
+					        <li class="col-xs-12" id="fee2">
+					        </li>	
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+									
+									<div>
+									    <p id="detail"  style="text-indent: 1.5rem;font-size: 14px;color: #333;"></p>
+								    	 <p style="color: #8f8f94;font-size: 12px;">具体需与用户沟通</p>
+									</div>
+								</div>
+					        </li>
+					    </ul>
+					    <div class="mui-clearfix"></div>		
+					</div>
+					<div>
+				</div>
+				</div>	
+
+            </div>	
+	
+		</div>
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/requirement.js"></script>
+		<script src="../js/user.js"></script>
+		<script src="../js/auth.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/common.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			
+		    var requirementId;
+		    var requirementUserId;
+
+		    var subject;
+		    var urlString;
+		   
+		    var loginUser;
+		    //var swiper;
+		    //初始化url参数来获取需求id和用户id,如果没有继续执行
+		    initUrlParam();
+		   
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				$('.mui-content').Auth({'wechat':false,'openid':false,'phone':false});
+				loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				initLoginUserInfo();
+				//初始化需求发布人用户信息
+				initUserInfo();//不需要登录
+				//初始化需求详情信息
+				initRequirmentInfo();//不需要登陆
+				//初始化 投标按钮和发送消息按钮
+
+				//initFavoriteRequirement();//是否是收藏房源
+				
+				initWxShareBackUrl();//分享后的返回键处理
+			});
+			
+			//在头像上增加增加用户信息 tap事件
+			document.querySelector('#userPic').addEventListener('tap', function() {
+				//用户未登陆，则无法看到
+				var userid = $("#userInfo").attr("user-id");
+				var type = 1;//1需求页中点击 2 房源页中点击
+				var dstUrl = '../Mine/User.html?userId='+userid+'&type='+type;
+				if(!$('#userType').hasClass('mui-hidden'))
+				{
+					dstUrl = '../Agent/AgentInfo.html?userId='+userid;
+				}
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'User.html'
+				});
+			}, false);
+
+			function alertObj(obj){
+				var output = "";
+				for(var i in obj){  
+					var property=obj[i];  
+					output+=i+" = "+property+"\n"; 
+				}  
+				alert(output);
+			}
+
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 urlString = String(window.document.location.href);
+				 requirementId = getQueryStr("requirementId");
+				 requirementUserId = getQueryStr("userId");
+				
+			}
+			//增加微信分享处理
+			function initWxShare()
+			{
+				
+				var requirementInfo = JSON.parse(localStorage.getItem('zmzfangOthersRequiement'));
+				var publishUserInfo = JSON.parse(localStorage.getItem('requirementPublishUserInfo'));
+				
+				//var calledUrl = String(window.document.location.href);
+				var link = 'http://www.zmzfang.com/weixin/Referral/RequirementDetailReferral.html?requirementId='+requirementId+'&userId='+requirementUserId;
+				var imgUrl = 'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg';
+				var param = new Object();
+				// param.getJssdkConfUrl = calledUrl;
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				
+				if(requirementInfo && publishUserInfo)
+				{
+					imgUrl = publishUserInfo.picture;
+					title = '求购'+requirementInfo.subject;
+					if(requirementInfo.housetype != '5-10')
+					{
+						title += requirementInfo.housetype+'房';
+					}
+					if(requirementInfo.budget == '1000-90000')
+					{
+						title += '1000万以上';
+					}
+					else
+					{
+						title +=  requirementInfo.budget + '万';
+					}
+					//desc = '具体描述：' + requirementInfo.detail + '[芝麻找房]';
+				}
+				
+				param.title = title;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+			
+			//填充需求信息
+	        function fillRequiementInfo(data)
+	        {
+	        	console.log('RequirementDetail.html: fillRequiementInfo data='+JSON.stringify(data));
+	        	
+	        	//将他人的需求详情存储到缓存中
+	        	localStorage.setItem('zmzfangOthersRequiement',JSON.stringify(data));
+	        	
+	        	subject='求购'+data.subject + data.housetype + '室';;
+				
+		        byId("requirementTitle").innerText = subject;
+	        	byId("requiremenSubject").innerText = subject;
+	        	
+	        	
+	        	byId("budget").innerText = data.budget;
+	        	if(data.storey == '0-300')
+	        	{
+	        		byId("storey").innerText = '不限';
+	        	}
+	        	else
+	        	{
+	        		byId("storey").innerText = data.storey + '层';
+	        	}
+	        	byId("housetype").innerText = data.housetype + '室';
+	        	byId("buildingType").innerText = data.buildingtype;
+	        	byId("budget").innerText = data.budget;
+	        	byId("detail").innerText = data.detail;
+	        	
+
+	        	requirementUserId = data.publishuserid;
+	        	//获取其他信息成功后，再初始化分享消息
+	        	initWxShare();
+	        	
+	        }
+	        
+	        function initUserInfo()
+	        {
+	        	var userid = requirementUserId;
+
+	        	ajax_get_user_info({
+					userid: userid
+				});
+	        }
+	        function initRequirmentInfo()
+	        {
+				byId("requirementInfo").setAttribute("requirement-id",requirementId);
+				
+				var url = getRequirementDetailReferralUrl;
+				var options = {
+					id: requirementId
+				};
+				ajax_to_server(url,options,getRequirementDetailSuc,null);
+//				ajax_get_requirement_detail({
+//					requirementid: requirementId,
+//					userid: userid
+//				});
+	        }
+	        
+	        function getRequirementDetailSuc(data)
+			{
+				if(data && data.data)
+				{
+					fillRequiementInfo(data.data);
+				}
+			}
+	        //填充用户信息
+	        function getUserInfoSuccess(data)
+	        {
+	        	if(data.agentflag=="1"){
+	        		//经纪人
+	        		//byId("agentIcon").classList.remove("mui-hidden");//暂不显示图像
+	        		//byId("userType").innerText = "经纪人";
+	        		byId("userType").classList.remove("mui-hidden");
+	        	}
+	        	byId("userPic").src = imgpath(data.picture);
+	        	byId("userName").innerText = data.nickname;
+	        	
+	        	var logintime = data.logintime;
+				var timearray=logintime.split(" ");
+		
+	        	byId("loginTime").innerText = timearray[0];
+	        	$("#userInfo").attr("user-id",data.id);
+	        	
+	        	//保存到内存中
+	        	localStorage.setItem("requirementPublishUserInfo", JSON.stringify(data));
+	        	//获取需求信息
+	        	//initRequirmentInfo();
+	        }
+	        
+	        
+	        function isUserLogin()
+	        {
+	        	return true;
+	        }
+	        
+	      
+			function getQueryStr(str) {
+				var rs = new RegExp("(^|)" + str + "=([^&]*)(&|$)", "gi").exec(urlString), tmp;
+				if (tmp = rs) {
+				return tmp[2];
+				}
+				// parameter cannot be found
+				return "";
+			}
+			
+			function initLoginUserInfo(){
+
+				var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+				var regUrl = 'http://www.zmzfang.com/weixin/Mine/reg.html';
+				
+				initCheckView(shareBackUrl,regUrl);
+						
+				if(loginUser == null || loginUser.wxunionid.length < 1){
+					var requirementId = getQueryStr("requirementId");
+					var userId = getQueryStr("userId");
+					if(mui.os.wechat){
+					   	window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=HomePage/RequirementDetailReferral&requirementId='+requirementId+'&userId='+userId+'&city='+requirementCity;
+					}
+					$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+					$('#follow').removeClass("mui-hidden");
+					$('#bid').on('tap',function(){
+						showLoginDiv();
+					});
+					$('#follow').on('tap',function(){
+						showLoginDiv();
+					});
+				}
+				else
+				{
+					$('#bid').on('tap',function(){
+						initChatBtnEvent();
+					});
+				}
+			}
+			        
+			//联系他 tap事件
+			function initChatBtnEvent()
+			{
+				var done = false;
+				if(!$.wechated()){done =true;$('.mui-content').hide();$('#authMessage').show();$('.need-wechat').show();}
+				if(!$.openided() && !done){done =true;$('.mui-content').hide();$('#authMessage').show();$('.need-openid').show();}
+				if(!$.phoned() && !done ){$('.mui-content').hide();$('#authMessage').show();$('.need-phone').show();}
+				if(!loginUser){return;}
+					
+				if(loginUser)
+				{
+					if(loginUser.id == requirementUserId)
+					{
+						mui.toast('您不能联系自己');
+					}
+					else if((loginUser.phone && loginUser.phone.length != 11) || (!loginUser.phone))
+					{
+						mui.toast('请先绑定微信，注册手机号');
+					}
+					else
+					{
+						var nickName = byId('userName').innerText;
+						window.location.href = '../Message/im-chat.html?id='+requirementUserId+'&nickname='+nickName;	 
+					}
+				}
+				else
+				{
+					mui.toast('您还没有绑定微信');
+				}
+			}		
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			#beginDate,#endDate,#activityCity
+			{
+				width:65%;
+			}
+
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			#headpic{
+				width:100%;
+				height:80px;
+				overflow:hidden;
+				margin-left: 15px;
+				margin-top: 15px;
+			}
+			h5{
+				margin:15px 0;
+			}
+		/*picupload start*/
+			/*picupload base*/
+			.pick-button{width: 80px;height: 80px;background-image:  url(../../img/iconfont-tianjia.png);position:relative;display:inline-block;background-size:80px 80px;}
+			.pick-button label{position:absolute;width:80px;height:80px;color:#fff;font-size:2rem;}
+			#file{position: absolute;clip: rect(1px 1px 1px 1px);}
+			.imgpath{display:inline-block;margin-right:10px;position: relative;}
+			.imgpath span{
+				display: block;
+	    		background-color: transparent;
+	    		height:20px;
+	    		position:absolute;
+	    		bottom:0px;
+	    		font-size:.5rem ;
+	    		width: 100%;
+	    		text-align: center;
+	    		color:#fff;
+	    	}
+	    	/*picupload 进度条*/
+	    	.imgpath.active span{
+	    		animation:   reverse progress-bar-stripes 0.80s linear infinite;
+	    		-webkit-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		-o-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		background-image: linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -o-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-size: 20px 20px;
+			    -webkit-background-size: 20px 20px;
+	    	}
+	    	@-webkit-keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+			@keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+		/*picupload end*/
+		
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">发布活动</h1>
+			<a id="saveInfo" class="mui-pull-right" style="color: #007aff;padding-top:10px;">发布</a>
+		</header>
+		
+		<div class="mui-content">
+			 <div class="mui-page-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>主办方</label>
+							<div id="authFlag" class="mui-switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</div>
+					</li>
+					
+					<li id="organizationNameLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+						<label>企业名称</label>
+						<input id="organizationName" type="text" disabled="disabled" placeholder="">
+						</div>
+					</li>
+					
+					<li id="contactNameLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+						<label>联系人</label>
+						<input id="contactName" type="text" disabled="disabled" placeholder="">
+						</div>
+					</li>
+					
+					<li id="contactPhoneLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+						<label>联系方式</label>
+						<input id="contactPhone" type="text" disabled="disabled" placeholder="">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>活动背景图</label>
+							<div id="headpic">
+								<div class="pick-button"> 
+									<input id="file" type="file" accept="image/*" />
+									<label for="file" style="padding:0px 0px"></label>
+								</div>
+							</div>
+							<p style="text-align: center">点击图片进行修改<span style="font-size:12px;color:#000">(建议大小420*140)</span></p>
+						</div>
+						
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>活动类型</label>
+							<select id="activityType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="培训" selected="selected">培训</option>
+								<option value="开盘">开盘</option>
+								<option value="讲座">讲座</option>
+								<option value="聚会">聚会</option>
+								<option value="户外">户外</option>
+								<option value="派对">派对</option>
+								<option value="会议">会议</option>
+								<option value="沙龙">沙龙</option>
+								<option value="演出">演出</option>
+								<option value="比赛">比赛</option>
+								<option value="导购">导购</option>
+								<option value="团购">团购</option>
+								<option value="展览">展览</option>
+								<option value="体验">体验</option>
+								<option value="招商">招商</option>
+								<option value="其他">其他</option>
+							</select>
+						</div>
+					</li>
+					
+					<!--<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>个人照片</label>
+						<input id="headPic" type="text" placeholder="请填写公司名称">
+						</div>
+					</li>-->
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>活动主题</label>
+						<input id="activitySubject" type="text" placeholder="请填写活动主题">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>开始时间</label>
+						<button id='beginDate' class="btn mui-btn mui-btn-block">请选择</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>结束时间</label>
+						<button id='endDate' class="btn mui-btn mui-btn-block">请选择</button>
+						
+						</div>
+					</li>
+															
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>活动城市</label>
+						<button id='activityCity' class="btn mui-btn mui-btn-block">请选择</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>活动地点</label>
+						<input id="activityLocation" type="text" placeholder="请填写详细地址">
+						
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>人数限制</label>
+							<input id="personCnt" type="text" placeholder="请填写人数限制">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>报名费用</label>
+							<input id="fee" type="text" placeholder="请填写报名费用，0表示无费用">
+						</div>
+					</li>
+										
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>活动详情</label>
+						</div>
+						
+						<div class="mui-input-row">
+							<textarea id='activityDetail' placeholder="活动详情描述" rows="10" style="margin-left: 15px;"></textarea>
+						</div>
+					</li>
+					
+				</ul>
+				<div id="oprDiv">
+					<div class="col-xs-12" style="margin-top:10px;margin-bottom:20px">
+						<div class="col-xs-6">
+							<button id="deleteInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							取消
+							</button>
+						</div>
+						<div class="col-xs-6">
+							<button id="saveInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							发布
+							</button>
+						</div>
+					</div>
+				</div>
+		    </div>	
+		    
+		    
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/mui.picker.min.js"></script>
+		<script src="../../js/common.js" charset="UTF-8"></script>
+		<script src="../../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../../js/city.data.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Activity/common/common.js?v=0.01"></script>
+		<script src="../../js/Activity/Mine/Activity.js?v=0.01"></script>
+		<script src="../../js/PicUpload/dist/lrz.bundle.js"></script>
+	</body>
+
+</html>

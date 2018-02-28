@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="./css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="./css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			.touxiang {
+				text-align: center;
+			}
+			
+			.touxiang div {
+				/*width: 4em;*/
+				/*height: 4em;*/
+				margin: 0px auto;
+				margin-bottom: 5px;
+			}
+			.mission{
+				float: right;
+				margin-right: 22px;
+				font-size: 20px;
+				border-radius: 50%;
+				font-weight: 700;
+				text-shadow: 1px 0px 2px #ada8a8;
+				color: red;
+			}
+			.mission_undo{
+				/*color:#644acc;*/
+			}
+			.mission_done{
+				/*color:#16ab28*/
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content">
+				<div class="headImg">
+					<div class="touxiang">
+						<div>
+							<div id="touxiangPicDiv">
+								<div  style="width:70px; height:70px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:20px;">
+									<img id="headPic" style="width:70px; height:70px; " src="" alt="个人头像" />
+								</div>
+								<p style="margin-bottom: 5px;"> 
+									<span id="nickname" style="color: black;"></span> 
+									<span id="headNav" style="position: relative;position: relative;left: 30px;bottom: 5px;font-size: 1rem;" class="mui-icon mui-push-right">
+										
+									</span> 
+									<span id="scoreSpan" style="color: yellow;"></span> &nbsp;
+								</p>
+							</div>
+
+							<!-- <p id="phone" class="mui-hidden" style="color: black;margin-bottom: 5px;"></p> -->
+							<p id="note" class="mui-hidden"><a>完善资料小贴示<span style="font-size: 6px;">  隐藏</span></a></p>
+							<p id="noteDetail" style="margin-bottom: 5px;padding-left: 10px;padding-right: 10px;text-indent: 0.8rem;" class="mui-text-left mui-hidden">完善详细信息，可被优先搜索到，并有更多的位置推荐；</p>
+						</div>
+					</div>
+				</div>
+
+				<ul id="agentEditUl" class="mui-table-view mui-hidden" style="margin-top: 0px;">
+					<li class="mui-table-view-cell">
+						<a id="agentEdit" class="mui-navigate-right" href="./Agent/Mine/MyAgentSettingModify.html">
+							编辑资料
+							<span style="float: right;margin-right: 15px;font-size: 13px;">资料完整度<span id="dataCompleteRate">30</span>%</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="whoFollowMe" class="mui-navigate-right" >
+							今日来访
+							<span id="followMe" style="float: right;margin-right: 15px;font-size: 13px;">
+								<svg  class="icon" aria-hidden="true" style=""><use xlink:href="#icon-mine"></use></svg><svg  class="icon" aria-hidden="true" style=""><use xlink:href="#icon-mine"></use></svg>
+								<!-- <img class="mui-media-object" src="" alt="个人头像"/>
+								<img class="mui-media-object" src="" alt="个人头像"/>
+								<span >2人</span> -->
+							</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="mission" class="mui-navigate-right" href="./Mission/list.html">
+							红包任务
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="recruit" class="mui-navigate-right" href="./Recruit/index.html">
+							求职招聘
+						</a>
+					</li>
+				</ul>
+				
+				<ul class="mui-table-view" style="margin-top: 10px;">
+					<li class="mui-table-view-cell">
+						<a id="myRequirement" class="mui-navigate-right" href="./Mine/MyRequirement.html">
+							我的需求
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="myHouse" class="mui-navigate-right" href="./Mine/MyHouse.html">
+							我的房源
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<a id="myExpert" class="mui-navigate-right" href="./Expert/menu.html">
+							我的问答
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="myAccount" class="mui-navigate-right" href="./Expert/Mine/Account.html">
+							我的账户
+						</a>
+					</li>
+					<!--li class="mui-table-view-cell">
+						<a class="mui-navigate-right" href="./Mine/ApplyExpert.html">
+							成为专家
+						</a>
+					</li-->
+				</ul>
+				<ul class="mui-table-view" style="margin-top: 10px;">
+					<li class="mui-table-view-cell">
+						<a id="myFavorite" class="mui-navigate-right" href="./Mine/MyFavorite.html">
+							我的收藏
+						</a>
+					</li>
+					<li id="mySettingLi" class="mui-table-view-cell">
+						<a id="mySetting" class="mui-navigate-right" href="./Mine/MySetting.html">
+							个人设置
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a id="systemSetting" class="mui-navigate-right" href="./Mine/SystemSetting.html">
+							系统设置
+						</a>
+					</li>
+					
+				</ul>
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="./js/mui.min.js" charset="UTF-8"></script>
+		<!-- <script src="./js/own.js" charset="UTF-8"></script> -->
+		<script src="./js/jquery.min.js"></script>
+		<script src="./js/common.js"></script>
+		<script src="./js/auth.js"></script>
+		<script src="./js/commonAjax.js?v=0.01"></script>
+		<script src="./js/wxShare.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.ready(function() {
+				$('.mui-content').Auth({'phone':false});
+				$('#mineLink').addClass('mui-active');
+				if (!loginUser) {return;}
+				//初始化界面用户信息
+				initUserInfo();
+				//初始化连接事件
+				initLinkEvent();
+				initFollowMe();
+				initMission();
+			});
+			
+			function initUserInfo()
+			{
+				ajax_to_server('http://www.zmzfang.com/index.php?r=user/get-user-info',{'userid':loginUser.id},getUserInfoSuccess)
+			
+			}
+			function getUserInfoSuccess(data)
+			{
+				console.log('getUserInfoSuccess');
+				$("#headPic").attr('src' , imgpath(data.picture));
+				$("#nickname").text(data.nickname);
+				// $("#phone").text(data.phone);
+				
+				if(1 == loginUser.agentflag)
+				{
+					$('#agentEditUl').removeClass('mui-hidden');
+					$('#mySettingLi').addClass('mui-hidden');
+				}
+				agentNote();
+				getAgentExtraInfo();
+			}
+			
+			function initLinkEvent()
+			{
+				console.log('initLinkEvent');
+				$('#touxiangPicDiv').on('tap', function() {
+					if(1 == loginUser.agentflag)
+					{
+						noPhoneRegAfterJumpUrl = "./Agent/Mine/AgentMySetting.html?userId="+loginUser.id;
+					}
+					else
+					{
+						noPhoneRegAfterJumpUrl = "./Mine/User.html?userId="+loginUser.id;
+					}
+					window.location.href  = noPhoneRegAfterJumpUrl
+				});
+				$('#whoFollowMe').on('tap',function(){
+					mui.openWindow({
+						url:'./Mine/whoFollowMe.html?id='+loginUser.id,
+						id:'search'
+					})
+				})
+			}
+
+			function agentNote()
+			{
+				if(loginUser.agentflag == 1 && (loginUser.activeregion == null || loginUser.activeregion == ''))
+				{
+					console.log('activeregion null');
+					$('#note').removeClass('mui-hidden');
+					$('#noteDetail').removeClass('mui-hidden');
+					$('#note').on('tap', function() {
+						$('#noteDetail').toggle();
+					});
+				}
+			}
+			
+			function getAgentExtraInfo()
+			{
+				if(loginUser && 1 == loginUser.agentflag)
+				{
+					var dstUrl = getAgentExtraUrl;
+					var options = new Object();
+					options.userid = loginUser.id;
+					ajax_to_server(dstUrl,options,getAgentExtraInfoSuc);
+				}
+			
+			}
+			
+			function getAgentExtraInfoSuc(data)
+			{
+				console.log("getAgentExtraInfoSuc");
+				if(data && data.length != 0)
+				{
+					$('#dataCompleteRate').text(data.datacompleterate);
+					var compliterConfirmFlag = localStorage.getItem('zmzfangCompliterConfirmFlag');
+					var str = "您的资料完整度是"+data.datacompleterate+"%,完善信息，看看有多少同事、同行在用。完善领取红包。"
+					if(Date.parse(new Date())/1000 - compliterConfirmFlag <= 86400)
+					{
+						console.log(str);
+						return;
+					}
+					else
+					{
+						if(data.datacompleterate <= 50)
+						{
+							localStorage.setItem('zmzfangCompliterConfirmFlag',Date.parse(new Date())/1000);
+							if(confirm(str))
+							{
+								var dstUrl = "./Agent/Mine/MyAgentSettingModify.html";
+								mui.openWindow({
+									url: dstUrl
+								});
+							}
+						}
+					}
+					
+				}
+			}
+			function initFollowMe()
+			{
+				var options = new Object();
+				options.dstid = loginUser.id;
+				ajax_to_server(getInterfaceUrl()+"?r=user/get-who-have-seen-agent-today",options,getWhoHaveSeenAgentTodaySuc);
+			}
+
+			function getWhoHaveSeenAgentTodaySuc(data)
+			{
+				console.log('getWhoHaveSeenAgentTodaySuc');
+				var followMeUl=$('#followMe');
+				var firstFrag ='';
+				if(data)
+				{
+					firstFrag += '<span>'+data+'人</span>';
+					followMeUl.append(firstFrag);
+					return ;
+				}
+				
+				firstFrag='<span>0人</span>';
+				followMeUl.append(firstFrag);
+			}
+
+			function initMission(){
+				if(loginUser && 1 == loginUser.agentflag)
+				{
+					var options = new Object();
+					options.userid = loginUser.id;
+					options.mid = 1;
+					ajax_to_server('http://www.zmzfang.com/?r=mission/get-mission-info',options,getMissionInfoSuc);
+				}
+			}
+			function getMissionInfoSuc(data)
+			{
+				console.log("getAgentExtraInfoSuc");
+				if(data && data.length != 0)
+				{
+					switch(data.status)
+					{
+						case 1:
+						$('#mission').append('<span class="mission mission_done">!</span>')
+						break;
+						case 2:
+						break;
+						default:
+						$('#mission').append('<span class="mission mission_undo">?</span>')
+						break;
+					}
+				}else{
+					mui.toast('任务完成度解析失败，请重试。')
+				}
+			}
+		</script>
+	</body>
+
+</html>

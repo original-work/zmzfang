@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+			}
+			.mui-bar{
+				padding:0;
+			}
+			p {
+				padding-left:20px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">你还没有绑定微信公众号</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">请绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+		    <div id="requirementInfo" class="requirement-info" requirement-id="1">
+		    	<ul class="row">
+
+			        <li class="col-xs-12">
+			            <div class="mui-input-row">
+			            	<p></p>
+			            	<p></p>
+							<p id="subject">未看中原因：</p>
+							<div>
+							    <textarea id="detail" rows="5" placeholder="请填写未看中或者拒绝原因"></textarea>
+						    </div>
+						</div>
+			        </li>
+			        
+			        <li class="col-xs-12">
+			            <div class="mui-input-row">
+			            	<p id='reject' class='mui-hidden'> 
+			            	拒绝可能原因参考：</br>
+			            	1.价格离谱</br>
+			            	2.看不中</br>
+			            	</p>
+			            	<p id='close' class='mui-hidden'> 
+			            	未看中可能原因参考：</br>
+			            	1.价格谈不拢</br>
+			            	2.楼层不好</br>
+			            	3.房型结构不好</br>
+			            	</p>
+			            </div>
+			        </li>
+			    </ul>	
+			</div>
+			<footer id="" class="mui-bar mui-bar-footer" style="background:#4cd964;">
+	        	<h1 class="mui-title" id='submit_refuse'>提交</h1>
+	        </footer>
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+
+		<script src="../js/user.js"></script>
+
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			
+		    var bidInfo;
+		    var commitFlag = true;
+		    var refuseReason;
+		    var bidStatus;
+		    var refuseType;
+			mui.init({
+				swipeBack: false
+			});
+			
+			
+			mui.ready(function() {
+				
+				initSubjectAndBidInfo();
+				bidInfo = JSON.parse(localStorage.getItem('zmzfangBidInfo'));
+				console.log("bidInfo:"+localStorage.getItem('zmzfangBidInfo'));
+				
+				//self = plus.webview.currentWebview();
+				console.log("refuseReason is "+refuseReason+"  bidId is "+bidInfo.bidId+"  bidStatus is "+bidStatus);
+			});
+
+			document.querySelector('#submit_refuse').addEventListener('tap', function() {
+				console.log('submit_refuse click');
+				
+				if(commitFlag)
+				{
+					commitFlag = false;
+					rejectBid();
+				}
+				
+	            //submitRefuse();
+				//$("#submit_refuse").attr("disabled","disabled");
+
+			}, false);
+
+			function initSubjectAndBidInfo()
+			{
+				//增加url参数处理
+				var bidId = getQueryStrFromUrl("bidId");
+				refuseType = getQueryStrFromUrl("refuseType");
+				if(refuseType == '1')
+				{
+					//未接收投标时就拒绝
+					byId("subject").innerText = '拒绝原因';
+					byId('reject').classList.remove('mui-hidden');
+					bidStatus = "3";
+				}
+				else if(refuseType == '2')
+				{
+					//接收投标但未看中拒绝
+					byId("subject").innerText = '未看中原因';
+					byId('close').classList.remove('mui-hidden');
+					bidStatus = "4";
+				}
+			}
+
+//			function submitRefuse()
+//	        {
+//					console.log("提交");
+//					// alert('举报需求');
+//
+//					ajax_modify_bid_status({
+//						bidid:bidId,
+//						oprtype:bidStatus,
+//						refusereason: refuseReason
+//					});
+//	        }
+//
+//
+//	   
+//
+//	        
+//	        function submitRefuseSuccess(data)
+//	        {
+//	        	mui.toast("提交成功！");
+//	        	console.log("config  " + JSON.stringify(data));
+//
+//	        	mui.back();
+//	        }
+//
+//	        function submitRefuseFailed()
+//	        {
+//	        	toastMSG = '网络异常，信息提交失败，请重试！';
+//			    mui.toast(toastMSG);
+//			    $("#submit_refuse").removeAttr("disabled");
+//			    return;
+//	        }
+
+			function rejectBid()
+			{
+				//
+				var statusStr = getBidStatusStr(bidStatus);
+				refuseReason = byId("detail").value;
+				ajax_modify_bid_status(
+					{
+						bidid:bidInfo.bidId,
+						oprtype:bidStatus,
+						refusereason: refuseReason
+					}
+				);
+				$("#submit_refuse").attr("disabled","disabled");
+				
+				//发送投标模板消息，后续应该改为投标成功后再发送模板消息
+				if(bidStatus == '3')
+				{
+					var msg = '您的投标被拒绝';
+					sendMsgToUserByWxTpl(msg,bidInfo.housePublishUserId,bidInfo.housePublishNickName,bidInfo.houseId);
+					//发送IM系统消息
+					var now = new Date();
+	                var content = '您的投标被拒绝，所投需求的主题是'+bidInfo.subject+'需求发布人：'+bidInfo.housePublishNickName+'，请您查收。';		
+	                content += '时间：'+ now.toLocaleString();
+	                sendSystemMsgToWildog(bidInfo.housePublishUserId,bidInfo.housePublishNickName,content,back);
+				}
+				
+			}
+			
+			function modifyBidStatusSuccess(data)
+			{
+				if(data.rscode == 0)
+				{
+					
+					console.log('modifyBidStatusSuccess rscode = 0');
+					mui.toast('提交成功');
+					if(bidStatus == '4')
+					{
+						//未看中 不发送 模板消息 直接返回
+						mui.back();
+					}
+				}
+				else
+				{
+					//按钮变可用
+					commitFlag = true;
+				}
+			}
+			
+			function modifyBidStatusFailed()
+			{
+				//按钮变可用
+				commitFlag = true;
+			}
+			
+			function sendMsgToUserByWxTpl(msg,housePublishUserId,housePublishNickName,houseId) {
+				//想发送模板消息
+				console.log('sendMsgToUserByWxTpl');
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				if(!loginUser)
+				{
+					console.log('user info not exist');
+					return;
+				}
+				
+				var content = msg;
+			
+				var toUserid = housePublishUserId;
+				var fromUserid = loginUser.id;//chail
+				var templateId = 2;//投标模板消息
+				var toNickname = housePublishNickName;
+				var fromNickname = loginUser.nickname;
+				var url = 'http://www.zmzfang.com/?r=door/scope&view=Mine/MyHouseDetail&houseId='+houseId;
+				var col = [];
+				
+				ajax_send_template_message({
+					toUserid:toUserid,
+					toNickname:toNickname,
+					fromUserid:fromUserid,
+					fromNickname:fromNickname,
+					templateId:templateId,
+					content:content,
+					col:col,
+					url:url
+					
+				});
+			}
+		
+			function sendTplMsgSuccess(data){
+				if(data.rscode==0){
+					//mui.toast("提交成功");
+					//mui.back();
+					console.log('发送模板消息成功');
+				}else{
+					//mui.toast("提交失败，请重试！");
+					console.log('发送模板消息失败');
+				}
+			}
+			
+			function back()
+			{
+				console.log('back');
+				//return 0;
+				mui.back();
+			}
+		</script>
+	</body>
+
+</html>

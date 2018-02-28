@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			.mui-table-view-cell{
+				list-style: none;
+			}
+			.mui-content{
+				padding-top:50px;
+			}
+			.house-brief .bid-flag
+			{
+				float:right;
+			}
+			.house-brief #matchRate
+			{
+				float:right;
+			}
+			
+			.house-not-match
+			{
+				opacity: 0.8;
+				background-color:#D4E0D6;
+			}
+			.house-bided
+			{
+				opacity: 0.8;
+				background-color:#D4E0D6;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">投标管理</h1>
+			
+		</header>
+		
+		<footer id="bidFooter" class="mui-bar mui-bar-footer" style="background-color: #4cd964;">
+        	<h1 class="mui-title" id='bid'>投标</h1>
+        	<!--
+        	<h1 class="mui-title" id='sendMsg'>发消息</h1>
+             -->        	
+        </footer>
+	
+		<div class="mui-content">
+			<div id="requirementDiv">
+			</div>		
+			
+			
+			
+			<div id="houselist">
+				<ul id="houseUl" class="mui-table-view">	
+					<li class="mui-table-view-cell mui-media" >
+						<div style="position: relative;">
+							<center> <h4>我的房源</h4> </center>
+							<h5 style="margin-top: 0px;margin-bottom: 0px;position: absolute;top: 5px;right: 5px;">
+								<a id="publishHouse2">发布房源</a>
+							</h5>
+					    </div>
+					</li>
+					
+					<li id="promptDivLi" class="mui-table-view-cell mui-media mui-hidden">
+						<div id="promptDiv" class="prompt-div" style="text-align: center; margin-top: 1px;">
+							<span style="color: gray; font-size: 0.9em;">您还没有匹配的房源，请点击发布</span>
+							<br />
+							<button id="publishHouse" type="button" class="mui-btn " style="margin-top: 5px; padding: 5px 20px;background-color: #4cd964;color: #fff;">发布房源</button>
+						</div>
+					</li>
+					
+			    </ul>
+			
+			</div>	
+			
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/house.js?v=0.01"></script>
+	    <script src="../js/bid.js"></script>
+	    <script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			
+			var requirementId;
+			var userid;
+			var requirementPublishUserid;
+			var houseids = new Array();
+			var cnt = 0;
+			var subject;
+			mui.init({
+				swipeBack: false
+			});
+			
+
+			
+	        mui.ready(function() {
+				initRequiementInfo();
+				initHouseInfo();
+				//初始化微信分享
+				wxShare();
+				//初始化房源个数显示
+				initLimitInfo();
+			});
+			
+	        //增加房源列表中tap事件
+			mui('#houseUl').on('tap', '.mui-table-view-cell', function() {
+				var className = this.className;
+				console.log('className:'+className);
+				if(className.indexOf("house-bided") > 0 )
+				{
+				    mui.toast('该房源已投');
+				    return;
+				}
+				if(className.indexOf("house-not-match") > 0 )
+				{
+				    mui.toast('房源匹配度小于51%，无法投标');
+				    return;
+				}
+				
+				
+			});
+			
+			
+		    //增加投标 tap事件
+			document.querySelector('#bid').addEventListener('tap', function() {
+				console.log('bid click');
+				
+				//判断需求是否接收经纪人投标
+				var requirement = JSON.parse(localStorage.getItem('zmzfangOthersRequiement'));
+				var acceptAgentFlag = requirement.acceptagentflag;
+				//判断登陆用户是否是经纪人
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				var agentFlag = loginUser.agentflag;
+				
+				if('0' == acceptAgentFlag && '1' == agentFlag)
+				{
+					//不接收经纪人投标
+					mui.toast('该需求不接收经纪人投标');
+					return;
+					
+				}
+				
+				//用户未登陆，则提示用户登录
+				//判断当日投标次数是否超过限制
+				if(!checkBidLimit())
+				{
+					return;
+				}
+				//
+				
+				bid();
+				/*
+				mui.openWindow({
+					url: '../index.html',
+					id: '../index.html'
+				});
+				*/
+			}, false);
+			
+			  //增加发布房源tap事件
+			document.querySelector('#publishHouse2').addEventListener('tap', function() {
+				console.log('publishHouse2 click');
+				//增加判断
+				var userLimit=localStorage.getItem("zmzfangUserLimit");
+				if(!userLimit){
+					mui.toast("网络不畅，请稍后重试！");
+					return;
+				}
+				userLimit=JSON.parse(userLimit);
+				if(userLimit.max_supplyment <= userLimit.user_supply_count){
+					mui.toast("您已达到最大发布房源量，暂不能再发布房源");
+					return;
+				}
+				
+				//发布房源
+				var dstUrl="../Publish/HousePublish1.html?backRequirementId="+requirementId;
+				dstUrl += "&userid="+requirementPublishUserid;
+				mui.openWindow({
+					url: dstUrl
+				});
+			});
+			
+			function initRequiementInfo()
+			{
+				var str = localStorage.getItem('zmzfangOthersRequiement');
+				var data = JSON.parse(str);
+				
+				requirementId = data.id;
+				var strUser = localStorage.getItem('requirementPublishUserInfo');
+				var publishUser = JSON.parse(strUser);
+				
+				requirementPublishUserid = data.publishuserid;
+				
+				var updatetime = data.updatetime;
+				var timearray=updatetime.split(" ");
+				var newupdatetime=timearray[0];
+				
+				subject = '求购'+data.subject + data.housetype + '室';
+				
+		
+				var content = '<li class="mui-table-view-cell mui-media">';
+				content += '<div id="requirementBrief" class="requirement-brief" publishuser-id="'+data.publishuserid+'" requirement-id="'+data.id+'">';
+				content += '<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;float:left;margin-right:10px;">';
+				content += '<img style="width:42px; height:42px; " src="'+publishUser.picture+'" alt="个人头像" />';
+				content += '</div>';
+				content += '<div class="mui-media-body" style="padding-left: 10px;">';
+				content += '<div style="float: left;">';
+				content += '<h4 class="mui-ellipsis requirement-user-nickname" style="margin-left: 0px;overflow: visible;">'+publishUser.nickname+'</h4>';
+				content += '<h5 class="requirement-subject" style="margin-left: 0px;">'+subject+'</h5>';
+				content += '<h5><span>价格：'+data.budget+'万</span> <span>佣金：'+data.agentfee+'元</span> </h5>';
+				content += '</div>';
+				content += '<div>';
+				content += '<h5 class="publish-date" style="float:right;font-size:12px">'+newupdatetime+'</h5>';
+				content += '</div>';
+				content += '</div>';
+				content += '</div>';
+				content += '</li>';
+				
+				byId("requirementDiv").innerHTML = content;
+			}
+			
+			function initHouseInfo()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				userid = user.id;
+				
+				var str = localStorage.getItem('zmzfangMatchHouseList');
+				var matchHouses = JSON.parse(str);
+				if(matchHouses)
+				{
+					getMatchHouseListSuccess(matchHouses);
+					initPromptInfo();
+				}
+				else
+				{
+					//获取匹配该需求的房源id
+					ajax_get_houselist_match_requirement(
+						{
+							requirementid:requirementId,
+							supplyuserid:userid
+						}
+					);
+				}
+				
+			}
+			
+			
+			function bid()
+			{
+				//获取选中的houseid
+				$(".bid-flag").each(function()
+				{
+				   console.log('house-id:'+$(this).attr('house-id'));
+				   
+				   if($(this).is(':checked') && $(this).is(':enabled'))
+				   {
+				   	   console.log('check:'+$(this).attr('house-id'));
+				   	
+				       houseids[cnt] = {houseid:$(this).attr('house-id')};
+				       cnt++;
+				   }
+				});
+				
+				console.log('houseids:'+houseids);
+				if(houseids.length < 1)
+				{
+					var toastMSG = '请您至少选择一个房源！';
+				    mui.toast(toastMSG);
+				    return ;	
+				}
+				
+				//获取匹配该需求的房源id
+				ajax_bid(
+					{
+						requirementid: requirementId,
+						biduserid: userid,
+						
+						houseids: houseids
+					}
+				);
+				
+			}
+			
+			function initPromptInfo()
+			{
+				var houseCnt = $(".bid-flag").length;
+				console.log("house cnt matched :"+houseCnt);
+				if(houseCnt == 0)
+				{
+					
+					$('#promptDivLi').removeClass('mui-hidden');
+					$('#bidFooter').addClass('mui-hidden');
+					
+					//增加投标 tap事件
+					document.querySelector('#publishHouse').addEventListener('tap', function() {
+						console.log('publishHouse click');
+						
+						//发布房源
+						var dstUrl="../Publish/HousePublish1.html?backRequirementId="+requirementId;
+						dstUrl += "&userid="+requirementPublishUserid;
+						mui.openWindow({
+							url: dstUrl
+						});
+					},false);
+				
+				}
+			}
+			
+			
+			//获取匹配房源成功处理函数
+		function getMatchHouseListSuccess(data)
+		{
+			console.log("MyBidMgr house getMatchHouseListSuccess：data"+JSON.stringify(data));
+			localStorage.setItem('zmzfangMatchHouseList',JSON.stringify(data));
+			var houseUl=document.getElementById('houseUl');
+			var firstFrag = document.createDocumentFragment();
+			
+			if(!data || !data.house)
+			{
+				initPromptInfo();
+				return;
+			}
+				
+			for(var i in data.house)
+			{
+				var houseid=data.house[i].houseid;
+				console.log('\n houseid:'+houseid);
+
+				//内部控制显示，已经投过的，选中，调整背景颜色，不能再点击；---li 加class 控制背景颜色
+				//匹配分数小于50的，调整背景颜色，不能在点击；---- li 加class 控制背景颜色
+				firstFrag.appendChild(fillMatchHouseListLi(data.house[i]));
+			}
+			
+			//houseUl.innerHTML = "";
+			houseUl.appendChild(firstFrag);
+			initPromptInfo();
+		}
+		
+		//投标成功
+		function bidSuccess(data)
+		{
+			console.log('bidSuccess data'+JSON.stringify(data));
+			//alert(JSON.stringify(data));
+			//判断是否投标成功，投标成功则发送模板消息
+			updateBidLimitInfo();
+			sendMsgToUserByWxTpl();
+			sendMsgToUserByWildog();
+			
+		}
+		
+		function sendMsgToUserByWxTpl() {
+			//想发送模板消息
+			console.log('sendMsgToUserByWxTpl');
+			var requirementPublishUser = JSON.parse(localStorage.getItem('requirementPublishUserInfo'));
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			if(!loginUser || !requirementPublishUser)
+			{
+				console.log('user info not exist');
+				return;
+			}
+			
+			var content = '您收到一个投标';
+		
+			var toUserid = requirementPublishUser.id;
+			var fromUserid = loginUser.id;//chail
+			var templateId = 2;//投标模板消息
+			var toNickname = requirementPublishUser.nickname;
+			var fromNickname = loginUser.nickname;
+			var url = 'http://www.zmzfang.com/?r=door/scope&view=Mine/MyRequirementDetail&requirementId='+requirementId;
+			var col = [];
+			
+			ajax_send_template_message({
+				toUserid:toUserid,
+				toNickname:toNickname,
+				fromUserid:fromUserid,
+				fromNickname:fromNickname,
+				templateId:templateId,
+				content:content,
+				col:col,
+				url:url
+				
+			});
+		}
+		
+		function sendTplMsgSuccess(data){
+			if(data.rscode==0){
+				//mui.toast("提交成功");
+				//mui.back();
+				console.log('发送模板消息成功');
+			}else{
+				//mui.toast("提交失败，请重试！");
+				console.log('发送模板消息失败');
+			}
+		}
+		
+		function sendMsgToUserByWildog()
+		{
+			console.log('sendMsgToUserByWildog');
+			var requirementPublishUser = JSON.parse(localStorage.getItem('requirementPublishUserInfo'));
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			if(!loginUser || !requirementPublishUser)
+			{
+				console.log('user info not exist');
+				return;
+			}
+			
+			var toUserid = requirementPublishUser.id;
+			var toNickname = requirementPublishUser.nickname;
+			var fromNickname = loginUser.nickname;
+			var now = new Date();
+			var content = '您'+subject+'的需求收到'+fromNickname+'的投标，请您查收。';
+			content += '投标时间是：'+ now.toLocaleString();
+			sendSystemMsgToWildog(toUserid,toNickname,content,back);
+			
+			
+		}
+		
+		function back()
+		{
+			mui.toast('投标成功');
+			mui.back();
+		}
+		
+		function initLimitInfo()
+		{
+			var limitInfo = localStorage.getItem("zmzfangUserLimit");
+			if(limitInfo)
+			{
+				return;	
+			}
+			
+			ajax_get_user_limit({
+				userid:userid
+			});
+		}
+		function getUserLimitSuccess(data){
+			console.log("UserLimit="+JSON.stringify(data));
+			localStorage.setItem("zmzfangUserLimit",JSON.stringify(data));
+		}
+		
+		</script>
+	</body>
+
+</html>

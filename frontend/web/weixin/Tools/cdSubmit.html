@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+    	<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+	<style type="text/css">
+		.mui-radio{font-size:.9rem;}
+    	.mui-radio label{margin-left: 8px}
+    	.mui-input-group .mui-input-row{color:#333;}
+    	pre{white-space: inherit;}
+    	ul li{
+    		    font-size: .9rem;
+    			margin: 0 0 8px 3px;
+    	}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">产调申请</h1>
+			
+		</header>
+		<div class="mui-content">
+				<ul class="row" style="padding:10px">
+				    <li class="col-xs-12">
+				    	<p><span style="color:#999;">区域名：</span><span id="area"></span></p>
+				    </li>
+				    <li class="col-xs-12">
+				    	<p><span style="color:#999;">产证地址：</span><span id="address"></span></p>
+				    </li>
+				    <li class="col-xs-12">
+				    	<p><span style="color:#999;">手机号码：</span><span id="mobile"></span></p>
+				    </li>
+				    <li class="col-xs-12">
+				    	<p><span style="color:#999;">产调费用：</span><span>45.00 元</span></p>
+				    </li>
+				    <li class="col-xs-12">
+				    	<p><span style="color:#999;">产调状态：</span><span id="status"></span></p>
+				    </li>
+				</ul>
+				<button type="button" id="submit" class="mui-btn mui-btn-success mui-btn-block"  onclick="return check();">确定付款</button>
+				<div id="help">
+				<div style="padding: 8px;border-bottom: 1px solid #ddd;width: 90%;margin: 0 auto;">使用说明</div>
+				<ul style="list-style: none;padding: 8px;width: 90%;margin: 0 auto;">
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989317&idx=1&sn=c0c7b60f41545ca96c181050e6c23559&scene=1&srcid=0902yeN3zlLXrhxDGr4oAZFS#wechat_redirect">接单时间安排</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989332&idx=1&sn=482f4451d5c4bd60b39cc38618525649&scene=1&srcid=0902jVwsOaJ35gOO5hXTqYoT#wechat_redirect">产调单怎么看</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989325&idx=1&sn=3ecaf006340cd21af90ddc6d61e5d9d7&scene=1&srcid=0902TIOn2PmV9KZ1F8AMuOKd#wechat_redirect">产调单的用途</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989321&idx=1&sn=981b77b19cf86d87a513db5bfe8a47aa&scene=1&srcid=09021ZDv4THRexD3varVZsh9#wechat_redirect">退款说明</a></li>
+					<li><a href="https://m.huoban.com/share/app/14179f1826318473f3eb816b01683a8d/form/create_item">所要发票</a></li>
+					<li><a href="https://m.huoban.com/share/app/1d35a092fc4f454302c8f5c4a54d4e66/form/create_item">原件到付</a></li>
+ 				</ul>
+			</div>			
+		</div>
+		
+
+    <script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script type="text/javascript">
+		
+		var jsApiParameters,openid,orderid,mobile,area,address;
+		$(function(){
+			
+			
+			loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+			orderid = sessionStorage.getItem("orderid");
+			if(loginUser)
+			{
+
+				openid = loginUser.openid;
+				$("#mobile").val(loginUser.phone);
+				$("#displayAfterLoginDiv").removeClass('mui-hidden');
+				
+			}else{
+				if(mui.os.wechat){
+					window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=Tools/cd';
+				}
+				$("#needLoginDiv").removeClass('mui-hidden');
+			}
+			initwepay();
+			initorder();
+		});
+		function initwepay(){
+			$.ajax({
+				type:"POST",
+				// url:"http://www.zmzfang.com/?r=wechat/wepay",
+				url:getInterfaceUrl()+"?r=wechat/wepay",
+				dataType:"json",
+				data:{
+						openid:openid,
+						orderid:orderid
+				},
+				success: function(data){
+				 	// console.log(data);
+				 	if(data.code == 0){
+				 		mui.toast("初始化微信支付失败！请稍后重试！");
+				 	}else{
+				 		jsApiParameters = data
+				 	}
+
+				},
+				error: function(jqXHR){
+					mui.toast("初始化微信支付发生错误"+ jqXHR.status);
+				}
+			});
+		}
+		function initorder(){
+			$.get("http://www.zmzfang.com/?r=tools/getorder", {orderid:orderid} ,
+				function(data){
+					if(data == null){
+						mui.toast("初始化订单失败！请稍后重试！");
+					}else{
+						console.log(data);
+						data = JSON.parse(data);
+						console.log(data.area);
+						area = data.area;
+						address = data.address;
+						$("#area").text(data.area);
+						$("#address").text(data.address);
+						$("#mobile").text(data.mobile);
+						var $status;
+						switch(data.status){
+							case '0':
+							$status = '待付款';
+							break;
+							case '1':
+							$status = '审核中';
+							break;
+							case '-1':
+							$status = data.reason;
+							break;
+						}
+						$("#status").text($status);
+						// switch($(this).val()){
+						// 	case '':
+						// 		$("#hint").text('');
+						// 	break;
+						// 	case '宝山区':
+						// 		$("#hint").text(str+'1个工作日');
+						// 	break;
+						// 	case '虹口区':
+						// 		$("#hint").text(str+'工作日10点30以后延续至下个工作日,周末统一安排在下周一');
+						// 	break;
+						// 	case '浦东新区':
+						// 		$("#hint").text(str+'19点至21点出单');
+						// 	break;
+						// 	default:
+						// 		$("#hint").text(str+'1-2小时');
+						// 	break;
+						// }
+					}
+				}
+			);
+		}
+			
+		//调用微信JS api 支付
+		function jsApiCall()
+		{
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				 {
+		           "appId" : jsApiParameters.appId,
+		           "timeStamp":jsApiParameters.timeStamp.tostring(),
+		           "nonceStr" : jsApiParameters.nonceStr,    
+		           "package" : jsApiParameters.package,     
+		           "signType" : jsApiParameters.signType,
+		           "paySign" : jsApiParameters.paySign
+		       	},
+				function(res){
+					// WeixinJSBridge.log(res.err_msg);
+					if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+						mui.alert( '您的订单已生效，请耐心等待审核！', '芝麻找房提醒', '确定', function(){
+							 			window.close();
+							 		})
+					}else{
+						mui.toast("生成订单失败！请联系管理员！");
+					}
+					// alert(res.err_code+res.err_desc+res.err_msg);
+				}
+			);
+		}
+		function check(){
+			mui.confirm( "亲，请仔细检查您的地址是否与产证地址一致，模糊地址会导致查询失败，差错订单将收取15元人工服务费。", area+address, ['已知晓','返回检查'], function(e) {
+					if (e.index == 0) {
+						callpay();
+					} else {
+						return false;
+					}});
+		}
+		function callpay()
+		{
+			if (typeof WeixinJSBridge == "undefined"){
+			    if( document.addEventListener ){
+			        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+			    }else if (document.attachEvent){
+			        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+			        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+			    }
+			}else{
+			    jsApiCall();
+			}
+		}
+	</script>
+</body>
+</html>

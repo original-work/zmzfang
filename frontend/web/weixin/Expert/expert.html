@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+				top:0px;
+				bottom: 50px
+			}
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.expertisenDiv
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			
+		    #subject{
+		    	margin-top: 10px;
+		    	margin-bottom: 10px;
+		    	text-align: center;
+		    	position: relative;
+		    }
+		    nav.header-nav{
+		    	padding: .6rem .75rem;
+		    }
+		    nav.header-nav a{
+		    	border: 1px solid #f85f48;
+		    	padding: .25rem 0;
+		    	width: 4rem;
+		    	display: inline-block;
+		    	color:#f85f48;
+		    	background: #fff;
+		    	border-radius:0 .3rem .3rem 0;
+		    }
+		    nav.header-nav a:first-child{
+		    	border-radius:.3rem 0 0 .3rem;
+		    	border-right: none;
+		    }
+			.unselect{
+				background-color:gainsboro;
+			}
+			.select{
+				background-color: greenyellow;
+			}
+			
+			#label:after { 
+				content:""; 
+				display: block; 
+				clear: both; 
+			} 
+			#prompt{
+				font-size:16px;
+			}
+			.badge{
+    			font-size: .5rem;
+    			border: 1px solid #f85f48;
+    			color: #f85f48;
+				padding: 1px 2px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="expertDiv" class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div id="mui-scroll">
+				<div id="slider" class="mui-slider">
+				  <div class="mui-slider-group">
+				  	<!-- <div id="ad1" class="mui-slider-item" style="height: 150px;background-image: url('http://www.zmzfang.com/weixin/img/bak.jpg');background-size: cover;">
+				    </div> -->
+				    <div id="ad2" class="mui-slider-item"  style="height: 150px;background-image: url('http://www.zmzfang.com/weixin/img/zhuanjia1.jpg');background-size: cover;">
+				    </div>
+				    
+				  </div>
+				</div>
+					
+				    <div id="subject">
+				    	<nav class="header-nav"><a href="http://www.zmzfang.com/weixin/Expert/List/QuestionAnserList.html">问题</a><a href="http://www.zmzfang.com/weixin/Expert/List/ExpertList.html">专家</a></nav>
+				    	<a style="color:#f85f48" href="http://www.zmzfang.com/weixin/Expert/User/search.html?type=1"><span id="search" class="mui-icon mui-icon-search" style="position: absolute;right: 20px;top:10px;"></span></a>
+				    </div>
+				    
+				    <div>
+				    	 <div class="mui-text-center" style="clear: both;margin-top: 10px;position: relative;">
+				    		<h5 id="prompt">热门问题</h5>
+				    	</div>
+				
+				    	<div id="hotQuestionDiv">
+							<!--数据列表-->
+							<ul id="hotQuestionUl" class="mui-table-view">
+							</ul>
+							
+							</div>
+						</div>
+				    </div>
+				    
+				     <div>
+				    	 <div class="mui-text-center" style="clear: both;margin-top: 10px;position: relative;">
+				    		<h5 id="prompt">推荐专家</h5>
+				    	</div>
+				
+				    	<div id="hotExpertDiv">
+								<!--数据列表-->
+							<ul id="hotExpertUl" class="mui-table-view">
+							</ul>
+							<div style="height: 50px;">
+						</div>
+				    </div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+        <script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/promotion.js"></script>
+		
+		<script src="../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../js/wxShare.js?v=0.01"></script>
+		<script src="../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../js/Expert/expert.js?v=0.01"></script>
+		
+	</body>
+</html>

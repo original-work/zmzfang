@@ -1,0 +1,581 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, no-store, must-revalidate"> 
+		<META HTTP-EQUIV="Expires" CONTENT="0">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<script type="text/javascript" src="../js/head.js"></script>
+    	<title>芝麻找房</title>
+    	<style>
+    		.msg-item {
+			    padding: 8px;
+			}
+    		.msg-item .mui-item-clear {
+				clear: both;
+			}
+			
+			.msg-item .msg-user {
+				width: 38px;
+				height: 38px;
+				border: solid 1px #d3d3d3;
+				display: inline-block;
+				background: #fff;
+				border-radius: 3px;
+				vertical-align: top;
+				text-align: center;
+				float: left;
+				padding: 3px;
+				color: #ddd;
+			}
+			/*
+			.msg-item .msg-user-img {
+				width: 38px;
+				height: 38px;
+				display: inline-block;
+				border-radius: 3px;
+				vertical-align: top;
+				text-align: center;
+				float: left;
+				color: #ddd;
+			}
+			*/
+			.msg-item .msg-content {
+				display: inline-block;
+				border-radius: 5px;
+				border: solid 1px #d3d3d3;
+				background-color: #FFFFFF;
+				color: #333;
+				padding: 8px;
+				vertical-align: top;
+				font-size: 15px;
+				position: relative;
+				margin: 0px 8px;
+				max-width: 75%;
+				min-width: 35px;
+				float: left;
+			}
+			
+			.msg-item .msg-content .msg-content-inner {
+				overflow-x: hidden;
+			}
+			
+			.msg-item .msg-content .msg-content-arrow {
+				position: absolute;
+				border: solid 1px #d3d3d3;
+				border-right: none;
+				border-top: none;
+				background-color: #FFFFFF;
+				width: 10px;
+				height: 10px;
+				left: -5px;
+				top: 12px;
+				-webkit-transform: rotateZ(45deg);
+				transform: rotateZ(45deg);
+			}
+			
+			.msg-item-self .msg-user,
+			.msg-item-self .msg-content {
+				float: right;
+			}
+			
+			.msg-item-self .msg-content .msg-content-arrow {
+				left: auto;
+				right: -5px;
+				-webkit-transform: rotateZ(225deg);
+				transform: rotateZ(225deg);
+			}
+			
+			.msg-item-self .msg-content,
+			.msg-item-self .msg-content .msg-content-arrow {
+				background-color: #4CD964;
+				color: #fff;
+				border-color: #2AC845;
+			}
+			footer {
+			    position: fixed;
+			    width: 100%;
+			    border-top: solid 1px #bbb;
+			    left: 0px;
+			    bottom: 0px;
+			    overflow: hidden;
+			    padding: 0px 50px;
+			    background-color: #fafafa;
+			}
+			.footer-left {
+			    position: absolute;
+			    left: 14px;
+			    bottom: 15px;
+			    text-align: center;
+			    vertical-align: middle;
+			}
+			.footer-right {
+			    position: absolute;
+			    right: 8px;
+    			bottom: 14px;
+			    text-align: center;
+			    vertical-align: middle;
+			}
+			pre {
+			    overflow-y: auto;
+			    overflow-x: hidden;
+			    outline: none;
+			    background: #fff;
+			    border: solid 1px #ddd;
+			    padding: 10px;
+			    font-size: 16px;
+			    line-height: 16px;
+			    font-family: verdana;
+			    overflow: hidden;
+			    border-radius: 5px;
+			    white-space: pre-wrap;
+				word-break: normal;
+				max-height: 54px;
+				margin:10px 0;
+				-webkit-user-select:text
+			}
+			
+			.mui-bar-nav~.mui-content{
+				padding-bottom:75px;
+			}
+			.time {
+			    display: block;
+			    margin: 0 auto;
+			    margin-bottom: 8px;
+			    font-size: .5rem;
+			    color: #fff;
+			    text-align: center;
+			    background: rgba(0,0,0,.15);
+			    border-radius: 5px;
+			    width: 85px;
+			}
+			#file{display:none;position: absolute;clip: rect(1px 1px 1px 1px);}
+
+			/*lightBox*/
+			#LightBoxWrap{
+				position: fixed;
+				z-index: 1000;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				-webkit-transition-duration: 400ms;
+				transition-duration: 400ms;
+				background: rgba(0,0,0,.4);
+				display:none;
+				width: 100%;
+				height: 100%;
+			}
+			#LightBox{
+				/*display: none;*/
+				position:relative;
+				width: 100%;
+				text-align: center;
+			}
+			#LightBox img{
+				background: #fff;
+				max-height:auto;
+				max-width: 80%;
+				padding:3px;
+				border:1px solid #ccc;
+			}
+			#closeLightBox {
+				position:absolute;
+				top:-40px;
+				right:-40px;
+				padding: 40px;
+				background: rgba(0,0,0,.3);
+				border-radius: 50%
+			}
+			#closeLightBox:after {
+				content: 'X';
+				position: absolute;
+				top:45px;
+				right:50px;
+				color:#fff;
+			}
+			.orgImg{width: 100%}
+    	</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="subject" class="mui-title"></h1>
+			<a class="mui-icon mui-icon-person mui-pull-right info"></a>
+		</header>
+		<div class="mui-content">
+			<div id="taskDiv" class="mui-hidden" style="width: 100%;height: 82px;right:0px;top: 44px;background-image: url('../img/recruit.jpg');background-size: cover;">
+			</div>
+			<div id='msg-list'>
+			</div>
+			
+		</div>
+		<footer>
+			<div id="picUpload" class="footer-left">
+				<label for="file" style="color: #999" class="mui-icon mui-icon-image">
+					<input id="file" type="file" accept="image/*" />
+				</label>
+				
+			</div>
+			<pre contenteditable="plaintext-only" id='msg-text' type="text"></pre>
+			<div id="submit" class="footer-right">
+				发送
+			</div>
+		</footer>
+		<div id="LightBoxWrap"><div id="LightBox"></div><div id="closeLightBox"></div></div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="../js/common.js?v=0.04"></script>
+		<script src="../js/commonAjax.js?v=0.04"></script>
+		<script src="../js/PicUpload/dist/lrz.bundle.js"></script>
+		<script type="text/javascript" src="../js/pinchzoom.js"></script>
+		<script type="text/javascript">
+			// 初始化变量
+			var config = {
+			  syncURL: "https://sickeeer.wilddogio.com"
+			};
+			new RTP.PinchZoom($('#LightBox'), {'use2d':false});
+			wilddog.initializeApp(config);
+			var ref = wilddog.sync().ref();
+			var user =  getQueryStrFromUrl("id");
+			var userName;
+			var userpic;
+			userInfo();
+
+			var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+			if(loginUser){
+				var me =loginUser.id;
+				var mepic = loginUser.picture;
+				var meName = loginUser.nickname;
+			}else{
+				mui.toast('您尚未登陆，5S后自动尝试登陆');
+				setTimeout(window.location.href='http://www.zmzfang.com/?r=door/scope&view=Message/im-list',5000);
+			}
+			// hasMission(); 暂时隐藏 替换如下 招聘广告
+			if(loginUser.agentflag == 1){
+				$('#taskDiv').removeClass('mui-hidden');
+				mui('.mui-content').on('tap', '#taskDiv', function() {
+					window.location.href="../Recruit/index.html";
+				});
+			}
+			// end
+			var templated =false;
+			var node;
+			var unlook;
+			var userChild = "list/"+user+"/"+me;
+			var meChild = "list/"+me+"/"+user;
+			if(me == user){
+				mui.toast('系统错误');
+			}
+			if(me < user){
+				node = me+'/'+user;
+			}else{
+				node = user +'/' +me;
+			}
+			// 自身列表未读数置零 初始化读取一次
+			ref.child(meChild).once('value', function(snapshot,error) {
+				if (error == null) {
+					if(snapshot.exists()){
+						ref.child(meChild).update({
+							'unlook':0
+						})
+					}
+				}
+			})
+			//提交信息
+			$('#submit').on('tap',function(){
+				if($('#msg-text').text().trim()){
+					sendMsg( $('#msg-text').text())
+				}
+			});
+			// 推送到内容节点
+			function sendMsg(content,type){
+				type = type?type:'text'
+				who = me
+				ref.child("message/"+node+"/"+getNowFormatDate()).set({
+					'content': content,
+					'type':type,
+					'user':who
+				})
+				.then(function(){
+					console.info('set data success.')
+					$('#msg-text').text('');
+					if(type == 'image'){
+						pushList('[图片]',type);
+					}else{
+						pushList(content,type);
+					}
+					
+				})
+				.catch(function(err){
+					console.info('set data failed', err.code, err);
+				});
+			}
+			// 推送到列表节点
+			function pushList(content,type){
+				// 判断对方存在几个节点
+				ref.child(userChild).once('value', function(snapshot) 
+				{
+					if(snapshot.exists()){
+						unlook = snapshot.val().unlook;
+					}else{
+						unlook = 0;
+					}
+					
+				}).then(function(newRef){
+					type = type?type:'text'
+					who = me
+					//推送自己消息列表
+					ref.child(meChild).set({
+						'time': getNowFormatDate(),
+						'type':type,
+						'content':content,
+						'unlook':0
+					})
+					.then(function(newRef){
+						console.info('push me list success.')
+					})
+					.catch(function(err){
+						console.info('push me list failed', err.code, err);
+					});
+					//推送对方消息列表
+					ref.child(userChild).set({
+						'time': getNowFormatDate(),
+						'type':type,
+						'content':content,
+						'unlook':unlook+1
+					})
+					.then(function(newRef){
+						console.info('push user list success.')
+					})
+					.catch(function(err){
+						console.info('push user list failed', err.code, err);
+					});
+					sendMsgToWx(content);
+				})
+				.catch(function(err){
+					console.info('get user unlook failed , cannot push list', err.code, err);
+				});
+			}
+			//抓取用户数据
+			function userInfo(){
+				$.ajax({
+					'url':'http://www.zmzfang.com/index.php?r=user/user-info',
+					data:JSON.stringify({'user':user}),
+					// contentType: "application/json; charset=utf-8",
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					success:function(data){
+						userName = data.nickname;
+						userpic = data.picture;
+						$('#subject').text(userName);
+						//用户资料跳转
+						$('.info').on('tap',function(){
+							switch(parseInt(data.userType)){
+								case 1:
+								window.location='../Agent/AgentInfo.html?userid='+user;
+								break;
+								case 2:
+								window.location='../Expert/List/ExpertDetail.html?expertId='+user;
+								break;
+								default:
+								window.location='../Mine/User.html?userid='+user;
+							}
+							
+						})
+						// 监听聊天内容
+						ref.child('message/'+node).orderByKey().limitToLast(30).on('child_added', function(snapshot) {
+							var item = snapshot.val();
+							var orgtime = snapshot.key();
+							var t = orgtime.substr(4, 2) + orgtime.substr(6, 2) + orgtime.substr(8,2)+ orgtime.substr(10,2);
+							var list = '';
+							var who = (item.user==me)?' msg-item-self':''
+							var time = orgtime.substr(4, 2) + '-' + orgtime.substr(6, 2) + ' ' + orgtime.substr(8,2)+ ':'+orgtime.substr(10,2);
+							var headpic = (item.user==me)?mepic:userpic;
+							var content;
+							if(item.type == 'text'){
+								content = item.content;
+							}else{
+								content = '<img class="orgImg" src="http://www.zmzfang.com/weixin/img/Im/'+item.content+'" />';
+							}
+							list += '<div class="msg-item'+who+'">';
+							if($('#t'+t).length>0){
+							}else{
+								list		+= '<span class="time" id="t'+t+'">'+time+'</span>'	
+							}
+							list		+= '<img class="msg-user" src="'+headpic+'" alt="">'
+							 			+'<div class="msg-content">'
+											+'<div class="msg-content-inner">'
+													+content
+											+'</div>'
+											+'<div class="msg-content-arrow"></div>'
+										+'</div>'
+										+'<div class="mui-item-clear"></div>'
+									+'</div>';
+							$('#msg-list').append(list);
+							window.scrollTo(0,document.body.scrollHeight);
+							if(item.type == 'image'){
+								$('.orgImg').on('tap',function(){
+									var img = $(this).attr('src');
+									$('#LightBox').html('<img src="'+img+'" />');
+									$('#LightBoxWrap').css({'display':'table'});
+									// $('#LightBox').css('-webkit-transform','scale3d(1,1,1) translate3d(0px,0px,0px)');
+								})
+								$('#closeLightBox').on('tap',function(){
+									$('#LightBoxWrap').css({'display':'none'});
+								})
+							}
+						});
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						//mui.toast('对不起，头像抓取失败了！')
+					}
+				});
+			}
+			
+			//红包任务
+			function hasMission()
+			{
+				if(loginUser && 1 == loginUser.agentflag)
+				{
+					var dstUrl = getAgentExtraUrl;
+					var options = new Object();
+					options.userid = loginUser.id;
+					ajax_to_server(dstUrl,options,getAgentExtraInfoSuc,getAgentExtraInfoFailed);
+				}
+			
+			}
+			//红包任务 - 抓取经纪人资料完成度
+			function getAgentExtraInfoSuc(data)
+			{
+				console.log("getAgentExtraInfoSuc data:"+JSON.stringify(data));
+				if(data && data.length != 0)
+				{
+					if(data.datacompleterate < 80)
+					{
+						// 增加需求列表中tap事件
+						$('#taskDiv').removeClass('mui-hidden');
+						mui('.mui-content').on('tap', '#taskDiv', function() {
+							var dstUrl = "../Mission/list.html";
+							mui.openWindow({
+								url: dstUrl
+							});
+						});
+					}
+				}
+			}
+			//抓取经纪人资料完成度失败
+			function getAgentExtraInfoFailed(data)
+			{
+				console.log("getAgentExtraInfoFailed data:"+JSON.stringify(data));
+			}
+			//发送模板消息
+			function sendMsgToWx(content)
+			{
+				if(templated){
+					return;
+				}
+				if(!loginUser)
+				{
+					return;
+				}
+				var message = content;
+				var toUserid = user;
+				var fromUserid = me;
+				var templateId = 1;
+				var toNickname = userName;
+				var fromNickname = meName;
+				var col = [];
+				var sendTplMsgUrl = "http://www.zmzfang.com/?r=wechat/send-template-message";
+				var options = {
+						'toUserid':toUserid,
+						'toNickname':toNickname,
+						'fromUserid':fromUserid,
+						'fromNickname':fromNickname,
+						'templateId':templateId,
+						'content':message,
+						'col':col
+				};
+				$.ajax({
+					url: sendTplMsgUrl,
+					data: JSON.stringify(options),
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						console.log('发送模板消息成功');
+						templated = true;
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log('发送模板消息失败');
+					}
+				});
+			}
+			// 发布图片
+			$('#file').on('change',function(){
+				lrz(this.files[0], {width: 800})
+				.then(function (rst) {
+					var img = new Image();
+					img.src = rst.base64;
+					img.onload = function () {
+						mui.confirm( '<img src="'+rst.base64+'" style="width:100%;max-height:300px;" />', '发送图片', ['发送','取消'],function(e){
+								if(e.index == 0){
+									// alert('start ajax');
+									$.ajax({
+										url: 'http://www.zmzfang.com/?r=user/impic-upload',
+										data: {base64:rst.base64},
+										type: 'POST',
+										dataType:"json",
+										success: function (data) {
+											if(data.status > 0){
+												picname = "http://www.zmzfang.com/weixin/img/headpic/"+data.picname;
+												mui.toast('图片上传成功');
+												// 回调调用 
+												sendMsg( data.picname,'image')
+											}else{
+												mui.toast('图片上传失败');
+											}
+											
+										},error:function (){
+											mui.toast('图片上传失败');
+										}
+									});
+									
+								}
+							} )
+					};
+				})
+				$('#file').val('');
+			})
+				
+			// 当前时间函数  bool false
+			// 一个月前时间  bool true （未用）
+			function getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var seperator2 = ":";
+				var monthorg = date.getMonth()
+				var month = PrefixInteger( monthorg + 1 , 2)
+				var year = date.getFullYear()
+				var strDate = PrefixInteger( date.getDate() , 2)
+				var hours = PrefixInteger(date.getHours(),2)
+				var minutes = PrefixInteger(date.getMinutes(),2)
+				var second = PrefixInteger(date.getSeconds(),2)
+				var currentdate =year + month + strDate
+						+ hours  + minutes
+						 + second;
+				return currentdate;
+			}
+			// 补零函数
+			function PrefixInteger(num, n) {
+				return (Array(n).join(0) + num).slice(-n);
+			}
+		</script>
+	</body>
+
+</html>

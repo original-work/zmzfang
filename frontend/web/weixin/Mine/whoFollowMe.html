@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01">
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.mui-table-view.mui-grid-view{
+				padding: 0;
+			}
+			.content {
+				display: none;
+			    position: absolute;
+			    background: #fff;
+			    top: 80px;
+			    right: 0;
+			    -webkit-transition: -webkit-transform .5s ease;
+			    transition: transform .5s ease;
+			    -webkit-transform: translate3d(0,-100%,0);
+			    transform: translate3d(0,-100%,0);
+			    opacity: 0;
+			    z-index: -1;
+			}
+			.content.active {
+				display:block;
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			    overflow-y: auto;
+			    max-height: 24.25rem;
+			}
+			.content ul{
+				padding: 0;
+				margin: 0;
+			}
+			.content li{
+				list-style: none;
+				padding:0px 15px;
+				margin:10px 0;
+			}
+			.mui-scroll-wrapper{
+				top: 50px;
+				bottom: 50px
+			}
+			.search{
+				position: relative;
+				z-index: 1000;
+				display: inline-table;
+				width: 100%;
+				background: #f7f7f7;
+			}
+			.search #keywords
+			{
+				margin-left:10px;
+				margin-top: 2px;
+				width:calc(100% - 60px);
+				display:table-cell;
+				border-top-left-radius:2em;
+				border-top-right-radius:2em;
+				border-bottom-right-radius:2em;
+				border-bottom-left-radius:2em;
+				margin-bottom: 2px;
+				height: 2.3em;
+				padding-bottom: 5px;
+				padding-top: 5px;
+				font-size:14px;
+			}
+			.search #search{
+				display: table-cell;
+			}
+			#popup {
+				position: absolute;
+			    left: 0;
+			    top: 44px;
+			    width: 100%;
+			    height: 100%;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translate3d(-100%,0,0);
+			    transform: translate3d(-100%,0,0);
+			    -webkit-transition: -webkit-transform .2s ease;
+			    transition: transform .2s ease;
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    opacity: 0;
+			    z-index: -1;
+			}
+			#popup.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 1000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">近期来访</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="followMe" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="popup">
+			<div id="district">
+			</div>
+		</div>
+
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/dom.create.js" charset="UTF-8"></script>
+
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../js/area.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/user.js?v=0.01"></script>
+		<script type="text/javascript" src="../js/wxShare.js"></script>
+		<script>
+			// var offset = parseInt(window.document.location.href.split('=')[1]);
+			var startSn = 0;
+			var oldSn = 0;
+
+			mui.init(
+			{
+				swipeBack: false,
+				gestureConfig:{
+						doubletap:true
+				},
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+
+			mui.ready(function() {
+				$('#mineLink').addClass('mui-active');
+				getFollowMe(startSn,"");
+			});
+
+
+			mui('#followMe').on('tap', '#follow-user', function() {
+				var userid = $(this).attr('user-id');
+				var agentflag = $(this).attr('agent-flag');
+				var dstUrl = 'http://www.zmzfang.com/weixin/Agent/AgentInfo.html?userid='+userid;
+				if(agentflag==0){
+					var dstUrl = 'http://www.zmzfang.com/weixin/Mine/User.html?userid='+userid;
+				}
+				
+				console.log('dstUrl is '+dstUrl);
+				mui.openWindow({
+					url: dstUrl,
+					id: 'AgentInfo.html'
+				});
+			});
+
+			mui('#followMe').on('tap', 'li', function() {
+				// var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]); 
+			});
+
+			function getFollowMe(start,flag,count)
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var loginUser = JSON.parse(data);
+				var options = new Object();
+				options.dstid = loginUser.id;
+				options.start = start;
+				options.flag = flag;
+				options.count = arguments[2]?arguments[2]:20;
+				ajax_who_have_seen_agent(options,getWhoHaveSeenAgentSuc,getWhoHaveSeenAgentFailed);
+			}
+
+			function getWhoHaveSeenAgentSuc(data,flag)
+			{
+				var followMeUl=$('#followMe');
+				if(!data){
+					if(flag == "up")
+					{	
+						return;
+					}
+					mui.toast('未能获取到更多数据');
+					return;
+				}
+				var firstFrag ='';
+				var count=0;
+				oldSn = startSn;
+				startSn =parseInt(startSn)+data.length;
+				console.log(startSn);
+				console.log('getWhoHaveSeenAgentSuc data:'+JSON.stringify(data));
+				console.log('getWhoHaveSeenAgentSuc flag:'+flag);
+
+				for(var i in data)
+				{
+					console.log('count is '+count++);
+					firstFrag += fillWhoHaveSeenAgentLi(data[i]);
+				}
+				// if(flag == "up")
+				// {
+					followMeUl.append(firstFrag);
+				// }else{
+					// followMeUl.html(firstFrag);
+				// }
+
+				// console.log("offset\n"+offset)
+				// if(offset){
+					// console.log('in scroll');
+					// mui('#pullrefresh').pullRefresh().scrollTo(0,offset,0);
+					// offset = null;
+				// }
+			}
+
+			function getWhoHaveSeenAgentFailed(data)
+			{
+				console.log('getWhoHaveSeenAgentFailed data:'+JSON.stringify(data));
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				getFollowMe(startSn,"up");
+				// console.log(startSn - oldSn);
+				if((startSn - oldSn) < 20){
+					this.endPullupToRefresh(true); 
+				}else{
+					this.endPullupToRefresh(false);
+				} 
+			}
+
+		</script>
+	</body>
+
+</html>

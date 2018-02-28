@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<style type="text/css">
+			html{background:#f72526 url('./bg2.jpg') no-repeat;background-size:cover; }
+			body{background: none;}
+			.mui-popup p{text-align: left;}
+			.col-xs-3{padding:0;}
+			h5{border-bottom:2px solid #efefef;padding-bottom: 8px}
+			.mui-content{padding:10px;background: none;}
+			#first li ,#second li {list-style: none;text-align: center;}
+			#first li img,#second li img{width: 40px;height:40px;border-radius: 50%}
+			#invite{padding: 4px 8px;background: /*#fd7d4c*/#2282b9;color: #fff;font-size: .8rem;border-radius: 10px;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">邀请任务</h1>
+			<a id='topic' class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">任务说明</a>
+		</header>
+		<div class="mui-content">
+			<div id="main" style="width: 120px;height:120px;margin:30px auto 10px;"></div>
+			<div style="margin-bottom: 30px;text-align: center;">
+				<p style="margin-bottom: 5px">已领取<span class="total"> - </span>元，排名第<span class="sort"> - </span>位 ， <a href="./inviteSort.html">查看天梯</a></p>
+				<p><a id='invite'>生成我的任务</a></p>
+			</div>
+			<div class="card">
+				<h5>1度好友</h5>
+				<div id="first">
+					<div class="row">
+					</div>
+				</div>
+			</div>
+			<div class="card">
+			<h5>2度好友</h5>
+				<div id="second">
+					<div class="row">
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<script src="../../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/auth.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/3.5.4/echarts.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/resource/echarts-liquidfill-1.0.4/dist/echarts-liquidfill.js"></script>
+	<script type="text/javascript" src="../../js/wxShare.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		$('.mui-content').Auth({'wechat':false});
+		var loginUser = userInfo
+		if(loginUser.agentflag != 1 && loginUser.mobile){
+			mui.alert('很抱歉您已注册个人用户，不能参与经纪人活动!');
+			setTimeout(function(){
+				window.location.href='../../HomePage/index.html';
+			},3000)
+		}
+		$('#invite').on('tap',function(){
+			window.location.href='./inviteIndex.html?pid='+loginUser.id
+		})
+		$('#topic').on('tap',function(){
+			mui.alert('<p>活动内容:</p><p>1、转发此活动至朋友圈、微信群、好友等社交圈，好友通过你的转发链接注册后，既有红包可领，人数越多金额越多，上无封顶哦！</p><p>2、好友注册后再次分享活动，同样可以领取二次奖励！</p><p>每日可分享，红包领不停 每月排名前三更有神秘大礼等着你</p><p>活动奖励：</p><p>每日新增新用户数*1元，累加不封顶</p><p>申请提现，请先关注公众号：芝麻找房</p>')
+		})
+		var chart = echarts.init(document.getElementById('main'));
+		var a = '0'
+		var options = {}		
+		chart.showLoading();
+		options.userid = loginUser.id;
+		jQuery.ajax('http://www.zmzfang.com/?r=mission/get-reward', {
+				data: JSON.stringify(options),
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					if(data.rescode == 0){
+						if(parseInt(data.oReward) != 0){
+							a = data.oReward*1 + data.tReward*0.2
+						}
+						InitEchars()
+					}else{
+						mui.toast('账户获取失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+		jQuery.ajax('http://www.zmzfang.com/?r=mission/sort', {
+				data: JSON.stringify(options),
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					if(data.rescode == 0){
+						$('.sort') .text(data.sort);
+						$('.total') .text(data.total);
+					}else{
+						mui.toast('排名获取失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+		jQuery.ajax('http://www.zmzfang.com/?r=mission/get-reward-agent', {
+				data: JSON.stringify(options),
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					if(data.rescode == 0){
+						if(data.oReward.length > 0){
+							var res =''
+							for (i in data.oReward){
+							res+= '<div class="col-xs-3">'
+								+'<li class="mui-table-view-cell" data-userid="'+data.oReward[i].userid+'">'
+									+'<img src="'+data.oReward[i].picture+'" />'
+									// +'<p>'+data.oReward[i].nickname +'</p>'
+									// +'<p>'+data.oReward[i].organization+'</p>'
+								+'</li>'
+							+'</div>'
+							}
+							// console.log(res);
+							if(res){
+								$('#first .row').append(res)
+							}
+							
+							if(data.tReward.length > 0){
+							var res =''
+							for (i in data.tReward){
+							res+= '<div class="col-xs-3">'
+								+'<li class="mui-table-view-cell" data-userid="'+data.tReward[i].userid+'">'
+									+'<img src="'+data.tReward[i].picture+'" />'
+									// +'<p>'+data.tReward[i].nickname +'</p>'
+									// +'<p>'+data.tReward[i].organization+'</p>'
+								+'</li>'
+							+'</div>'
+							}
+							console.log(res);
+							if(res){
+								$('#second .row').append(res)
+							}
+							
+							$('.col-xs-3 li').on('tap',function(){
+								window.location.href="../AgentInfo.html?userId="+$(this).attr('data-userid');
+							})
+						}
+						}else{
+							$('#first .row').append('<p style="text-align:center">暂无好友</p>')
+							$('#second .row').append('<p style="text-align:center">暂无好友</p>')
+						}
+					}else{
+						mui.toast('获取邀请用户资料失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+		function InitEchars(){
+			chart.hideLoading();
+			var b = a/20
+			var option = {
+				series: [{
+					type: 'liquidFill',
+					data: [b],
+					amplitude: 5,
+					waveAnimation: 1,
+					outline: {
+						show: false
+					},
+					label: {
+						normal: {
+							formatter: a+'元',
+							textStyle: {
+								fontSize: 28
+							}
+						}
+					},
+					radius: '100%'
+				}],
+				
+			};
+			chart.setOption(option);
+			$('#main').on('tap', function() {
+				if(a == 0){
+					mui.alert('很抱歉，您当前没有额度可以领取，继续努力吧！')
+					return;
+				}
+				jQuery.ajax('http://www.zmzfang.com/?r=mission/reward', {
+					data: JSON.stringify(options),
+					dataType: 'json',
+					type: 'post',
+					timeout: 3000,
+					async: false,
+					success: function(data) {
+						if(data.rescode == 0){
+							chart.setOption({series: [{data: [0],label: {normal: {formatter: '0元'}}}]});
+							mui.alert('领取成功，已存入账户中')
+						}else{
+							mui.alert('领取失败，请稍后再试')
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui('当前网络不通畅，请稍后再试！')
+					}
+				});
+			})
+		}
+		
+	</script>
+</body>
+</html>

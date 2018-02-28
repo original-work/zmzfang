@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+				top:50px;
+				bottom: 50px
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.expertisenDiv
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			
+			#keywords
+			{
+				border-top-left-radius:2em;
+				border-top-right-radius:2em;
+				border-bottom-right-radius:2em;
+				border-bottom-left-radius:2em;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">
+				<input type="text" id="keywords" placeholder="搜索感兴趣的专家和问题"  onkeydown="enterPress()">
+			</h1>
+			<button id="searchBtn" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">搜索</button>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div id="mui-scroll">
+					<div id="noDataDiv" class="mui-text-left mui-hidden" style="padding-left:15px;margin-top: 20px;">
+						<h5 id="noDataPrompt">没有找到匹配的专家或问题，换个关键词试试</h5>
+					</div>
+					<div id="matchExpertDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;position: relative;margin-left: 15px;">
+				    		<h5 id="prompt">搜索的专家</h5>
+				    	</div>
+				
+				    	<div>
+								<!--数据列表-->
+							<ul id="matchExpertUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreExpertDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreExpert" style="">搜索更多专家</h5>
+				    	</div>
+				    </div>
+						    
+				    <div id="matchQuestionDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;margin-left: 15px;position: relative;">
+				    		<h5 id="prompt">搜索的问题</h5>
+				    	</div>
+				
+				    	<div>
+							<!--数据列表-->
+							<ul id="matchQuestionUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreQuestionDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreQuestion" style="">搜索更多问题</h5>
+				    	</div>
+				    </div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/User/search.js?v=0.01"></script>
+		
+	</body>
+</html>

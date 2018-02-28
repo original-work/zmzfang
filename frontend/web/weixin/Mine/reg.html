@@ -1,0 +1,857 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+        
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<style type="text/css">
+		/*picupload start*/
+			/*picupload base*/
+			.pick-button{width: 64px;height: 64px;background-image:  url(../img/iconfont-tianjia.png);position:relative;display:inline-block;background-size:64px 64px;}
+			.pick-button label{position:absolute;width:64px;height:64px;color:#fff;font-size:2rem;}
+			#file{position: absolute;clip: rect(1px 1px 1px 1px);}
+			.imgpath{display:inline-block;margin-right:10px;position: relative;}
+			.imgpath span{
+				display: block;
+	    		background-color: transparent;
+	    		height:20px;
+	    		position:absolute;
+	    		bottom:0px;
+	    		font-size:.5rem ;
+	    		width: 100%;
+	    		text-align: center;
+	    		color:#fff;
+	    	}
+	    	/*picupload 进度条*/
+	    	.imgpath.active span{
+	    		animation:   reverse progress-bar-stripes 0.80s linear infinite;
+	    		-webkit-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		-o-animation: reverse progress-bar-stripes 0.80s linear infinite;
+	    		background-image: linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -webkit-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-image: -o-linear-gradient(
+					45deg,
+					rgba(255,255,255,.55) 25%,
+					transparent 25%,
+					transparent 50%,
+					rgba(255,255,255,.55) 50%,
+					rgba(255,255,255,.55) 75%,
+					transparent 75%,
+					transparent
+				);
+				background-size: 20px 20px;
+			    -webkit-background-size: 20px 20px;
+	    	}
+	    	@-webkit-keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+			@keyframes progress-bar-stripes{
+				  from{background-position:40px 0}to{background-position:0 0}
+			}
+		/*picupload end*/
+	
+			/*input style*/
+			.mui-radio input[type=radio]:before{
+				font-size:.9rem;
+			}
+			.mui-radio.mui-left input[type=radio]{
+				left:0;top:7px;
+			}
+			#personDiv span,#agentDiv span{
+				margin-left: 20px;color:#666;
+			}
+			#agentDiv{
+				margin-left:10px;
+			}
+			.mui-input-row label{
+				font-size: .9rem;text-align:justify;
+			}
+			.mui-input-row .mui-btn{
+				width:20%;
+				padding:9px 15px;
+				margin-top:2px;
+			}
+			.mui-h5, h5{
+				margin-top:10px;
+				margin-bottom:10px;
+			}
+			.submit-btn{margin:0;}
+						#bq .bqlist{
+				width:33.3%;
+				display: inline-block;
+
+			}
+			/*新标签样式*/
+			#bq .bqlist{
+				width:33.3%;
+				display: inline-block;
+
+			}
+			body,.mui-content{background-color:#f2f2f2;}
+			#bq label{
+				margin: 0 auto;
+				position: relative;
+				width: 65px;
+				height: 65px;
+				display: block;
+				background-size: 65px 65px;
+			}
+			input[type=checkbox]{
+				clip: rect(1px 1px 1px 1px);
+				position: absolute;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">绑定微信-芝麻找房</h1>
+		</header>
+		<div class="mui-content" style="width: 80%;max-width:400px;margin:20px auto;">
+		<h5>基本信息</h5>
+		<form class="mui-input-group">
+			<div class="mui-input-row">
+		        <label>我的身份</label>
+				<div id="personDiv" class="mui-input-row mui-radio mui-left " style="display:inline-block;line-height:40px;">
+					<span>个人</span>
+					<input id="person" name="radio1" type="radio" checked="checked">
+				</div>
+
+				<div id="agentDiv" class="mui-input-row mui-radio mui-left " style="display:inline-block;line-height:40px">
+					<span>经纪人</span>
+					<input id="agent" name="radio1" type="radio" >
+				</div>
+			</div>
+		    <div class="mui-input-row">
+		        <label>手机号码</label>
+		        <input id="phone" type="number" class="mui-input-clear inputBox" />
+		    </div>
+		    <div class="mui-input-row">
+		        <label>验证码</label>
+		        <input id="smsCodeInput" type="number" class="inputBox" name="smsBox" style="width:45%;float:left" />
+				<button type="button" class="mui-btn" id="smsButton" >发送</button>
+		    </div>
+		    <div class="mui-input-row">
+		        <label id="name">昵称</label>
+		        <input id="nickname" type="text" class="mui-input-clear inputBox" />
+				<input id="realName" type="text" class="mui-input-clear inputBox mui-hidden" />
+		    </div>
+		</form>
+		<div>
+		<h5 id="cityInfo">所属城市</h5>
+			<div id="cityDiv">
+				<button id='showCityPicker' class="mui-btn mui-btn-block" type='button' style="margin-bottom: 10px;padding:10px 5px;">业务城市</button>
+			</div>
+			
+			<div id="regionDiv" class="mui-hidden">	
+				<button id='showRegionPicker' class="mui-btn mui-btn-block" type='button' style="padding:10px 5px;">活动区域（可多选）</button>
+				<div id='regionResult' class="" style="clear:both;"></div>
+			</div>
+			
+			<div id="selectDiv" class="mui-hidden">
+			<h5>标签</h5>
+				<div id="bq">
+					<div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="1" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="2" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="3" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="4" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="5" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="6" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="7" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="8" /></label>
+					</div><div class="bqlist">
+						<label><input type="checkbox" name="checkbox1" value="9" /></label>
+					</div>
+				</div>
+			</div>
+			<h5>头像</h5>
+			<div class="progress">
+				<div class="pick-button"> 
+					<input id="file" type="file" accept="image/*" />
+					<label for="file"></label>
+				</div>
+			</div>
+				
+			<h5>点击修改头像</h5>
+			<h5>手机号不对外显示，无电话骚扰</h5>
+		</div>
+		<div id="regButton" class="submit-btn btn-green">提交</div>
+		</div>
+
+
+			<!--<div align="left" style="padding-left: 10%;">
+				<input id="password" type="password" class="inputBox"  placeholder="请设置6-20位密码" style="width: 80%;" />
+			</div>
+			<div align="left" style="padding-left: 10%;">
+				<input id="passwordConfirm" type="password" class="inputBox"  placeholder="请确认6-20位密码" style="width: 80%;" />
+			</div>-->
+			
+			<!-- <div id="identityCardInfo" class="mui-hidden" style="padding-left: 10%;">
+				<input type="text" class="inputBox" name="identityCard" id="identityCard" placeholder="身份证号" style="width: 80%;" />
+			</div>
+			 -->
+			
+
+		</div>
+		<script src="../js/mui.min.js "></script>
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/city.data.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/Expert/common/expertData.js?v=0.01"></script>
+
+
+		<script src="../js/PicUpload/dist/lrz.bundle.js"></script>
+		<!--<script src="../js/wxShare.js"></script>-->
+		
+		<script type="text/javascript ">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var loginUserInfo;
+			var selectAreaFlag = 0;
+			var resultValueArray = new Array();
+			var resultTextArray = new Array();
+			var isSendingSms = false;
+			var accountBox;
+			var smsCounting = 30;
+			var nickName;
+			var headPic;
+			var secseq;
+			var passwordBox;
+			var smsBox ;
+			var regButton;
+			var city = "上海市";//经纪所在业务城市 默认上海市
+			var cityPicker = new mui.PopPicker({
+					layer: 1
+				});
+			var cityPicker3 = new mui.PopPicker({
+					layer: 3
+				});
+			var pic;
+			var picname;
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				loginUserInfo = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				var url = 'http://www.zmzfang.com/weixin/Mine/reg.html';
+				initWxInfo();
+				//处理个人和经纪人
+				checkPerson();
+				//初始化微信分享
+//				wxShare();
+				//初始化城市与活动区域
+				initCityControl();
+				initAreaControl();
+				$('#bq label').each(function(index){
+					$(this).css('background-image','url(\'../img/bq/'+(index+1)+'.jpg\')');
+				})
+			});
+			
+			
+			
+		
+			//
+			(function($, doc) {
+				regButton = doc.getElementById('regButton');
+				accountBox = doc.getElementById('phone');
+				passwordBox = doc.getElementById('password');
+				//nickName = byId("nickname");
+				nickName = byId("nickname");
+				headPic = byId("headPic");
+				var passwordConfirmBox = doc.getElementById('passwordConfirm');
+				smsBox = doc.getElementById('smsCodeInput');
+				regButton.addEventListener('tap', function(event) {
+					if (accountBox.value.length != 11) {
+						toastMSG = '手机号码不正确';
+						mui.toast(toastMSG);
+						return;
+					}
+//					if (passwordBox.value.length < 6) {
+//						toastMSG = '密码长度不能小于6位';
+//						mui.toast(toastMSG);
+//						return;
+//					}
+					if (smsBox.value.length < 4) {
+						toastMSG = '验证码不正确';
+						mui.toast(toastMSG);
+						return;
+					}
+//					var passwordConfirm = passwordConfirmBox.value;
+//					if (passwordConfirm != passwordBox.value) {
+//						mui.toast('密码两次输入不一致');
+//						return;
+//					}
+//					if(getByteLen(nickName.value.trim()) < 1)
+//					{
+//						toastMSG = '昵称不能为空';
+//						mui.toast(toastMSG);
+//						return;
+//					}
+					
+					//alert('headPic:'+headPic.src);
+					var verifyInfo={
+						phonenumber:accountBox.value,
+						secseq:secseq,
+						vcode:byId("smsCodeInput").value
+					}
+					ajax_verify_verification_code(verifyInfo);
+					//commitReg();
+				});
+
+			}(mui, document));
+			
+			var smsSend = byId("smsButton");
+			//发送验证码
+			smsSend.addEventListener('tap', function() {
+				if (isSendingSms == true) {
+					//mui.toast("isSendingSms==true");
+				} else {
+					//var mobileNumber = 13636548541;
+					console.log("account="+accountBox.value);
+					if (accountBox.value.length != 11) {
+						mui.toast("手机号码不正确");
+					} else {
+						ajax_get_verification_code({
+							phone: accountBox.value
+						});
+						//JSON发送验证码
+						//使submitButton有效
+						isSubmitAvailable = true;
+						//						byId().style.backgroundColor = "darkorange";
+						//使smsButton无效
+						isSendingSms = true;
+						smsSend.style.backgroundColor = "gainsboro";
+						smsSend.innerHTML = smsCounting;
+						counting(smsSend);
+					}
+				}
+			});
+			$('input[type="checkbox"]').on('change',function(){
+				var index = $(this).parent().parent('.bqlist').index() + 1;
+				if($(this).is(':checked')){
+					if($('input[name="checkbox1"]:checked').length >4){
+						$(this).prop('checked',false);
+						mui.toast('标签最多只能选中4个');
+					}else{
+						$(this).parent('label').css('background-image','url(\'../img/bq/'+index+'_a.jpg\')');
+					}
+				}else{
+					$(this).parent('label').css('background-image','url(\'../img/bq/'+index+'.jpg\')');
+				}
+			})
+
+			function counting(smsButton) {
+				//倒计时
+				setTimeout(function() {
+					smsCounting--;
+					if (smsCounting > 0) {
+						smsButton.innerHTML = smsCounting;
+						setTimeout("counting(smsButton)", 1000);
+					} else {
+						//smsButton.style.backgroundColor = "darkorange";//#4cd964
+						smsButton.style.backgroundColor = "#4cd964";
+						smsButton.style.color = "#fff";
+						smsButton.innerHTML = "发送验证码";
+						isSendingSms = false;
+						smsCounting = 30;
+					}
+				}, 1000);
+			}
+			
+			function getVerificationCodeSuccess(data) {
+				console.log(JSON.stringify(data));
+				secseq=data.secseq;
+			}
+
+			function getVerificationCodeFailed(data) {
+				console.log(JSON.stringify(data));
+			}
+			function verifyverificationCodeSuccess(data) {
+				console.log('verifyverificationCodeSuccess:'+JSON.stringify(data));
+				if(data && data.rscode == "0")
+				{
+					uploadPic();
+				}
+				else
+				{
+					console.log(JSON.stringify(data));
+					toastMSG = '验证码不正确';
+					mui.toast(toastMSG);
+				}
+				
+			}
+
+			function verifyverificationCodeFailed(data,options){
+				console.log(JSON.stringify(data));
+				toastMSG = '验证码不正确';
+				mui.toast(toastMSG);
+			}
+			
+			
+			//增加注册按钮事件
+			/**
+			document.querySelector('#regButton').addEventListener('tap', function() {
+				console.log('regButton click');
+			    commitReg();
+			})
+			*/
+			
+			function initWxInfo()
+			{
+				//从缓存中获取 微信相关消息
+				if(!loginUserInfo){
+					window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=Mine/reg';
+				}
+				if(loginUserInfo.phone){
+					mui.toast('您已绑定，将为您转到首页');
+					setTimeout(function(){window.location.href = 'http://www.zmzfang.com/weixin/HomePage/index.html';},3000)
+					
+				}
+				var nickname = loginUserInfo.nickname;
+				var headimgurl = loginUserInfo.picture;
+				//console.log('headimgurl:'+headimgurl);
+				//byId("nickname").value = nickname;
+
+
+				// byId("headPic").src = headimgurl;
+
+				// headimgurl = 'http://wx.qlogo.cn/mmopen/ZY1YkMICXycTIB03Sksp9faB7oEAA117eyRK9fH6gaAR9Xl4u5OaPlpTKRZxTk4libaDtmudQ9MuPiboVcoicNjBDmelNrqvlhh/0'   
+
+				// headimgurl = 'http://wx.qlogo.cn/mmopen/BXUKHbNicxjKYm5g9st9WiacaKic0ewexL6wm5zyZZ4UHoVFRqC1DXJlibhzwS6jwL0hLnruCiaiaqrQsQskRiakqibweAibC8F561QuB/0';
+				$('.pick-button label').html('<div class="imgpath"><img src="../js/PicUpload/loading.gif" width="64" height="64" /><span></span></div>');
+				lrz(headimgurl, {width: 128}).then(function (rst) {
+					var img = new Image();
+					img.src = rst.base64;
+					
+					img.onload = function () {
+						$('.imgpath img').attr('src',rst.base64)
+					};
+					pic = rst.base64
+				})
+			}
+			
+			function commitReg()
+			{
+				var userid = loginUserInfo.id;
+				var nickname = byId("nickname").value;
+				// console.log('nickname:'+nickname);
+				
+				var phone = byId("phone").value;
+				// console.log('phone:'+phone);
+				
+				var picture = picname;
+				// console.log('picture:'+picture);
+				
+//				var password = byId("password").value;
+//				console.log('password:'+password);
+//				
+//				var confirmpasswd = byId("passwordConfirm").value;
+//				console.log('confirmpasswd:'+confirmpasswd);
+				
+//				if(password != confirmpasswd)
+//				{
+//					toastMSG = '两次密码不一样，请重新输入！';
+//					mui.toast(toastMSG);
+//					return;
+//				}
+				
+				var email = loginUserInfo.email;//先不填
+				var sex = loginUserInfo.sex;
+				
+				var realname = loginUserInfo.realname;//先不填
+				var agentflag = '0';//
+				var identitycard = loginUserInfo.identitycard;//先不填
+				var activeregion = '';
+				
+				if($("#agent").is(':checked'))
+				{
+				 	agentflag = '1';	
+				 	// identitycard = byId("identityCard").value;
+				 	// if(!isCardNo(identitycard.trim()))
+				 	// {
+				 	// 	mui.toast('请输入合法的身份证号');
+				 	// 	return ;
+				 	// }
+				 	realname = byId('realName').value;
+				 	nickname = byId('realName').value;
+				 	if(getByteLen(realname.trim()) < 2)
+				 	{
+				 		mui.toast('请输入真实姓名');
+				 		return ;
+				 	}
+				 	if(hasNumber(realname))
+				 	{
+				 		mui.toast('姓名中不能包含数字');
+				 		return ;
+				 	}
+				 	if(hasSpecialChar(realname))
+				 	{
+				 		mui.toast('含有特殊字符，姓名只能由汉字或字母组成');
+				 		return ;
+				 	}
+				 	
+				 	if(selectAreaFlag == 0)
+					{
+						mui.toast('请您选择活动区域');
+						return false;
+					}
+					var chk_value = [];
+					$('input[name="checkbox1"]:checked').each(function(index){
+						chk_value.push($('input[name="checkbox1"]:checked')[index].value); 
+					}); 
+					if(chk_value.length == 0){
+						mui.toast('请至少选择一个标签')
+						return;
+					}
+					if(chk_value.length > 4){
+						mui.toast('最多只能选取四个标签')
+						return;
+					}
+					activeregion = resultValueArray.join();
+					console.log('applyInfo.activeregion :' + activeregion);
+	
+				}
+				else
+				{
+					nickname = byId('nickname').value;
+					// console.log('******************');
+				 	if(getByteLen(nickname.trim()) < 2)
+				 	{
+				 		mui.toast('请输入昵称');
+				 		return ;
+				 	}
+				 	
+				 	if(hasNumber(nickname))
+				 	{
+				 		mui.toast('含有数字，昵称只能由汉字或字母组成');
+				 		return ;
+				 	}
+				 	
+				 	if(hasSpecialChar(nickname))
+				 	{
+				 		mui.toast('含有特殊字符，昵称只能由汉字或字母组成');
+				 		return ;
+				 	}
+				}
+				
+				var tags = loginUserInfo.tags;//默认为空
+				
+				// console.log(chk_value);
+				ajax_modify_user_info({
+					userid: userid,
+					nickname: nickname,
+					phone: phone,
+					picture: picture,
+					email: email,
+					sex: sex,
+					city: city,
+					select:chk_value,
+					realname: realname,
+					identitycard: '',
+					agentflag: agentflag,
+					activeregion:activeregion
+				});
+				
+			}
+			
+			
+//			function registerWeixinSuccess(data)
+//			{
+//			    //注册成功，跳转到首页	
+//			    if(data.rscode == 0)
+//			    {
+//			    	console.log('data.userid'+data.userid);
+//			    	localStorage.setItem('zmzfangLoginUserId',data.userid);
+//			    	
+//			    	mui.openWindow({
+//					url: '../index.html',
+//					id: 'index.html'
+//				});
+//			    }
+//			}
+
+			function modifyUserInfoSuccess(data)
+			{
+				
+				//上传图片文件
+				if(data.rscode == 0)
+				{
+					//更新用户信息
+					getUserByid();
+				}
+				else
+				{
+					mui.toast('绑定用户手机号码失败:'+data.error);
+				}
+				
+			}
+			
+			function getUserByid(){
+				var userid = loginUserInfo.id;
+				ajax_get_user_info({
+					userid: userid
+				});
+			}
+            
+		    function getUserInfoSuccess(data)
+		    {
+		    	//根据openid 获取用户信息成功
+		    	console.log(JSON.stringify(data));
+		    	localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+		    	var url = localStorage.getItem('zmzfangRegAfterJumpUrl');
+		    	var jumpUrl = url;
+		    	if(!url || url == '')
+		    	{
+		    		jumpUrl = '../HomePage/index.html';
+		    	}
+		    	//如果是经纪人则跳转到经纪人个人详情修改页
+		    	if($("#agent").is(':checked'))
+		    	{
+		    		jumpUrl = "../Agent/Mine/MyAgentSettingModify.html";
+		    	}
+		    	
+		    	//mui.toast('跳转至原页面');
+				mui.openWindow({
+					url: jumpUrl
+				});
+		    }
+    
+			function checkPerson()
+			{
+				var personRadio = byId('personDiv');
+				var agentRadio = byId('agentDiv');
+				personRadio.addEventListener('tap', function() {
+			        console.log("personRadio click");
+			        // $('#identityCardInfo').addClass('mui-hidden');
+			        $('#realName').addClass('mui-hidden');
+			        $('#nickname').removeClass('mui-hidden');
+			        $('#regionDiv').addClass('mui-hidden');
+			        $('#selectDiv').addClass('mui-hidden');
+			         $("#name").text("昵称")
+			         $("#cityInfo").text("所属城市")
+			        $("#person").attr("checked","checked");	
+				});
+				
+				agentRadio.addEventListener('tap', function() {
+			        console.log("agentRadio click");
+			        // $('#identityCardInfo').removeClass('mui-hidden');
+			        $('#realName').removeClass('mui-hidden');
+			        $('#nickname').addClass('mui-hidden');
+			        $('#regionDiv').removeClass('mui-hidden');
+			        $('#selectDiv').removeClass('mui-hidden');
+			        
+			        $("#agent").attr("checked","checked");
+			        $("#name").text("真实姓名")
+			        $("#cityInfo").text("业务城市")
+				});
+			}
+			
+			function initCityControl()
+			{
+				//级联示例
+				cityPicker.setData(openedCityData);
+				var showCityPickerButton = document.getElementById('showCityPicker');
+				showCityPickerButton.innerText = city;
+				showCityPickerButton.addEventListener('tap', function(event) {
+					
+					cityPicker.show(function(items) {
+						
+						console.log("你选择的城市是:" + items[0].text);
+						showCityPickerButton.innerText = items[0].text;
+						
+						if(items[0].text == city)
+						{
+							//alert('城市没有变');
+						}
+						else
+						{
+							//alert('城市改变');
+							//初始化活动区域
+							city = items[0].text;
+							if($("#agent").attr('checked')==undefined)
+							{
+								//alert('agent not checked');
+							}
+							else
+							{
+								regionResult.innerHTML = '';
+								resultValueArray = [];
+								resultTextArray = [];
+								initAreaControl();
+							}
+						}
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				}, false);
+				
+			}
+			
+			
+			function initAreaControl()
+			{
+				//-----------------------------------------
+				//					//级联示例
+				var regionData = new Array();
+				regionData.push(getAreaDataByCityName(city));
+				//cityPicker3.setData(areaData3);
+				cityPicker3.setData(regionData);
+				
+				var showCityPickerButton = document.getElementById('showRegionPicker');
+				var cityResult3 = document.getElementById('regionResult');
+				
+				showCityPickerButton.addEventListener('tap', function(event) {
+					if(resultValueArray.length>0){
+						console.log(resultValueArray[0].slice(0,2));
+						switch(resultValueArray[0].slice(0,2)){
+							case '11':
+								//cityPicker3.setData([areaData3[0]]);
+								break;
+							case '12':
+								// cityPicker3.setData([areaData3[1]]);
+								break;
+							case '13':
+								cityPicker3.setData(regionData);
+								break;
+						}
+					}
+					cityPicker3.show(function(items) {
+						if(resultValueArray.length >2){
+							mui.toast('您最多可选3个区域，请删除后再操作！');
+							return;
+						}
+						
+						for (i in resultValueArray){
+							if(items[2].value == resultValueArray[i]){
+								mui.toast('该区域已存在！');
+								return;
+							}
+							if(items[2].value.slice(0,2) !=resultValueArray[i].slice(0,2)){
+								mui.toast('非法的选取选项');
+								return;
+							}
+
+						}
+						
+						resultValueArray.push(items[2].value);
+						resultTextArray.push(items[1].text+items[2].text);
+						console.log(resultValueArray);
+
+						cityResult3.innerHTML = "你选择的区域是:";
+						
+						for (i in resultTextArray){
+							cityResult3.innerHTML += '<span data="'+resultValueArray[i]+'" class="item mui-badge mui-badge-success">' +resultTextArray[i] + ' x</span>';
+						}
+						$('.item').on('tap', function() {
+							$(this).remove();
+							for(var i =0;i<resultValueArray.length;i++){  
+		            			if(resultValueArray[i]==$(this).attr('data')){
+		           	        		resultValueArray.splice(i,1);
+		           	        		resultTextArray.splice(i,1);
+		        	    		}
+     						}
+     						if(!resultValueArray.length){
+     							cityResult3.innerHTML ='';
+     							cityPicker3.setData(regionData);
+     							selectAreaFlag = 0;
+     						}
+						});
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					    
+					    selectAreaFlag = 1;//add by chail on 20160714
+					     
+					});
+				}, false);
+			}
+			$('#file').on('change',function(){
+				$('.pick-button label').html('<div class="imgpath"><img src="../js/PicUpload/loading.gif" width="64" height="64" /><span></span></div>');
+				lrz(this.files[0], {width: 128})
+				.then(function (rst) {
+					var img = new Image();
+					img.src = rst.base64;
+					img.onload = function () {
+						$('.imgpath img').attr('src',rst.base64)
+					};
+					
+					pic = rst.base64
+				})
+			
+			})
+			function uploadPic() {
+				$.ajax({
+					url: 'http://www.zmzfang.com/?r=user/headpic-upload',
+					data: {base64:pic},
+					type: 'POST',
+					dataType:"json",
+					beforeSend: function(){
+						$('.imgpath').children('span').addClass('active');
+						$('.imgpath').children('span').css('background-color','#007aff;');
+						$('.imgpath').children('span').text('上传中');
+					},
+					success: function (data) {
+						if(data.status > 0){
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#073');
+							$('.imgpath').children('span').text('上传成功');
+							mui.toast('头像已上传');
+							picname = "http://www.zmzfang.com/weixin/img/headpic/"+data.picname;
+							commitReg();
+						}else{
+							// $('.imgpath').removeClass('active');
+							$('.imgpath').children('span').css('background-color','#c00');
+							$('.imgpath').children('span').text('上传失败');
+							mui.toast('头像上传失败了！');
+						}
+						
+					},error:function (){
+						$('.imgpath').removeClass('active');
+						$('.imgpath').children('span').css('background-color','#c00');
+						$('.imgpath').children('span').text('上传失败');
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

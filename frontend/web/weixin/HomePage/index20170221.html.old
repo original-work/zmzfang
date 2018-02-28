@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01">
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			/*.mui-content {
+				padding:88px 0 50px!important;
+			}*/
+			/*
+			test
+			*/
+			.mui-table-view.mui-grid-view{
+				padding: 0;
+			}
+
+			.content {
+				display: none;
+			    position: absolute;
+			    background: #fff;
+			    top: 80px;
+			    right: 0;
+			    -webkit-transition: -webkit-transform .5s ease;
+			    transition: transform .5s ease;
+			    -webkit-transform: translate3d(0,-100%,0);
+			    transform: translate3d(0,-100%,0);
+			    opacity: 0;
+			    z-index: -1;
+			}
+			.content.active {
+				display:block;
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			    overflow-y: auto;
+			    max-height: 24.25rem;
+			}
+			.content ul{
+				padding: 0;
+				margin: 0;
+			}
+			.content li{
+				list-style: none;
+				padding:0px 15px;
+				margin:10px 0;
+			}
+			.mui-scroll-wrapper{
+				top: 80px;
+				bottom: 50px
+			}
+			.search{
+				position: relative;
+				z-index: 1000;
+				display: inline-table;
+				width: 100%;
+				background: #f7f7f7;
+			}
+			.search #keywords
+			{
+				margin-left:10px;
+				margin-top: 2px;
+				width:calc(100% - 60px);
+				display:table-cell;
+				border-top-left-radius:2em;
+				border-top-right-radius:2em;
+				border-bottom-right-radius:2em;
+				border-bottom-left-radius:2em;
+				margin-bottom: 2px;
+				height: 2.3em;
+				padding-bottom: 5px;
+				padding-top: 5px;
+				font-size:14px;
+			}
+			.search #search{
+				display: table-cell;
+			}
+/*			.flag{
+				width:0;
+		    	height:0;
+		    	border-left:27px solid transparent;
+		    	border-bottom:27px solid #4cd964;
+		    	position:absolute;
+		    	right:0;
+		    	bottom:0;
+			}
+			.bflag{
+				border-bottom:27px solid green;
+			}
+			.rflag{
+				border-bottom:27px solid blue;
+			}
+			.flag:after{
+				position: absolute;
+		    	bottom: -30px;
+		    	right:2px;
+		    	color:#f7f7f7;
+		    	font-size: .8rem;
+			}
+		  	.bflag:after{
+		    	content:'售';	
+		  	}
+		  	.rflag:after{
+		    	content:'租';	
+		  	}
+		  	.hflag:after{
+		    	content:'助';
+		  	}*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="z-index: 1000; ">
+         	<div id="logo"><img src="http://www.zmzfang.com/weixin/img/banner.png" height="40" width="320" /></div>
+		</header>
+		
+		<div class="mui-content">
+			<div class="search">
+				<input type="text" id="keywords" placeholder="搜索感兴趣的求购/求租/求助">
+				<span id="search" class="mui-icon mui-icon-bars" style="position: absolute;right: 12px;top:5px;"></span>
+			</div>
+			<div class="content">
+				<ul>
+					<li><a href="./RequirementList.html">购房</a></li>
+					<li><a href="./RentRequirementList.html">租房</a></li>
+					<li><a href="./HelpList.html">求助</a></li>
+				</ul>
+			</div>
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="topic" class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell mui-media"><div id="requirementBrief" class="requirement-brief"><div style="width:42px; height:60px;overflow:hidden;float:left;position:relative;"><img id="topic-picture" class="mui-media-object circle-img" src="../img/favicon.ico" alt="话题"><div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">话题</div></div><div style="margin-left: 50px;overflow:hidden;"><p id="topic-title" class="requirement-subject" style="margin-left: 0px;color:#000;"></p>
+						<p style="height:42px;overflow: hidden;" id="topic-desc"></p>
+						</div>
+						<p style="position:absolute;right:3px;top:38px;"><span id="topic-count"></span>人参与</p>
+						<p style="position:absolute;right:3px;top:12px;"><span id="topic-gdcount"></span>个观点</p></div></li>
+					</ul>
+					<!--数据列表-->
+					<ul id="requirementUl" class="mui-table-view mui-table-view-chevron">
+					</ul>
+				</div>
+			</div>
+		
+		</div>
+
+		
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/dom.create.js" charset="UTF-8"></script>
+
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../js/area.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+		<script src="../js/user.js?v=0.01"></script>
+		<script type="text/javascript" src="../js/wxShare.js"></script>
+		<script>
+			var startSn = 0;
+			var oldSn = 0;	
+			var mask = mui.createMask(callback);
+			var offset = parseInt(window.document.location.href.split('=')[1]);
+			var refreshFlag = null;
+			mui.init(
+			{
+				swipeBack: false,
+				gestureConfig:{
+						doubletap:true
+				},
+				pullRefresh: {
+					container: '#pullrefresh',
+					// down: {
+					// 	callback: pulldownRefresh
+					// },
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+			
+			mui.ready(function() {
+				// alert("ready");
+			 	$('#homeLink').addClass('mui-active');
+				wxShare({"link":"http://www.zmzfang.com/weixin/HomePage/RequirementList.html"});
+				var searchParameter = JSON.parse(sessionStorage.getItem('searchParameter'));
+				// console.log(searchParameter.start);
+				InitTopic();
+			 	if(searchParameter){
+					initstartSn = searchParameter.start;
+					refreshFlag = null;
+					getRequirementList(0,'',initstartSn);//获取需求列表
+					console.log('sessionStorage works')
+				}else{
+					refreshFlag = null;
+					getRequirementList(0);
+				}
+				
+				//初始化未读消息统计
+				initMsgCntEvent();
+			});
+
+			function isEmpty(str)  
+			{  
+			    if(str != null && str.length > 0)  
+			    {  
+			        return false;  
+			    }  
+			    return true;  
+			}  
+
+			 //增加需求列表中tap事件
+			 /*
+			mui('#requirementUl').on('tap', 'li', function() {
+				var requirementId = $(this).children('#requirementBrief').attr('requirement-id');
+				localStorage.setItem("requirementId", requirementId);
+				var requiementPublishuserId = $(this).children('#requirementBrief').attr('publishuser-id');
+				
+				localStorage.setItem("requiementPublishuserId", requiementPublishuserId);
+				var dstUrl = './RequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + requiementPublishuserId;
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				history.replaceState({}, "房源列表页", "RequirementList.html?offset="+offset);
+
+				sessionStorage.setItem("searchParameter" , '{"start": "'+startSn+'"}');
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'RequirementDetail.html'
+				});
+			});
+			*/
+			mui('#requirementUl').on('tap', '.requirement-brief', function() {
+				var requirementId = $(this).attr('requirement-id');
+				var requiementPublishuserId = $(this).attr('publishuser-id');
+				
+				
+				var dstUrl = './RequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + requiementPublishuserId;
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				history.replaceState({}, "房源列表页", "index.html?offset="+offset);
+
+				sessionStorage.setItem("searchParameter" , '{"start": "'+startSn+'"}');
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'RequirementDetail.html'
+				});
+			});
+
+			
+			mui('#requirementUl').on('tap', '.rent-requirement-brief', function() {
+				var requirementId = $(this).attr('requirement-id');
+				var requiementPublishuserId = $(this).attr('publishuser-id');
+				
+				
+				var dstUrl = './RentRequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + requiementPublishuserId;
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				history.replaceState({}, "房源列表页", "index.html?offset="+offset);
+
+				sessionStorage.setItem("searchParameter" , '{"start": "'+startSn+'"}');
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'RentRequirementDetail.html'
+				});
+			});
+
+			mui('#requirementUl').on('tap', '.help-brief', function() {
+				var helpId = $(this).attr('help-id');
+								
+				var dstUrl = './HelpDetail.html?helpId='+helpId;
+				
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				history.replaceState({}, "房源列表页", "index.html?offset="+offset);
+
+				sessionStorage.setItem("searchParameter" , '{"start": "'+startSn+'"}');
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'HelpDetail.html'
+				});
+			});
+
+
+			function getRequirementList(startsn,flag,countsn)
+			{
+				var start = startsn;
+				// var count = arguments[2] ? arguments[2] :5;
+				var count = 5;
+				// console.log("flag is "+flag);
+				var options = new Object();
+				options.start = start;
+				options.requirementCount = count;
+				options.rentCount = count;
+				options.helpCount = count;
+				// var searchRequirementIndexUrl='http://zm.com/?r=search/search-requirement-index'
+				ajax_to_server(searchRequirementIndexUrl,options,getRequirementListSuccess,getRequirementListFailed);
+			}
+			
+			//获取需求列表成功后的处理方法，新建li元素
+			function getRequirementListSuccess(data)
+			{
+				var requirementUl=$('#requirementUl');
+				if(!data.data){
+					if(refreshFlag == "up")
+					{	
+						return;
+					}
+					requirementUl.html('<div style="color:#ccc;padding:30px 0;text-align:center">暂无数据;</div>');
+					return;
+				}
+				// pastDom = JSON.stringify(data);
+				// sessionStorage.pastDom = pastDom;
+
+				oldSn = startSn;
+				startSn =parseInt(startSn)+data.data.length;
+				console.log(startSn);
+				
+				
+				var firstFrag ='';
+				for(var i in data.data)
+				{
+					firstFrag +=fillRequirementList(data.data[i]);
+				}
+				// console.log(firstFrag);
+				if(refreshFlag == "up")
+				{	
+					requirementUl.append(firstFrag);
+				}
+				// else if(flag == "down")
+				// {
+				// 	requirementUl.appendChild(firstFrag);
+				// }
+				else{
+					requirementUl.html(firstFrag);
+				}
+				console.log("offset\n"+offset)
+				if(offset){
+					console.log('in scroll');
+					mui('#pullrefresh').pullRefresh().scrollTo(0,offset,0);
+					offset = null;
+				}
+
+			}
+			
+			function getRequirementListFailed(data)
+			{
+				mui.toast('获取信息失败');
+			}
+			
+			function fillRequirementList(data){
+				var html = '';
+				console.log(data);
+				if(data){
+					if(data.helpid){
+						html+= fillHelpListLi(data);
+					}else{
+						if(data.agentfee){
+							html+= fillRequirementListLi(data);
+						}else{
+							html+= fillRentRequirementListLi(data);
+						}
+					}
+					return html;
+				}
+				
+				return;
+			}
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				refreshFlag = "up";
+				getRequirementList(startSn,"up");
+				this.endPullupToRefresh(false);
+			}
+			var index = '';
+			$('#search').on('tap',function(){
+					if($(this).hasClass('active')){
+						$(this).removeClass('active');
+						$('.content').removeClass('active');
+
+						mask.close();
+
+					}else{
+						$(this).addClass('active');
+						document.body.style.overflow='hidden';
+						$('.content').addClass('active');
+						mask.show();//显示遮罩
+					}
+			});
+			
+			function callback(){
+				$('#search').removeClass('active');
+				$('.content').removeClass('active');
+				document.body.style.overflow='';
+			}
+			function InitTopic(){
+				$.ajax({
+					type:"POST",
+					url:"http://www.zmzfang.com/?r=topic/last-content",
+					// url:"http://zm.com/?r=topic/last-content",
+					dataType:"json",
+					data:{
+					},
+					success: function(data){
+						$("#topic-title").html(data.title);
+						if(screen.width <= 320){
+							var str = data.short_desc.length<=25?data.short_desc:data.short_desc.substr(0,25)+'...';
+							$('#topic li').css('pading-right','56px');
+						}else if(screen.width <= 375){
+							var str = data.short_desc.length<=32?data.short_desc:data.short_desc.substr(0,32)+'...';
+						}else{
+							var str = data.short_desc;
+						}
+						$("#topic-desc").html(str);
+						$("#topic-gdcount").html(data.gd_count);
+						$("#topic-count").html(data.count);
+						if(data.picture){
+							$("#topic-picture").attr('src','http://www.zmzfang.com/assets/topic/'+data.picture);
+						}
+						$('#topic').on('tap',function(){
+							mui.openWindow({
+								url: '../Topic/index.html?tid='+data.id,
+								id: 'Topic'
+							});
+						})
+						
+					},
+					 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+				});
+			}
+			$('#keywords').on('tap',function(){
+				mui.openWindow({
+				    url:'./search.html?type=1',
+				    id:'search'
+				})
+			})
+			// function fillHelpListLi(data) 
+			// {
+			// 	console.log(data);
+			// 	var updatetime = data.updatetime;
+			// 	updatetime = updatetime.replace(/-/g,'/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
+			// 	var date = new Date(updatetime);
+			// 	var time = getTimeAgo(date.getTime());
+			// 	var feeDom ='';
+		
+			// 	var subject = data.subject;
+			// 	var liContent = '';
+		
+			// 	liContent += '<li class="mui-table-view-cell mui-media" id="helpid-' + data.helpid+'">';
+			// 	liContent += 	'<div id="helpBrief" class="help-brief" contactor="'+data.nickname+'" help-id="'+data.helpid+'">';
+			// 	liContent += 		'<div class="col-xs-2 mui-text-center" style="padding-left:0px;">';
+			// 	liContent += 			'<div style="width:42px; height:60px;  overflow:hidden;">';
+			// 	liContent += 				'<img style="width:42px; height:42px;" src="'+data.picture+'" alt="个人头像">';
+			// 	liContent += 				'<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">'+data.nickname+'</div>';
+			// 	liContent += 			'</div>';
+			// 	liContent += 		'</div>';				
+			// 	liContent += 		'<div class="col-xs-10" style="padding-left:0px;">';
+			// 	liContent += 			'<div>';
+			// 	liContent += 				'<p><span>悬赏</span> - <span>红包'+data.rewardfee+'元</span></p>';
+			// 	liContent += 			'</div>';
+			// 	liContent += 			'<div>';				
+			// 	liContent += 				'<p><span>求助</span> - <span>'+data.forhelpsubject+'</span></p>';
+			// 	liContent += 			'</div>';
+			// 	liContent += 		'</div>';	
+			// 	liContent +=        '<p class="publish-date" style="position:absolute;right:3px;top:12px">'+time+'</p>';
+			// 	liContent +=        '<p class="reply-times" style="position:absolute;right:3px;top:38px">'+data.replycnt+'条评论</p>';
+			// 	liContent += 	'</div>';
+			// 	liContent += '</li>';
+								
+			// 	return liContent;
+			// }
+
+		</script>
+	</body>
+
+</html>

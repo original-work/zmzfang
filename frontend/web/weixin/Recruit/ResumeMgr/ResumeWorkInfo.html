@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			#beginDate,#endDate
+			{
+				width:65%;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">新增工作经历</h1>
+			<a id="saveWorkInfo" class="mui-pull-right" style="color: #007aff;padding-top:10px;">保存</a>
+		</header>
+		
+		<div class="mui-content">
+			 <div class="mui-page-content">
+				<ul class="mui-table-view">
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>公司</label>
+						<input id="organization" type="text" placeholder="请填写公司名称">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>职位</label>
+						<input id="position" type="text" placeholder="请填写职位">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>入职时间</label>
+						<button id='beginDate' class="btn mui-btn mui-btn-block">2000-10</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>离职时间</label>
+						<button id='endDate' class="btn mui-btn mui-btn-block">至今</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>经历描述</label>
+						</div>
+						
+						<div class="mui-input-row">
+							<textarea id='workDetail' placeholder="职位经历描述" rows="5" style="margin-left: 15px;"></textarea>
+						</div>
+					</li>
+					
+				</ul>
+		    
+		    	<div id="oprDiv">
+					<div class="col-xs-12" style="margin-top:10px">
+						<div class="col-xs-6">
+							<button id="deleteWorkInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							取消
+							</button>
+						</div>
+						<div class="col-xs-6">
+							<button id="saveWorkInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							保存
+							</button>
+						</div>
+					</div>
+				</div>
+			 </div>	
+		    
+		    
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/mui.picker.min.js"></script>
+		<script src="../../js/common.js" charset="UTF-8"></script>
+		<script src="../../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Recruit/common/common.js?v=0.01"></script>
+		<script src="../../js/Recruit/ResumeMgr/ResumeWorkInfo.js?v=0.01"></script>
+		
+	</body>
+
+</html>

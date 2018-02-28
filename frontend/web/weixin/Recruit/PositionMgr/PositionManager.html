@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html style="background-color:#FFF;">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.02" />
+		<style type="text/css">
+			.location{
+				isplay:block; 
+				width: 300px; 
+				float:left; 
+				text-align:left;
+				clear:left;
+
+			}
+			.unhandledResume{
+				background-color:#FFF;
+				padding-top: 10px;
+			}
+			.resume{
+				padding-left:20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">职位管理</h1>
+		</header>
+
+
+		<div class="mui-content" style="background-color:#FFF;">
+			<div>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media" id="location">
+						<div class="mui-media-body mui-navigate-right" style="margin-top:10px; font-size: 14px;">
+							<p class="location">
+								<svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-edit"></use></svg> 发布新职位
+							</p>
+							<p style="clear:both"></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media" id="position">
+						<div class="mui-media-body mui-navigate-right" style="margin-top:10px;">
+							<p class="position">
+								<svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-position"></use></svg> 我发布的职位</span>
+							</p>
+							<p style="clear:both"></p>
+						</div>
+					</li>
+					</ul>
+				<div class="unhandledResume">
+					<p class="resume">
+						<span id="resume">未处理简历</span>
+						<p style="clear:both"></p>
+					</p>
+				</div>
+				
+			</div>
+			<div id="resumeDiv" style="">
+				<ul id="resumeUl" class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/Recruit/common/common.js"></script>
+		<script src="../../js/ajax.js"></script>
+		<script src="../../js/commonAjax.js"></script>
+		<script src="../../js/wxShare.js"></script>
+		<script src="../../js/auth.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			var loginUser = null;
+			var data = localStorage.getItem('zmzfangLoginUserInfo');
+			loginUser = JSON.parse(data);
+			var recruitCount = 0;
+			mui.init({
+				swipeBack: false
+			});
+						
+			mui.ready(function() {
+				$('.mui-content').Auth({'phone':true,'wechat':true,'openid':true});
+				initResumeListUnhandled();
+				initPositionInfo();
+				//wxShare();
+			});
+			if(loginUser && loginUser.agentflag != 1){
+				mui.alert('对不起,只有经纪人才可以发布职位',null,null,
+					function(){window.location.href="../index.html";});
+			}
+			var locationUrl = "./PublishPostion.html";
+			$('#location').on('tap',function(){
+				
+				if(parseInt(recruitCount) >=5 )
+				{
+					mui.toast('一个经纪人最多只能发布5条招聘信息');
+					return;
+				}
+				mui.openWindow({
+					url: locationUrl
+				});
+			});
+	
+	
+			var positionUrl = "./PositionIPublished.html";
+			$('#position').on('tap',function(){
+				mui.openWindow({
+					url: positionUrl
+				});
+			});
+	
+				//增加列表中tap事件
+			mui('#resumeUl').on('tap', '.resume-brief', function() {
+				var resumeId = this.getAttribute('resume-id');
+				var recruitId = this.getAttribute('recruit-id');
+				var deliveryId = this.getAttribute('delivery-id');
+				var userid = $(this).parents().attr('user-id');
+				var dstUrl = '../ResumeMgr/ResumeDetail.html?resumeUserId='+userid+'resumeId='+resumeId+"&recruitId="+recruitId+"&deliveryId="+deliveryId;
+				mui.openWindow({
+					url: dstUrl,
+					id: 'ResumeDetail.html'
+				});
+			});
+
+			function initResumeListUnhandled()
+			{
+				var optionObj = new Object();
+				optionObj.userid = loginUser.id;
+				var url = getResumeListUnhandledUrl;
+				ajax_to_server(url,optionObj,getResumeListUnhandledSuc,getResumeListUnhandledFailed);
+			}
+			
+			function getResumeListUnhandledSuc(data)
+			{
+				console.log('getResumeListUnhandledSuc:data'+JSON.stringify(data));
+				var resumeUl = $('#resumeUl');
+				var firstFrag = document.createDocumentFragment();
+				
+				//无数据显示提示
+				
+				//有数据显示列表
+				for(var i in data)
+				{
+					var id=data[i].id;
+					firstFrag.appendChild(NewResumeInfoLi(data[i]));
+				}
+			
+				resumeUl[0].appendChild(firstFrag);	
+			}
+			
+			function getResumeListUnhandledFailed(errorThrown, options)
+			{
+				mui.toast('获取信息失败');
+			}
+			
+			function initPositionInfo()
+			{
+				var optionObj = new Object();
+				optionObj.userid = loginUser.id;
+				var url = getRecruitCountByUserIdUrl;
+				ajax_to_server(url,optionObj,getRecruitCountByUserIdSuc,null);
+			}
+			
+			function getRecruitCountByUserIdSuc(data)
+			{
+				console.log('getRecruitCountByUserIdSuc:data'+JSON.stringify(data));
+				if(data && data.rscode == "0")
+				{
+					recruitCount = data.count;
+					console.log("recruitCount:"+recruitCount);
+				}
+			}
+			
+			
+			
+		</script>
+	</body>
+
+</html>

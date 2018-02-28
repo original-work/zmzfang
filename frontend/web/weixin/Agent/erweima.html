@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html style="height:100%;background-color: #fff">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="">
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			p{color:#666;margin-bottom: 5px;}
+			.mui-content{padding:20px;margin-top: 10px;background-color:#fff;}
+			.mui-page-content{padding-bottom: 10px;border-bottom: 1px solid #ddd;}
+			#code img {width:150px;height:150px;}
+			.skillwrap{border:solid 1px #ff6600;width:100%;margin:20px auto;padding:20px;} 
+			.skillwrap a{padding:3px;display:inline-block;white-space:nowrap;line-height: 1.2}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"><span id="title"> - </span>的宣传海报</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-page-content">
+				<div style="width:75px; height:75px; overflow:hidden;position:absolute;">
+					<img id="headPic" style="width:75px; height:75px; " src="" alt="个人头像" />
+				</div>
+				<div style="margin-left:100px">
+					<p><span id="nickname" style="color:black;"> - </span><svg class="icon" aria-hidden="true" style="font-size:25px;position: relative;top: 2px;font-size:20px;"><use id="sex" xlink:href="#icon"></use></svg> （<span id="place"></span>）</p>
+					<p><span id="organization"> - </span> <span id="position"> - </span></p>
+					<p>电话：<span id="mobile"> - </span></p>
+				</div>
+			</div>
+			<div class="skillwrap">
+				<p style="text-align: center;">加载中..</p>
+			</div>
+			<div id="code" style="padding-top:30px;text-align: center;"></div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/expertData.js"></script>
+		<script src="../js/echarts.min.js"></script>
+		<script src="../js/jquery.js"></script> 
+		<script src="../js/jquery.qrcode.min.js"></script> 
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+
+			var userid = getQueryStrFromUrl("userid");
+			var url = 'http://www.zmzfang.com/weixin/Agent/?userid='+userid+'?share=1';
+			var user = new Object();
+			user.id = userid;
+
+			mui.ready(function() {
+				initAgentInfo();
+				//初始化微信分享
+				wxShare();
+			});
+
+			function initAgentInfo()
+			{
+				ajax_get_agent_detail(user,getAgentDetailSuc,getAgentDetailFailed);
+			}
+	
+			function getAgentDetailSuc(data)
+			{
+				console.log('getAgentDetailSuc');
+				byId("headPic").src = data.picture;
+
+				byId("nickname").innerHTML=data.nickname;
+				if(data.sex==1){
+					$('#sex').attr('href',"#icon-male");
+				}else if(data.sex==2){
+					$('#sex').attr('href',"#icon-female");
+				}
+				byId("title").innerHTML =data.nickname;
+				byId("organization").innerHTML =data.organization;
+				byId("place").innerHTML=data.city;
+				byId("position").innerHTML=data.position;
+				byId("mobile").innerHTML=data.phone;
+
+				var s = data.skill.split('#');
+				var h =[]
+				for(i in s){
+					var font = ''
+					if(i == 0)font=40;else font = parseInt(10*Math.random())*4;
+					font= font==0?20:font
+					h[i]= '<a style="font-size:'+font+'px;color:#' + (function(color){return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)]) && (color.length == 3) ?  color : arguments.callee(color); })('') +'">'+s[i]+'</a>';
+				}
+				function randomSort(a, b) {return Math.random() > 0.5 ? -1 : 1;}
+				h.sort(randomSort);
+				h = h.join('');
+				$(".skillwrap").html(h);
+				var supInfo=new Object();
+				supInfo.url=url;
+				supInfo.pic=data.picture;
+				ajax_get_erweima(supInfo,getErweimaSuccess,getErweimaFailed);
+			}
+
+			function getErweimaSuccess(data)
+			{
+				console.log('生成二维码成功 '+data);
+				if(!data){
+					mui.toast('未能获取到更多数据');
+					return ;
+				}
+				var code=$('#code');
+				code.append(data.pic);
+			}
+
+			function getErweimaFailed(data)
+			{
+				console.log("生成二维码失败 "+data);
+			}
+
+			function getAgentDetailFailed(data)
+			{
+				console.log("getAgentDetailFailed");
+			}
+
+		</script>
+	</body>
+
+</html>

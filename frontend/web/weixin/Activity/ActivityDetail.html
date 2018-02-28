@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/swiper.min.css" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.house-info{
+				/*padding:20px;*/
+			}
+			/*p{
+				font-size: 16px!important;
+			}*/
+			.row p span{color:#000}
+			
+			.not-allow{
+				color: #999;
+			    background-color: #c7c7cc;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			}
+			.allow{
+			    background: #4cd964;
+			}
+			.head-row{
+				padding:0;
+				margin:0 1%;
+			}
+			.head-row .col-xs-2{
+				padding-right: 2%;
+   				padding-left: 2%;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+			#favorite,#comment{
+				color: #FFD306;
+			}
+			#commentUl .col-xs-12 
+			{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			#comment
+			{
+				padding-right: 0px;
+			}
+			#commentUl .mui-table-view-cell
+			{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			blockquote {
+				display: block;
+				border-left: 8px solid #d0e5f2;
+				padding: 5px 10px;
+				margin: 10px 0;
+				line-height: 1.4;
+				font-size: 100%;
+				background-color: #f1f1f1;
+			}
+			table {
+				border-top: 1px solid #ccc;
+				border-left: 1px solid #ccc;
+			}
+			table td,table th {
+				border-bottom: 1px solid #ccc;
+				border-right: 1px solid #ccc;
+				padding: 3px 5px;
+			}
+			table th {
+				border-bottom: 2px solid #ccc;
+				text-align: center;
+			}
+			img{
+				max-width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title" house-id="0">活动详情页</h1>
+			
+		</header>
+		
+		<!-- <footer id="sendMsgDiv" class="mui-bar mui-bar-footer mui-hidden" style="background-color: #4cd964;">
+        	<h1 class="mui-title" id='sendMsg'>发消息</h1>
+        </footer> -->
+        
+        <footer id="bidDiv" class="mui-bar mui-bar-footer allow">
+        	<h1 class="mui-title" id='applyBtn'>报名</h1>
+        </footer>
+        
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			<div id="displayAfterLoginDiv">
+				
+				
+			
+				<div id="ActiviePic">
+					<img id="background" src="http://www.zmzfang.com/assets/topic/170618102457.jpg" style="width: 100%;max-height:200px;">
+				</div>
+				
+				<div id="userInfo" class="card" user-id="15530">
+					<div class="user-info" style="border-bottom:1px solid #ddd;margin-bottom:20px;">
+						<div style="width:42px; height:42px;overflow:hidden;float:left;">
+							<img id="userPic" class="circle-img" width="42" height="42px" data-lazyload-id="0" src="http://www.zmzfang.com/weixin/img/headpic/201706141742429470.jpg">
+						</div>
+				       	<div class="user-info-content" style="float:left;margin-left: 0px;padding-left: 10px;">
+				        <p class="mui-ellipsis requirement-user-nickname" style="font-size:1.2rem;margin-bottom:5px;"> 
+								发布人：<span id="userName"></span>&nbsp;
+						</p>
+						<p>
+							<span id="organization" class="mui-hidden"></span> 
+							<span id="position" class="mui-hidden"></span>
+							
+						</p>
+						
+						</div>
+						<div style="position:absolute;right:45px;">
+							<svg id="favorite" class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-fav-o"></use></svg>
+						</div>
+						
+						<div style="position:absolute;right:20px;">
+							<svg id="comment" class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-comment"></use></svg>
+						</div>
+
+				    	<div class="mui-clearfix"></div>
+				   	</div>
+				    
+				    <div id="activityInfo" class="activity-info" activity-id="713">
+				    	<ul class="row">
+				    		<li class="col-xs-12">
+				    			<p style="color:#000;font-size:1.1rem;"><span id="activitySubject">房地产培训</span></p>
+				    		</li>
+				    		
+					        <li class="col-xs-12">
+					            <p><span style="color:#999;">开始时间：</span><span id="startTime" style="color: #333;">2017-07-18 09:00</span></p>
+					        </li>
+							<li class="col-xs-12">
+					            <p><span style="color:#999;">结束时间：</span><span id="endTime" style="color: #333;">2017-07-20 09:00</span></p>
+					        </li>
+					        <li class="col-xs-12">
+					        	<p><span style="color:#999;">活动城市：</span><span id="city" style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-12">
+					        	<p><span style="color:#999;">活动地点：</span><span id="location" style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">活动类型：</span><span id="type" style="color: #333;"></span></p>
+					        </li>	
+					       <li class="col-xs-6">
+					        	<p><span style="color:#999;">活动人数：</span><span id="personCnt" style="color: #333;"></span></p>
+					        </li>	
+					        <li class="col-xs-12">
+					        	<p><span style="color:#999;">活动费用：</span><span id="fee" style="color: #333;"></span></p>
+					        </li>
+					        
+
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+									<p><span style="color:#999;">活动详情：</span></p>
+									<div>
+									    <p id="detail" style="font-size: 14px;color: #333;">分享交流房地产活动</p>
+								    	
+									</div>
+								</div>
+					        </li>
+					    </ul>
+					    <div class="mui-clearfix"></div>		
+					</div>
+					<div>
+				</div>
+				</div>
+			   
+			   <div id="orgDiv" class="card mui-hidden">
+					<p class="mui-ellipsis" style="padding-top: 3px;padding-left: 10px;font-size:1.1rem;color:#000;">
+						主办方信息 
+					</p>	
+					<div id="orginfo">
+						<ul class="row">
+					        <li class="col-xs-12">
+					            <p><span style="color:#999;">主办方：</span><span id="orgName" style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-12">
+					            <p><span style="color:#999;">联系人：</span><span id="contactName" style="color: #333;"></span></p>
+					        </li>
+					        <li class="col-xs-12">
+					            <p><span style="color:#999;">联系方式：</span><span id="contactPhone" style="color: #333;"></span></p>
+					        </li>
+					    </ul>
+					</div>
+				</div>
+				
+				<div class="card">
+					<p class="mui-ellipsis" style="padding-top: 3px;padding-left: 10px;font-size:1.1rem;color:#000;">
+						报名人数 <small>(<span id="bidCnt" style="color:#007D2C;">0</span>人)</small>
+					</p>	
+					<div id="bidlist">
+						<ul class="head-row" id="bidUl">
+							<li style="text-align:center;list-style: none;"><span class="mui-pull-loading mui-icon mui-spinner"></span></li>
+						</ul>
+					</div>
+				</div>
+				
+				<div class="card">
+					<p class="mui-ellipsis" style="padding-top: 3px;padding-left: 10px;font-size:1.1rem;color:#000;">
+						评论<small>(<span id="commentCnt" style="color:#007D2C;">0</span>人)</small>
+					</p>	
+					<div id="commentlist">
+						<ul class="head-row" id="commentUl">
+							<li style="text-align:center;list-style: none;"><span class="mui-pull-loading mui-icon mui-spinner"></span></li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/swiper.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/auth.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/Activity/ActivityDetail.js?v=0.01"></script>
+	</body>
+
+</html>

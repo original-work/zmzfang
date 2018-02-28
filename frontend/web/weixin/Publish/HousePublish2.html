@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/image.upload.css" />
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">房源发布</h1>
+
+		</header>
+
+		<div class="mui-content">
+			<section id='requirement-info' class="requirement-info">
+				<ul id="houseInfoList1" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<p>请继续完善您的房屋资料！信息越详细，您的交易成功率越高</p>
+
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>请选择房龄</label>
+							<select id="houseAge" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">1980</option>
+								<option value="item-2">1981</option>
+								<option value="item-3">1982</option>
+								<option value="item-4">1983</option>
+								<option value="item-5">1984</option>
+								<option value="item-6">1985</option>
+								<option value="item-7">1986</option>
+								<option value="item-8">1987</option>
+								<option value="item-9">1988</option>
+								<option value="item-10">1989</option>
+								<option value="item-11">1990</option>
+								<option value="item-12">1991</option>
+								<option value="item-13">1992</option>
+								<option value="item-14">1993</option>
+								<option value="item-1">1994</option>
+								<option value="item-2">1995</option>	
+								<option value="item-10">1996</option>
+								<option value="item-11">1997</option>
+								<option value="item-12">1998</option>
+								<option value="item-13">1999</option>
+								<option value="item-14">2000</option>
+								<option value="item-1">2001</option>
+								<option value="item-3">2002</option>
+								<option value="item-4">2003</option>
+								<option value="item-5">2004</option>
+								<option value="item-6">2005</option>
+								<option value="item-7">2006</option>
+								<option value="item-8">2007</option>
+								<option value="item-9">2008</option>
+								<option value="item-10">2009</option>
+								<option value="item-11">2010</option>
+								<option value="item-12">2011</option>
+								<option value="item-13">2012</option>
+								<option value="item-14">2013</option>
+								<option value="item-15">2014</option>
+								<option value="item-16">2015</option>
+								<option value="item-16">2016</option>
+							</select>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>房屋类型</label>
+							<select id="buildingType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">住宅</option>
+								<option value="2">商住</option>
+								<option value="3">办公</option>
+								<option value="4">商铺</option>
+							</select>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>装修类型</label>
+							<select id="decorationType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">毛坯</option>
+								<option value="item-2">简装</option>
+								<option value="item-3">中装</option>
+								<option value="item-4">精装</option>
+								<option value="item-5">豪装</option>
+							</select>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>房屋朝向</label>
+							<select id="orientation" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">东</option>
+								<option value="item-2">南</option>
+								<option value="item-3">西</option>
+								<option value="item-4">北</option>
+								<option value="item-5">东南</option>
+								<option value="item-6">西南</option>
+								<option value="item-7">东北</option>
+								<option value="item-8">西北</option>
+							</select>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>具体描述</label>
+							<textarea id="detail" rows="5" placeholder="请输入您的具体需求描述" ></textarea>
+						</div>
+					</li>
+
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>学区房</label>
+							<input id="schoolDistrictFlag" name="checkbox" value="Item 1" type="checkbox">
+						</div>
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>地铁沿线</label>
+							<input id="metroFlag" name="checkbox" value="Item 1" type="checkbox">
+						</div>
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>满两年</label>
+							<input id="ownerOnlyFlag" name="checkbox" value="Item 1" type="checkbox">
+						</div>
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>满五唯一</label>
+							<input id="overFiveOnlyFlag" name="checkbox" value="Item 1" type="checkbox">
+						</div>
+					</li>
+					<!--
+					<li class="mui-table-view-cell">
+					    <button id='getHousePic' class="mui-btn mui-btn-block" type='button' style="float:center;">选取图片</button>
+					</li>  	
+					-->
+				</ul>
+				<div id="" class="upload">
+					<p>图片(选填,提供房屋图片,最多9张)</p>
+					<div id='image-list' class="row image-list"></div>
+				</div>
+				<div>
+					<button id="imageUploadBtn" type="button" class="mui-hidden">图片上传</button>
+				</div>
+				
+				<div id='commitHousePublish' class="submit-btn btn-green">发布房源</div>
+			</section>
+		</div>
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../js/weixin.image.upload.js"></script>
+		<!--<script src="../js/wxShare.js"></script>-->
+		<script type="text/javascript" charset="UTF-8">
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var user;
+
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				user = JSON.parse(data);
+			});
+			
+			//增加房源发布按钮事件
+			document.querySelector('#commitHousePublish').addEventListener('tap', function() {
+				console.log('commitHousePublish click');
+
+                //判断用户是否选中了图片 无选中图片 直接发布，有选中图片，则需要上传图片
+                var picCnt = upload.getFileInputArray().length; 
+                // alert("picCnt:"+picCnt);
+                if(picCnt > 1)
+                {
+                	//byId("imageUploadBtn").click();
+                	upload.uploadPics(publishHouseInfo);
+                }
+                else
+                {
+                	publishHouseInfo();
+                }
+			
+			}, false);
+
+
+			//检查房源关键信息
+			function checkHouseInfo() {
+
+			}
+
+			//上传图片信息
+			function uploadPic() {
+
+			}
+
+			function publishHouseInfo() {
+				
+				var userid = user.id;
+
+				var districtid = localStorage.getItem("hpublish-districtid");
+				var districtname = localStorage.getItem("hpublish-districtname");
+				var housenumber = localStorage.getItem("hpublish-housenumber");
+				var roomnumber = localStorage.getItem("hpublish-roomnumber");
+				var buildingarea = localStorage.getItem("hpublish-buildingarea");
+				var expectsaleprice = localStorage.getItem("hpublish-expectsaleprice");
+				var storey = localStorage.getItem("hpublish-storey");
+				var totalstorey = localStorage.getItem("hpublish-totalstorey");
+				var roomcnt = localStorage.getItem("hpublish-roomcnt");
+				var hallcnt = localStorage.getItem("hpublish-hallcnt");
+				var bathroomcnt = localStorage.getItem("hpublish-bathroomcnt");
+
+				var index = byId("houseAge").selectedIndex;
+				var houseage = byId("houseAge").options[index].text;
+
+				index = byId("buildingType").selectedIndex;
+				var buildingtype = byId("buildingType").options[index].text;
+
+				index = byId("decorationType").selectedIndex;
+				var decorationtype = byId("decorationType").options[index].text;
+				index = byId("orientation").selectedIndex;
+				var orientation = byId("orientation").options[index].text;
+
+				var detail = byId("detail").value;
+				console.log('detail:' + detail);
+
+				var schooldistrictflag = "0";
+				var metroflag = "0";
+				var owneronlyflag = "0";
+				var overfiveonlyflag = "0";
+
+				if ($("#schoolDistrictFlag").is(':checked')) {
+					schooldistrictflag = "1";
+				}
+
+				if ($("#metroFlag").is(':checked')) {
+					metroflag = "1";
+				}
+				if ($("#ownerOnlyFlag").is(':checked')) {
+					owneronlyflag = "1";
+				}
+				if ($("#overFiveOnlyFlag").is(':checked')) {
+					overfiveonlyflag = "1";
+				}
+
+                var pictures = new Array();
+				var picCnt = upload.files.length;
+				for(var i=0;i<picCnt;i++)
+				{
+					pictures[i] = {picture:upload.files[i].path.toString(),sn:i.toString()};
+				}
+				$("#commitHousePublish").attr("disabled","disabled");
+				
+				var city = user?user.city:null;
+				var options = {
+					mid: getRandStr(20),
+					userid: userid,
+					districtid: districtid,
+					districtname: districtname,
+					housenumber: housenumber,
+					roomnumber: roomnumber,
+					buildingarea: buildingarea,
+					expectsaleprice: expectsaleprice,
+					storey: storey,
+					totalstorey: totalstorey,
+					roomcnt: roomcnt,
+					hallcnt: hallcnt,
+					bathroomcnt: bathroomcnt,
+					houseage: houseage,
+					buildingtype: buildingtype,
+					decorationtype: decorationtype,
+					orientation: orientation,
+					detail: detail,
+					schooldistrictflag: schooldistrictflag,
+					metroflag: metroflag,
+					owneronlyflag: owneronlyflag,
+					overfiveonlyflag: overfiveonlyflag,
+					picture: pictures,
+					city: city
+				};
+				ajax_to_server(addHouseByCityUrl,options,addHouseSuccess,addHouseFail);
+			}
+
+			function addHouseSuccess(data) {
+				console.log('addHouseSuccess data:'+JSON.stringify(data));
+				if(data.rscode !== 0)
+				{
+					mui.toast('发布房源失败:'+data.error);
+					$("#commitHousePublish").removeAttr("disabled");
+					return;
+				}
+				
+				var str = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(str);
+				var userid = user.id;
+				
+				var houseid = data.houseid;
+				//var houseid = data.h;
+				//alert('houseid:'+houseid);
+				if(!houseid)
+				{
+					toastMSG = '房源发布失败';
+				    mui.toast(toastMSG);
+				    $("#commitHousePublish").removeAttr("disabled");
+				    return;
+				}
+				var type = "2";//表示房源
+				var status = "1";//表示初始状态
+				
+				var picCnt = upload.files.length;
+				//alert('picCnt:'+picCnt);
+				for(var i=0;i<picCnt;i++)
+				{
+					var options = {
+						type: type,
+						userid: userid,
+						houseid: houseid,
+						housepicsn: i.toString(),
+						serverid: upload.serverId[i].toString(),
+						localid: upload.files[i].path.toString(),
+						url: "",
+						status: status
+					};
+					//alert(JSON.stringify(options));
+					ajax_add_weixin_pic(options);
+				}
+				
+				//房源发布成功后，触发向同板块经纪发送模板消息的方法
+		    	pushSupplyment(houseid);
+		    	
+				toastMSG = '房源发布成功';
+				mui.toast(toastMSG);
+				
+				var zmzfangBidMgrBackInfo = JSON.parse(localStorage.getItem('zmzfangBidMgrBackInfo'));
+				var dstUrl = "../Mine/MyHouseDetail.html?houseId="+houseid;
+				dstUrl += "&city="+user.city;
+				//alert('backRequirementId:'+backRequirementId);
+				if(zmzfangBidMgrBackInfo)
+				{
+					dstUrl = "../HomePage/RequirementDetail.html?requirementId="+zmzfangBidMgrBackInfo.requirementid;
+					dstUrl += "&userid="+ zmzfangBidMgrBackInfo.userid;
+					window.history.go(-2);
+				}
+				
+				mui.openWindow({
+					url: dstUrl
+				});
+				
+			}
+			
+			function addHouseFail(data)
+			{
+				var toastMSG = '网络异常，信息提交失败，请重试！';
+				mui.toast(toastMSG);
+				$("#commitHousePublish").removeAttr("disabled");
+			}
+			
+			function pushSupplyment(data)
+		    {
+		    	var supplymentid = data;
+	    		ajax_push_supplyment({
+					supplymentid: supplymentid
+				});
+		    }
+
+		</script>
+	</body>
+
+</html>

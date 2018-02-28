@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/im.chat.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="subject" class="mui-title"></h1>
+		</header>
+		<pre id='h'></pre>
+		<script id='msg-template' type="text/template">
+			<% for(var i in record){ var item=record[i]; %>
+			<div class="msg-item <%= (item.sender=='self'?' msg-item-self':'') %>" msg-type='<%=(item.type)%>' msg-content='<%=(item.content)%>'>
+
+				<% if(item.sender=='self' ) { %>
+				<img class="msg-user msg-user-img " src="<%=(item.headUrl)%>"></img>
+				<% } else { %>
+				<img class="msg-user-img" src="<%=(item.headUrl)%>" alt="" />
+				<% } %>
+				<div class="msg-content">
+					<div class="msg-content-inner">
+						<% if(item.type=='text' ) { %>
+						<%=( item.content|| '&nbsp;&nbsp;') %>
+						<% } else if(item.type=='image' ) { %>
+						<img class="msg-content-image" src="<%=(item.content)%>" style="max-width: 100px;" />
+						<% } else if(item.type=='sound' ) { %>
+						<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
+						<span class="play-state">点击播放</span>
+						<% } %>
+					</div>
+					<div class="msg-content-arrow"></div>
+				</div>
+				<div class="mui-item-clear"></div>
+			</div>
+			<% } %>
+		</script>
+		<div class="mui-content">
+			<div id='msg-list'>
+			</div>
+		</div>
+		<footer>
+			<div class="footer-left">
+				<i id='msg-image' class="mui-icon mui-icon-camera mui-hidden" style="font-size: 28px;"></i>
+				<p style="font-size: 18px;margin-top: 6px;">消息</p>
+			</div>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+				<button id='msg-sound' type="button" class='input-sound' style="display: none;">按住说话</button>
+			</div>
+			<label for="" class="footer-right">
+				<!--<i id='msg-type' class="mui-icon mui-icon-mic"></i>-->
+				<i id='msg-type' class="mui-icon mui-icon-paperplane"></i>
+				
+			</label>
+		</footer>
+		<div id='sound-alert' class="rprogress">
+			<div class="rschedule"></div>
+			<div class="r-sigh">!</div>
+			<div id="audio_tips" class="rsalert">手指上滑，取消发送</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/arttmpl.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/mui.imageViewer.js"></script>
+		<!--<script src="http://app.cloopen.com/im50/ytx-web-im-min-new.js"></script>-->
+		<script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+		<!--<script src="../js/im.message.js?v=0.02"></script>-->
+		<script src="../js/ajax.js?v=0.04"></script>
+		<script src="../js/common.js?v=0.04"></script>
+		<script src="../js/im.chat.js?v=0.04"></script>
+	</body>
+
+</html>

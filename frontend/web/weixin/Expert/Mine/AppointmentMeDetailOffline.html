@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:10px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			#subject
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+			}
+			#alreadyAnserInfo
+			{
+				text-indent:1em;
+			}
+			#expertBrief{
+				border-bottom: 1px solid #ccc;
+			}
+			
+			#statuInfo{
+				clear:both;
+			}
+			#eventName,#flishFlagDiv{
+				margin-top: 5px;
+			}
+			#statusTimeDiv{
+				margin-top: 5px;
+				
+			}
+			#dealName{
+				margin-top: 5px;
+			}
+			#question
+			{
+				padding: 5px 10px;
+				border-top: 1px solid #ccc;
+				
+			}
+			.finish {
+				background-color: greenyellow;
+				border-radius: 50%;
+				/* 宽度和高度需要相等 */
+				width: 15px;
+				height: 15px;
+			}
+			
+			.unfinish {
+				background-color: grey;
+				border-radius: 50%;
+				/* 宽度和高度需要相等 */
+				width: 15px;
+				height: 15px;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">约见我的详情</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/mine.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div id="appointmentMeBrief" appointment-id="5320" expert-id="474">
+				<div id="userBrief" class="col-xs-12">
+					<div id="userPicBrief" class="col-xs-2 mui-text-center" publishuser-id="">
+						<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+							<img id="headPic" style="width:42px; height:42px; " src="" alt="个人头像">
+						</div>
+					</div>
+					<div class="col-xs-10">
+						<div>
+							<div class="col-xs-8" style="margin-top: 5px;">
+								<span id="userName" ></span>
+							</div>
+							<div class="col-xs-4">
+								<p id="appointmentType" class="type mui-text-right" style="font-size:11px"></p>
+							</div>
+						</div>
+						
+						<div>
+							<div class="col-xs-6">
+								<h5>价格:<span id="fee"></span>元/次</h5>
+							</div>
+							<div class="col-xs-6">
+								<h5>状态:<span id="status"></span></h5>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<h5 id="createTime" class="mui-text-right" style="font-size:11px"></h5>
+						</div>
+					</div>
+				</div>	
+			
+				<div style="margin-top: 10px;clear: both;">
+					<ul id="statusUl" class="mui-table-view">
+						<li id="submit" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-7">
+								<h5>状态</h5>
+							</div>
+							<div id="statuTime" class="col-xs-5">
+								<h5>时间</h5>
+							</div>
+						</li>
+						
+						<li id="userSubmitLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>用户提交预约申请</span> </h5>
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="expertAcceptLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>专家确认</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+									<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="userPayLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>客户支付</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+									<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="contactOfflineLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>线下沟通</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="expertCloseLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>专家确认流程结束</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="userCloseLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>客户确认流程结束</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="systemPayLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>平台打款</span> </h5>
+							
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="expertRejectLi" class="mui-table-view-cell mui-media mui-hidden">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>专家拒绝</span> </h5>
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="overTimeLi" class="mui-table-view-cell mui-media mui-hidden">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>超时结束</span> </h5>
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statueTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+						
+						<li id="completeLi" class="mui-table-view-cell mui-media">
+							<div id="eventName" class="col-xs-5">
+								<h5><span>完成</span> </h5>
+							</div>
+							<div id="flishFlagDiv" class="col-xs-1 mui-text-center">
+								<h5 id="flishFlag" class="unfinish" style=""></h5>
+							</div>
+							<div id="statusTimeDiv" class="col-xs-6">
+								<h5 id="statusTime">0000-00-00 00:00:00</h5>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<div id="subject" style="">
+					<h5>咨询问题</h5>
+					<p id="question"></p>
+				</div>
+
+				<div id="closeOrderDiv" class="mui-hidden">
+					<div class="col-xs-6">	
+						<button id="closeOrder" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">	
+							确认流程结束	
+						</button>
+					</div>	
+					<div class="col-xs-6">	
+						<button id="chat" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">	
+							联系用户
+						</button>
+					</div>
+				</div>
+				
+				<div id="affirmDiv" class="mui-hidden" style="clear:both" >	
+					<div class="col-xs-6">	
+						<button id="affirm" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">	
+							确认
+						</button>
+					</div>
+					<div class="col-xs-6">	
+						<button id="reject" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">	
+							拒绝	
+						</button>
+					</div>
+				</div>
+			</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/Mine/AppointmentMeDetailOffline.js?v=0.01"></script>
+		
+	</body>
+
+</html>

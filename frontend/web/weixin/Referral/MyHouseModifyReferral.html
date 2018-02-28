@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">房源修改页面</h1>
+				
+		</header>
+		
+		<div class="mui-content">
+			<section id='requirement-info' class="requirement-info">
+				<ul id="houseInfoList1" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<p>房源信息仅作为需求匹配，不会泄露个人隐私</p>
+							
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>城市：</label> 
+							<input id="region" type="text" placeholder="" readonly="readonly"> 
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>小区名称：</label> 
+							<input id="districtName" type="text" placeholder=""> 
+						</div>
+					</li>
+				
+				  <li class="mui-table-view-cell">
+					    <div class="mui-input-row">
+					    	<input id="houseNumber" type="text" placeholder="" style="width: 100px;border:1px solid #EFEFF4;margin-bottom: 1px;">
+							<span>号</span>
+							<input id="roomNumber" type="text" placeholder="" style="width: 100px;border:1px solid #EFEFF4;;margin-bottom: 1px;">
+							<span>室</span>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<input id="buildingArea" type="text" class="mui-input-clear" placeholder="建筑面积" style="width: 80%;">
+						    <span>平方</span>
+						</div>
+				    </li>
+				   
+				    <li class="mui-table-view-cell">
+					    <div class="mui-input-row">
+							<input id="expectSalePrice" type="text" class="mui-input-clear" placeholder="期望售价" style="width: 80%;">
+						    <span>万元</span>
+						</div>
+					</li>
+				</ul>
+				
+				<ul id="houseInfoList2" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>所在楼层</label>
+							<select id="storey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+								<option value="34">34</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>总楼层</label>
+							<select id="totalStorey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+								<option value="34">34</option>
+							</select>	
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>室</label>
+							<select id="roomCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1室</option>
+								<option value="2">2室</option>
+								<option value="3">3室</option>
+								<option value="4">4室</option>
+								<option value="5">5室</option>
+								<option value="6">6室及以上</option>
+							</select>
+						</div>
+					</li>
+						
+				    <li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>厅</label>
+							<select id="hallCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5及以上</option>
+							</select>
+						</div>
+					</li>
+				
+				    <li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>卫</label>
+							<select id="bathroomCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5及以上</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>请选择房龄</label>
+							<select id="houseAge" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">1980</option>
+								<option value="item-2">1981</option>
+								<option value="item-3">1982</option>
+								<option value="item-4">1983</option>
+								<option value="item-5">1984</option>
+								<option value="item-6">1985</option>
+								<option value="item-7">1986</option>
+								<option value="item-8">1987</option>
+								<option value="item-9">1988</option>
+								<option value="item-10">1989</option>
+								<option value="item-11">1990</option>
+								<option value="item-12">1991</option>
+								<option value="item-13">1992</option>
+								<option value="item-14">1993</option>
+								<option value="item-1">1994</option>
+								<option value="item-2">1995</option>	
+								<option value="item-10">1996</option>
+								<option value="item-11">1997</option>
+								<option value="item-12">1998</option>
+								<option value="item-13">1999</option>
+								<option value="item-14">2000</option>
+								<option value="item-1">2001</option>
+								<option value="item-3">2002</option>
+								<option value="item-4">2003</option>
+								<option value="item-5">2004</option>
+								<option value="item-6">2005</option>
+								<option value="item-7">2006</option>
+								<option value="item-8">2007</option>
+								<option value="item-9">2008</option>
+								<option value="item-10">2009</option>
+								<option value="item-11">2010</option>
+								<option value="item-12">2011</option>
+								<option value="item-13">2012</option>
+								<option value="item-14">2013</option>
+								<option value="item-15">2014</option>
+								<option value="item-16">2015</option>
+								<option value="item-16">2016</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>房屋类型</label>
+							<select id="buildingType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">公寓</option>
+								<option value="item-2">商铺</option>
+								<option value="item-3">办公楼</option>
+								<option value="item-4">别墅</option>
+								<option value="item-5">商住楼</option>
+								<option value="item-5">其他</option>
+							</select>	
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>装修类型</label>
+							<select id="decorationType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">毛坯</option>
+								<option value="item-2">简装</option>
+								<option value="item-3">中装</option>
+								<option value="item-4">精装</option>
+								<option value="item-5">豪装</option>
+							</select>
+						</div>
+				    </li>
+				    
+				    <li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>房屋朝向</label>
+							<select id="orientation" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="item-1">东</option>
+								<option value="item-2">南</option>
+								<option value="item-3">西</option>
+								<option value="item-4">北</option>
+								<option value="item-5">东南</option>
+								<option value="item-6">西南</option>
+								<option value="item-7">东北</option>
+								<option value="item-8">西北</option>
+							</select>
+						</div>
+					</li>
+				
+				    <li class="mui-table-view-cell">
+					    <div class="mui-input-row" style="margin: 10px 0px;">
+							<label>具体描述</label>
+							<div>
+							    <textarea id="detail" rows="5" placeholder="请输入您的房源具体描述" style="margin: 0px 10px ;"></textarea>
+						    </div>
+						</div>
+				    </li>
+				    
+				    <li class="mui-table-view-cell">
+						<div id="feature">
+							<form class="mui-input-group">
+								<div class="mui-input-row mui-checkbox mui-left">
+									<label>学区房</label>
+									<input id="schoolDistrictFlag" name="checkbox" value="Item 1" type="checkbox" checked="checked">
+							    </div>
+							    <div class="mui-input-row mui-checkbox mui-left">
+									<label>地铁沿线</label>
+									<input id="metroFlag" name="checkbox" value="Item 1" type="checkbox" >
+							    </div>
+							    <div class="mui-input-row mui-checkbox mui-left">
+									<label>满两年</label>
+									<input id="ownerOnlyFlag" name="checkbox" value="Item 1" type="checkbox" >
+							    </div>
+							    <div class="mui-input-row mui-checkbox mui-left">
+									<label>满五唯一</label>
+									<input id="overFiveOnlyFlag" name="checkbox" value="Item 1" type="checkbox" >
+							    </div>
+						    </from>
+						</div>
+					</li>
+				</ul>	
+				<div id='modifyHouseInfo' class="submit-btn btn-green">保存</div>
+			</section>
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>		
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var loginUser;
+			var myHouse;
+			var houseId ;
+			mui.init({
+				swipeBack: false
+			});
+			mui.ready(function() {
+				//初始化房源详细信息
+				loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));;
+				initHouseDetail();
+				//初始化微信分享
+				wxShare();
+			});
+			
+	        //增加房源修改按钮事件
+			document.querySelector('#modifyHouseInfo').addEventListener('tap', function() {
+				console.log('modifyHouseInfo click');
+				/*
+				mui.openWindow({
+					url: './MyHouse.html'
+				});
+				*/
+				checkHouseInfo();
+			}, false);
+			
+			//初始化房源详细信息
+			function initHouseDetail()
+			{
+				var data = localStorage.getItem("zmzfangMyHouseReferral");
+	        	console.log('zmzfangMyHouseReferral:'+data);
+	        	myHouse = JSON.parse(data);
+	        	
+	        	houseId = myHouse.houseid;
+	        	byId("region").value = myHouse.region;
+	        	byId("districtName").value = myHouse.districtname;
+	        	byId("houseNumber").value = myHouse.housenumber;
+	        	byId("roomNumber").value = myHouse.roomnumber;
+	        	
+	        	byId("buildingArea").value = myHouse.buildingarea;
+	        	byId("expectSalePrice").value = myHouse.expectsaleprice;
+
+	        	initSelectElementByValue('storey',myHouse.storey);
+	        	initSelectElementByValue('totalStorey',myHouse.totalstorey);
+	        	initSelectElementByValue('roomCnt',myHouse.roomcnt);
+	        	initSelectElementByValue('hallCnt',myHouse.hallcnt);
+	        	initSelectElementByValue('bathroomCnt',myHouse.bathroomcnt);
+	        	initSelectElementByText('houseAge',myHouse.houseage);
+	        	
+	        	initSelectElementByText('buildingType',myHouse.buildingtype);
+	        	initSelectElementByText('decorationType',myHouse.decorationtype);
+	        	initSelectElementByText('orientation',myHouse.orientation);
+	        	
+				byId("detail").value = myHouse.detail;
+				
+				if(myHouse.schooldistrictflag == 1)
+				{
+				 	$("#schoolDistrictFlag").attr("checked","checked");	
+				}
+				if(myHouse.metroflag == 1)
+				{
+				 	$("#metroFlag").attr("checked","checked");	
+				}
+				if(myHouse.owneronlyflag == 1)
+				{
+				 	$("#ownerOnlyFlag").attr("checked","checked");	
+				}
+				if(myHouse.overfiveonlyflag == 1)
+				{
+				 	$("#overFiveOnlyFlag").attr("checked","checked");	
+				}
+				
+			}
+			
+		    function modifyHouseInfo()
+			{
+				//var userid = localStorage.getItem("zmzfangLoginUserId");
+				var userid = myHouse.userid;
+				var houseid = myHouse.houseid;
+				var districtid = myHouse.districtid;
+				var districtname = myHouse.districtname;
+				
+				var housenumber = byId('houseNumber').value;
+				var roomnumber = byId('roomNumber').value;
+				
+				var buildingarea = byId('buildingArea').value;
+				var expectsaleprice =  byId('expectSalePrice').value;
+				
+				var storey = getSelectElementValue('storey');
+				var totalstorey = getSelectElementValue('totalStorey');
+				var roomcnt = getSelectElementValue('roomCnt');
+				var hallcnt = getSelectElementValue('hallCnt');
+				var bathroomcnt = getSelectElementValue('bathroomCnt');
+				
+				var houseage = getSelectElementText('houseAge');
+				
+				var buildingtype = getSelectElementText('buildingType');
+				var decorationtype = getSelectElementText('decorationType');
+				var orientation = getSelectElementText('orientation');
+
+				var detail=byId("detail").value;
+				
+				var schooldistrictflag = 0;
+				var metroflag = 0;
+				var owneronlyflag = 0;
+				var overfiveonlyflag = 0;
+				
+				if($("#schoolDistrictFlag").is(':checked'))
+				{
+				 	schooldistrictflag = 1;	
+				}
+				
+				if($("#metroflag").is(':checked'))
+				{
+				 	metroFlag = 1;
+				}
+				if($("#owneronlyflag").is(':checked'))
+				{
+				 	ownerOnlyFlag = 1;
+				}
+				if($("#overfiveonlyflag").is(':checked'))
+				{
+				 	overFiveOnlyflag = 1;
+				}
+				
+				var picture = myHouse.picture;
+				var options = {
+					houseid:houseid,
+					userid:userid,
+					region:myHouse.region,
+					districtid: districtid,
+					districtname: districtname,
+					housenumber: housenumber,
+					roomnumber: roomnumber,
+					buildingarea: buildingarea,
+					expectsaleprice: expectsaleprice,
+					storey: storey,
+					totalstorey: totalstorey,
+					roomcnt: roomcnt,
+					hallcnt: hallcnt,
+					bathroomcnt: bathroomcnt,
+					houseage: houseage,
+					buildingtype: buildingtype,
+					decorationtype: decorationtype,
+					orientation: orientation,
+					detail: detail,
+					schooldistrictflag: schooldistrictflag,
+					metroflag: metroflag,
+					owneronlyflag: owneronlyflag,
+					overfiveonlyflag: overfiveonlyflag,
+					picture: picture
+				};
+				
+				ajax_to_server(modifyHouseReferralUrl,options,modifyHouseSuccess,modifyHouseFailed);
+
+			}
+			
+			function modifyHouseSuccess(data)
+			{
+				console.log('modifyHouseSuccess data:'+JSON.stringify(data));
+				if((data && data.rscode == 0) || (data == 0))
+				{
+					var toastMSG = '房源修改成功！';
+					mui.toast(toastMSG);
+					var dstUrl = './MyHouseDetailReferral.html?houseid='+houseId;
+					mui.openWindow({
+						url: dstUrl
+					});
+				}
+				else
+				{
+					mui.toast('房源修改失败');
+				}
+				
+			}
+			
+			function modifyHouseFailed(data)
+			{
+				console.log('modifyHouseFailed data:'+JSON.stringify(data));
+				mui.toast('房源修改失败：'+JSON.stringify(data));
+			}
+			
+			function checkHouseInfo()
+			{	
+				var housenumber = byId('houseNumber').value;
+				var roomnumber = byId('roomNumber').value;
+				if(housenumber == null || housenumber == '')
+				{
+					housenumber = 0;
+				}
+				
+				if(roomnumber == null || roomnumber == '')
+				{
+					roomnumber = 0;
+				}
+				
+				
+				var buildingarea = byId('buildingArea').value;
+				var expectsaleprice = byId('expectSalePrice').value;
+				if(buildingarea == null || buildingarea == '' || isNaN(buildingarea))
+				{
+					prompt('请输入合法房源建筑面积');
+					return;
+				}
+				
+				if(expectsaleprice == null || expectsaleprice == '' || isNaN(expectsaleprice))
+				{
+					prompt('请输入合法房源价格');
+					return;
+				}
+				modifyHouseInfo();
+			}
+			
+			function prompt(data)
+			{
+				//byId('prompt').innerText = data;
+			    mui.toast(data);
+			}
+		</script>
+	</body>
+
+</html>

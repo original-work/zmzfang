@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			p{
+				font-size: 16px!important;
+			}
+			.row p span{color:#000}
+			
+			#sendMsgBnt{
+				color: green;
+				right: 20px;
+				top: 10px;
+				position: absolute;
+				font-size: 28px;
+			}
+			#systemUl p {
+			    font-size: 14px!important;
+			}
+			.mui-table-view-chevron .mui-table-view-cell {
+			    padding-right: 65px;
+			}
+			.not-allow{
+				color: #999;
+			    position: absolute;
+			    bottom: 10px;
+			    right: 3px;
+			    border: 1px solid #ccc;
+			    padding: 4px 6px;
+			    font-size: .8rem;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			}
+			.allow{
+				color: #fff;
+			    position: absolute;
+			    bottom: 10px;
+			    right: 3px;
+			    border: 1px solid #ccc;
+			    padding: 4px 6px;
+			    font-size: .8rem;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			    background: #4cd964;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的房源详情页</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="slider" class="mui-slider" >
+			   
+		    </div>
+			<div id="houseInfo" class="house-info">
+				<div class="card">
+					<h4 style="margin-bottom:10px" class="mui-ellipsis requirement-subject">
+						<span id="districtName"></span> <span id="modifyhouse" class="mui-icon mui-icon-compose" style="float:right;padding-right: 10px;"></span>
+					<span id="deleteHouse" class="mui-icon mui-icon-close" style="padding-right: 5px;float:right;"></span>
+					</h4>
+					<p><span>售价:</span> <span id="expectSalePrice" style="color:red;"></span>万元 (<span id="avgPrice" style="color:red;"></span>元/㎡)</h5>
+					<h5 id="tags"><!-- <span class="mui-badge mui-badge-success"></span> --></p>
+				</div>
+				<div class="card">
+					<ul class="row">
+				        <li class="col-xs-6">
+				            <p><span style="color:#999;">户型：</span><span id="roomCnt"></span>室<span id="hallCnt" ></span>厅<span id="bathRoomCnt"></span>卫</p>
+				        </li>
+				        <li class="col-xs-6">
+				        	<p><span style="color:#999;">面积：</span><span id="buildingArea"></span>㎡</p>
+				        </li>
+						<li class="col-xs-6">
+				            <p><span style="color:#999;">楼层：</span><span id="storey"></span>/<span id="totalStorey" ></span>层</p>
+				        </li>
+				        <li class="col-xs-6">
+				        	<p><span style="color:#999;">房龄：</span><span id="houseAge"></span>年</p>
+				        </li>
+				        <li class="col-xs-6">
+				        	<p><span style="color:#999;">装修：</span><span id="decorationType"></span></p>
+				        </li>	
+				        <li class="col-xs-6">
+				        	<p><span style="color:#999;">朝向：</span><span id="orientation"></span></p>
+				        </li>
+				        <li class="col-xs-6">
+				            <p><span style="color:#999;">房产类型：</span><span id="buildingType"></span></p>
+				        </li>
+				        <li class="col-xs-12">
+				            <div class="mui-input-row">
+								<p>详情描述：</p>
+								<div>
+								    <textarea id="detail" rows="5" placeholder="" disabled="disabled"></textarea>
+							    </div>
+							</div>
+				        </li>
+				    </ul>
+				</div>	
+			</div>	
+			
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/house.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+		
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var houseId;
+			var requirementId;
+			var requirementUserId;
+			var requirementUserName;
+			var houseCity;
+			
+			initUrlParam();
+			mui.init({
+				swipeBack: false
+			});
+
+			mui.back = function(){
+				mui.openWindow({
+					url: '../Mine/MyHouse.html'
+				});
+			};
+			
+			mui.ready(function() {
+				//初始化房源详细信息
+				initHouseDetail();
+			
+				initWxShareBackUrl();//分享后的返回键处理
+			});
+			
+			var slider = mui("#slider");
+			slider.slider({
+				interval: 5000
+			});
+	
+	         //增加房源修改按钮事件
+			document.querySelector('#modifyhouse').addEventListener('tap', function() {
+				console.log('modifyhouse click');
+				mui.openWindow({
+					url: './MyHouseModifyReferral.html'
+				});
+			}, false);
+			
+			
+			//增加房源删除按钮事件
+			document.querySelector('#deleteHouse').addEventListener('tap', function() {
+				console.log('deleteHouse click');
+				if(confirm("确认要删除此房源吗？"))
+				{
+					console.log('begin delete house');	
+					ajax_to_server(deleteHouseReferralUrl,{houseid: houseId},deleteHouseSuccess,null);
+					
+				}
+				else
+				{
+					console.log('cancel delete house');
+				}
+				
+			}, false);
+			
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 var houseId = getQueryStrFromUrl("houseId");
+				 console.log('initUrlParam houseId:'+houseId);
+				 if(houseId && houseId != ' ')
+				 {
+				 	localStorage.setItem('houseId',houseId);
+				 }
+				 houseCity = getQueryStrFromUrl("city");
+				  if(houseCity == ' ')
+				 {
+				 	//默认为上海
+				 	houseCity = "上海市";
+				 }
+				 else
+				 {
+				 	 houseCity = decodeURI(houseCity);
+				 }
+			}
+			
+			//增加微信分享处理
+			function initWxShare()
+			{
+				var houseId = localStorage.getItem('houseId'); 
+				var houseInfo = JSON.parse(localStorage.getItem('zmzfangMyHouseReferral'));
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			
+				//var calledUrl = String(window.document.location.href);
+				var link = 'http://www.zmzfang.com/weixin/Referral/HouseDetailReferral.html?houseId='+houseId;
+				var imgUrl = 'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg';
+				var param = new Object();
+				// param.getJssdkConfUrl = calledUrl;
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				if(houseInfo && loginUser)
+				{
+					var housetype = houseInfo.roomcnt+'室'+houseInfo.roomcnt+'厅'+houseInfo.bathroomcnt+'卫';
+					title = houseInfo.districtname + housetype;
+					title += houseInfo.decorationtype;
+					title += houseInfo.expectsaleprice + '万元';
+					imgUrl = loginUser.picture;
+				}
+				
+				param.title = title;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+			
+			function initHouseDetail()
+			{
+				houseId = localStorage.getItem("houseId");
+				console.log("houseId:"+houseId);
+				byId("houseInfo").setAttribute("house-id",houseId);
+				
+				ajax_to_server(getHouseDetailReferralUrl,{houseid:houseId},getHouseDetailSuccess,null);
+				
+			}
+			
+			//填充房源详细信息
+	        function getHouseDetailSuccess(data)
+	        {
+	        	var info = data.data;
+	        	//将我的需求详情写入到缓存中去；方便修改页面使用
+	        	localStorage.setItem("zmzfangMyHouseReferral",JSON.stringify(info));
+				console.log('getHouseDetailSuccess:'+JSON.stringify(info));
+	        	
+	        	byId("districtName").innerText = info.region + info.districtname;
+	        	byId("buildingArea").innerText = info.buildingarea;
+	        	byId("expectSalePrice").innerText = info.expectsaleprice;
+	        	
+	        	if(parseInt(info.buildingarea) != 0)
+	        	{
+	        		byId("avgPrice").innerText = parseInt(parseInt(info.expectsaleprice)*10000/parseInt(info.buildingarea));
+	        	}
+	        	
+	        	byId("storey").innerText = info.storey;
+	        	byId("totalStorey").innerText = info.totalstorey;
+	        	byId("roomCnt").innerText = info.roomcnt;
+	        	byId("hallCnt").innerText = info.hallcnt;
+	        	byId("bathRoomCnt").innerText = info.bathroomcnt;
+	        	byId("houseAge").innerText = info.houseage;
+	        	byId("buildingType").innerText = info.buildingtype;
+	        	byId("decorationType").innerText = info.decorationtype;
+	        	byId("orientation").innerText = info.orientation;
+	        	byId("detail").innerText = info.detail;
+	        	houseId = info.houseid;
+	        	//var publishuserid = data.publishuserid;
+	        	//处理特色字段
+	        	//处理系统推荐
+	        	//填充房源图片
+	        	var pictures = info.pictures.split(',');
+	        	var picObjArray = new Array();
+	        	for(var i in pictures)
+	        	{
+	        		console.log('pic:'+pictures[i]);
+	        		picObjArray.push({id:i,picture:pictures[i]});
+	        	}
+	        	
+	        	getHouseDetailListSuccess(picObjArray);
+	        	
+	        	//getHouseDetailListSuccess(data.picture);
+				//初始化微信分享
+				initWxShare();
+	        }
+	        
+	       
+			function deleteHouseSuccess(data)
+			{
+				if(data && data.rscode == 0)
+				{
+					mui.toast("删除需求成功");
+					mui.openWindow({
+						url: '../Mine/MyHouse.html'
+					});
+
+				}
+				else
+				{
+					mui.toast("删除房源失败，请重试");
+				}
+			}
+		    
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+    	<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+	<style type="text/css">
+		.mui-radio{font-size:.9rem;}
+    	.mui-radio label{margin-left: 8px}
+    	.mui-input-group .mui-input-row{color:#333;}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">产调查询结果</h1>
+			
+		</header>
+		<div class="mui-content">
+			<div  class="card">
+		    	<ul class="row">
+			        <li class="col-xs-6">
+			            <p><span style="color:#666;">产调ID：</span><span id="id"></span></p>
+			        </li>
+			        <li class="col-xs-6">
+			        	<p><span style="color:#666;">订单状态：</span><span id="status"></span></p>
+			        </li>
+			        <li class="col-xs-6">
+			            <p><span style="color:#666;">申请区域：</span><span id="area"></span></p>
+			        </li>
+			        <li class="col-xs-6">
+			            <p><span style="color:#666;">手机号码：</span><span id="mobile"></span></p>
+			        </li>
+			        <li class="col-xs-12">
+			        	<p><span style="color:#666;">产证地址：</span><span id="address"></span></p>
+			        </li>
+			        <li class="col-xs-12">
+			            <p><span style="color:#666;">申请时间：</span><span id="rtime"></span></p>
+			        </li>
+			        <li class="col-xs-12">
+			        	<p><span style="color:#666;">最后更新：</span><span id="ltime"></span></p>
+			        </li>
+			        <li class="col-xs-12">
+			            <div class="mui-input-row">
+							<p>详情描述：</p>
+							<div>
+							    <textarea id="detail" rows="5" placeholder="" disabled="disabled" style="margin-bottom: 0px"></textarea>
+						    	 <p></p>
+							</div>
+						</div>
+			        </li>
+			        <li class="col-xs-12">
+			            <div class="mui-input-row">
+							<p>产调结果：</p>
+							<div>
+							    <div id="pics">
+							    </div>
+							</div>
+						</div>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+		
+
+    <script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script>
+        //ajax
+		$(function(){
+			id = sessionStorage.getItem('cdid');
+			$.ajax({
+				 type:"POST",
+				 // url:"http://www.zmzfang.com/?r=tools/cd-search",
+				 url:getInterfaceUrl()+"?r=tools/cd-search",
+				 dataType:"json",
+				 data:{
+					id :id
+				 },
+				 success: function(data){
+				 		// console.log(data);
+				 		var status,ltime,str = '',pics='';
+				 		if(data.code == 1){
+				 			// console.log(data.response);
+				 			switch (data.response.status){
+				 				case "PAYED":
+				 				status = '待处理';
+				 				ltime = data.response.create_time;
+				 				break;
+				 				case "SUCCESS":
+				 				status = '已处理';
+				 				ltime = data.response.deal_time;
+				 				str +=  "产调说明：" + data.response.success_msg;
+				 				break;
+				 				case "REFUND":
+				 				status = '已退款';
+				 				ltime = data.response.deal_time;
+				 				break;
+				 			}
+				 			$("#status").html(status);
+				 			$("#ltime").html(ltime);
+				 			$("#rtime").html(data.response.create_time);
+				 			$("#id").html(data.response.id);
+				 			if(data.response.refund_fee){
+				 				str+= "退款金额："+ data.response.refund_fee+ "  退款说明："+ data.response.refund_msg
+				 			}
+				 			$("#address").html(data.response.address);
+				 			$("#mobile").html(data.response.mobile);
+				 			$("#amount").html(data.response.amount);
+				 			$("#area").html(data.response.area);
+				 			$("#detail").html(str);
+				 			for(i in data.response.images){
+				 				pics += "<img src='"+data.response.images[i]+"' style='width:100%'/>";
+				 			}
+				 			$("#pics").html(pics);
+				 		}else{
+				 			mui.toast("获取信息失败！请稍后重试！");
+				 		}
+
+					},
+				 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+			});
+		  });
+    </script>
+</body>
+</html>

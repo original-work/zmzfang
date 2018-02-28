@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:10px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.subject
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			.mui-scroll-wrapper
+			{
+				top: 95px;
+				bottom: 50px
+			}
+			#onlinePromptDiv,#offlinePromptDiv
+			{
+				margin: 2rem 0;
+			}
+			.prompt a{
+		    	padding: 0.5rem 0;
+		    	width: 7rem;
+		    	display: inline-block;
+		    	background-color: #4cd964;
+		    	color:#fff;
+		    	border-radius:.5rem .5rem .5rem .5rem;
+		    }
+		    
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我问</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/mine.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a id="onlineLink" class="mui-control-item mui-active" href="">
+						我问
+					</a>
+					<a id="offlineLink" class="mui-control-item" href="">
+						我约
+					</a>
+				</div>
+			</div>
+			
+			<div class="mui-slider-group">
+				<div id="online" class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul id="onlineAppointmentUl" class="mui-table-view">
+							<li id="onlinePromptLi" class="mui-table-view-cell mui-media mui-text-center mui-hidden">
+								<div id="onlinePromptDiv" class="prompt">
+									<h5>您还没有提问</h5>
+									<a id="onlinePromptLink" href="">快去提问</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="offline" class="mui-content mui-scroll-wrapper mui-hidden">
+					<div class="mui-scroll">
+						<ul id="offlineAppointmentUl" class="mui-table-view">
+							<li id="offlinePromptLi" class="mui-table-view-cell mui-media mui-text-center  mui-hidden">
+								<div id="onlinePromptDiv" class="prompt">
+									<h5>您还没有约见</h5>
+									<a id="offlinePromptLink" href="">快去约TA</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/Mine/AppointmentList.js?v=0.01"></script>
+		
+	</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+
+		<title>芝麻找房</title>
+		<style type="text/css">
+			.col-xs-3{padding:0;}
+			h5{border-bottom:2px solid #efefef;padding-bottom: 8px}
+			.mui-content{padding:10px;}
+			#first li ,#second li {list-style: none;text-align: center;}
+			#first li img,#second li img{width: 40px;height:40px;border-radius: 50%}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">邀请天梯榜</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" id="list">
+			</ul>
+			<ul class="mui-table-view" id="mine">
+			    <li class="mui-table-view-cell" style="background: #eee">
+			        <a class="mui-navigate-right">
+			        	<p style="position:absolute;left:12px;font-size: 1.2rem;top:30%"><span class="sort"></span>.</p>
+			        	<div style="margin-left:30px;">
+			        		<p><img class="mypic" style="width:32px;height:32px;border-radius: 50%;vertical-align:middle;margin-right:8px;" src="http://www.zmzfang.com/weixin/img/favicon.ico" /><span style="color:#666">我</span><span class="total" style="position:absolute;right:50px;font-size: 1.2rem;top:30%"> - </span></p>
+			        	</div>
+			        </a>
+			    </li>
+			</ul>
+		</div>
+
+	<script src="../../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/auth.js"></script>
+	<script type="text/javascript" src="../../js/wxShare.js"></script>
+
+	<script type="text/javascript">
+		mui.init();
+		$('.mui-content').Auth({'wechat':false});
+		var loginUser = userInfo
+		$('.mypic').attr('src',loginUser.picture)
+		var options = {}		
+		options.userid = loginUser.id;
+		jQuery.ajax('http://www.zmzfang.com/?r=mission/sort', {
+				data: JSON.stringify(options),
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					if(data.rescode == 0){
+						$('.sort') .text(data.sort);
+						$('.total') .text(data.total);
+					}else{
+						mui.toast('排名获取失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+		jQuery.ajax('http://www.zmzfang.com/?r=mission/sort-list', {
+				data: {},
+				dataType: 'json',
+				type: 'post',
+				timeout: 3000,
+				async: false,
+				success: function(data) {
+					var l ='';
+					if(data.length > 0){
+						for (i in data){
+						l += '<li class="mui-table-view-cell" data-userid='+data[i].userid+'>'
+					        +'<a class="mui-navigate-right">'
+					        	+'<p style="position:absolute;left:12px;font-size: 1.2rem;top:30%">'+(parseInt(i)+1)+'.</p>'
+					        	+'<div style="margin-left:30px;">'
+					        		+'<p><img style="width:32px;height:32px;border-radius: 50%;vertical-align:middle;margin-right:8px;" src="'+data[i].picture+'" /><span style="color:#666">'+data[i].nickname+'</span><span style="position:absolute;right:50px;font-size: 1.2rem;top:30%">'+data[i].reward+'</span></p>'
+					        	+'</div>'
+					        +'</a>'
+					    +'</li>';
+					    }
+					    // console.log(l)
+					    $('#list').append(l)
+					    // $('#list li').on('tap',function(){
+					    // 	window.location.href="../AgentInfo.html?userId="+$(this).attr('data-userid');
+					    // })
+					}else{
+						mui.toast('排名获取失败！')
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui('当前网络不通畅，请稍后再试！')
+				}
+			});
+	</script>
+</body>
+</html>

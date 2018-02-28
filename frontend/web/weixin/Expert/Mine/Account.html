@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			
+			.mui-input-row{
+				padding:5px 15px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.subject
+			{
+				font-size:14px;
+				margin-top: 5px;
+				text-align:right;
+			}
+			.subject span
+			{
+				padding-left:10px;
+			}
+			
+			.account
+			{
+				font-size:14px;
+				margin-top: 5px;
+				text-align:left;
+			}
+			
+			.chart {
+				height: 200px;
+				margin: 0px;
+				padding: 0px;
+			}
+			h5 {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+			h5:first-child {
+				margin-top: 15px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的账户</h1>
+		</header>
+		
+		<div class="mui-content">
+			
+			<div class="mui-content-padded">
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">	
+						<h5>账户余额：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<h5><span id="account">0</span>元 <span id="drawed" class="item mui-badge mui-badge-success">提现 </span> </h5>
+					</div>		
+				</div>
+			</div>
+			
+			<div class="mui-content-padded">
+				<div class="chart mui-hidden" id="pieChart"></div>
+			</div>
+			
+			<section style="margin-top: 5px;">
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">	
+						<span>历史总收入：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="historyincome">0</span>元
+					</div>		
+				</div>
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">
+						<span>历史总收益：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="historyprofit">0</span>元
+					</div>		
+				</div>
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">
+						<span>已提现的收益：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="drawedprofit">0</span>元
+					</div>		
+				</div>
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">
+						<span>已支出的收益：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="usedprofit">0</span>元
+					</div>		
+				</div>
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">
+						<span>未提现的收益：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="remainedprofit">0</span>元
+					</div>		
+				</div>
+				
+				<div class="mui-input-row">
+					<div class="col-xs-6 subject">
+						<span>已冻结的收益：</span>
+					</div>
+					
+					<div class="col-xs-6 account">
+						<span id="lockingprofit">0</span>元
+					</div>		
+				</div>
+								
+				<div style="text-align: center;padding-top: 5px;">
+					<button id="showDetail" type="button" class="mui-btn" style="width: 90%;height: 40px;background-color: #4cd964;color: #fff;">
+						查看明细
+					</button>
+				</div>
+			</section>	
+		</div>
+	    
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/echarts-all.js"></script>
+		
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/Mine/Account.js?v=0.01"></script>
+		
+	</body>
+</html>

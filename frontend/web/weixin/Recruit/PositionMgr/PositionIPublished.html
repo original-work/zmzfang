@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.02" />
+	
+		<style type="text/css">
+			.mui-scroll-wrapper{
+				top: 44px;
+				bottom: 0px
+			}
+			.mui-table-view{
+				background-color: #efeff4;
+			}
+			h5{color:#666;margin-bottom: 5px}
+			p{margin-bottom: 3px}
+			#allUl{background-color: #fff}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我发布的职位</h1>
+		</header>
+
+
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="positionList" class="mui-table-view mui-table-view-chevron">
+					</ul>
+					
+					<div id="resumeDiv" class="mui-hidden">
+						<div style="padding: 10px 10px;">
+							<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+								<a id="allLink" class="mui-control-item mui-active" href="">
+									所有简历
+								</a>
+								<a id="unHandledLink" class="mui-control-item" href="">
+									未处理
+								</a>
+								<a id="handledLink" class="mui-control-item" href="">
+									已处理
+								</a>
+							</div>
+						</div>
+				
+						<div class="mui-slider-group" style="clear: both;">
+							<div id="all">
+									<!--数据列表-->
+								<ul id="allUl" class="mui-table-view">
+								</ul>
+							</div>
+							
+							<div id="unHandled" class="mui-hidden">
+								<!--数据列表-->
+								<ul id="unHandledUl" class="mui-table-view">
+								</ul>
+							</div>
+							
+							<div id="handled" class="mui-hidden">
+								<!--数据列表-->
+								<ul id="handledUl" class="mui-table-view">
+								</ul>
+							</div>
+						</div>	
+					</div>
+					
+				
+				</div>
+			</div>
+			
+					
+			
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/ajax.js"></script>
+		<script src="../../js/commonAjax.js"></script>
+		<script src="../../js/Recruit/common/common.js"></script>
+		<script src="../../js/wxShare.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			var globalCnt = 10;
+			var resumeStartSn = 0;
+			var loginUser = null;
+			
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+
+			mui.init(
+			{
+				swipeBack: false,
+				gestureConfig:{
+						doubletap:true
+				},
+				pullRefresh: {
+					container: '#pullrefresh',
+					// down: {
+					// 	callback: pulldownRefresh
+					// },
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+
+			mui.ready(function() {
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				loginUser = JSON.parse(data);
+				//获取我发布的所有职位
+				getMyRecruitList();
+				//获取我收取到的所有简历
+				initResumeListAll();
+			});
+
+			function pullupRefresh() {
+				
+				var self = this;
+				setTimeout(function() {
+					initResumeListAll(resumeStartSn);
+					self.endPullupToRefresh(false); 
+				}, 1000);
+			}
+
+			//增加职位列表中tap事件
+			mui('#positionList').on('tap', 'li', function() {
+				var recruitid = $(this).children().attr('recruitid');
+				localStorage.setItem("recruitid", recruitid);
+
+				var dstUrl = './PostionDetail.html?recruitid='+recruitid;
+				console.log("is is is "+$(".mui-scroll").css('transform').split(","));
+				// var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				// history.replaceState({}, "职位列表", "PositionIPublished.html?offset="+offset);
+				history.replaceState({}, "职位列表", "PositionIPublished.html");
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'PostionDetail.html'
+				});
+			});
+			
+			//增加简历列表中tap事件
+			mui('#allUl,#unHandledUl,#handleUl').on('tap', '.resume-brief', function() {
+				var resumeId = this.getAttribute('resume-id');
+				var recruitId = this.getAttribute('recruit-id');
+				var deliveryId = this.getAttribute('delivery-id');
+
+				var dstUrl = '../ResumeMgr/ResumeDetail.html?resumeId='+resumeId+"&recruitId="+recruitId+"&deliveryId="+deliveryId;
+				mui.openWindow({
+					url: dstUrl,
+					id: 'ResumeDetail.html'
+				});
+			});
+			
+			
+			//tap 点击所有简历 事件
+			document.querySelector('#allLink').addEventListener('tap', function() {
+				
+				$('#all').removeClass('mui-hidden');
+				$('#unHandled').addClass('mui-hidden');
+				$('#handled').addClass('mui-hidden');
+				
+				if(resumeStartSn == 0)
+				{
+					initResumeListAll();
+				}
+			}, false);
+			
+			//点击 未处理 简历事件
+			document.querySelector('#unHandledLink').addEventListener('tap', function() {
+				$('#all').addClass('mui-hidden');
+				$('#unHandled').removeClass('mui-hidden');
+				$('#handled').addClass('mui-hidden');
+				
+				if(resumeStartSn == 0)
+				{
+					initResumeListAll();
+				}
+			}, false);
+
+			//点击 已处理 简历事件
+			document.querySelector('#handledLink').addEventListener('tap', function() {
+				$('#all').addClass('mui-hidden');
+				$('#unHandled').addClass('mui-hidden');
+				$('#handled').removeClass('mui-hidden');
+				
+				if(resumeStartSn == 0)
+				{
+					initResumeListAll();
+				}
+			}, false);
+			
+			function getMyRecruitList()
+			{
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+
+				var options = new Object();
+				options.userid = user.id;
+		
+				ajax_get_my_recruit_list(options);
+			}
+
+			function getMyRecruitListSuccess(data)
+			{
+				console.log("getMyRecruitListSuccess: data is "+JSON.stringify(data));
+				var positionList=$('#positionList');
+				if(!data || data.length == 0){
+					positionList.html('<div style="color:#ccc;padding:30px 0;text-align:center">暂未发布职位;</div>');
+					
+					return;
+				}
+				$('#resumeDiv').removeClass('mui-hidden');
+				
+				var firstFrag ='';
+				for(var i in data)
+				{
+					firstFrag +=fillMyRecruitListLi(data[i]);
+				}
+			
+				positionList.append(firstFrag);
+			}
+
+
+
+			fillMyRecruitListLi = function(data) {
+				var headpic = data.organizationpic?data.organizationpic:data.headpic
+				var liContent = '';
+				liContent += '<li class="card">';
+				liContent += '<div recruitid="'+data.recruitid+'">';
+				liContent += '<div style="width: 42px;height: 60px;position: relative;overflow: hidden;float: left;"><img class="mui-media-object circle-img" src="'+headpic+'" alt="个人头像"></div>';
+				liContent += '<div style="margin-left:50px;"><h5>'+data.recruitsubject+'</h5><p><svg class="icon" aria-hidden="true"><use xlink:href="#icon-position"></use></svg> '+data.recruitposition+' | <svg class="icon" aria-hidden="true"><use xlink:href="#icon-location"></use></svg> '+data.location;
+				liContent += '</p><p><svg class="icon" aria-hidden="true"><use xlink:href="#icon-workperiod"></use></svg> '+glb.workperiod[data.workperiod]+' | <svg class="icon" aria-hidden="true"><use xlink:href="#icon-salary"></use></svg> '+glb.salary[data.salary];
+				liContent += ' | <svg class="icon" aria-hidden="true"><use xlink:href="#icon-education"></use></svg>'+data.education+'</p></div>';
+				liContent += '</div>';
+				liContent += '</li>';
+
+				return liContent;
+			}
+			
+			function initResumeListAll(startSn)
+			{
+				var optionObj = new Object();
+				optionObj.userid = loginUser.id;
+				
+				optionObj.start = arguments[0] ? arguments[0] : 0;
+				optionObj.count = arguments[1] ? arguments[1] : globalCnt;;
+				var url = getResumeListAllUrl;
+				ajax_to_server(url,optionObj,getResumeListAllSuc,getResumeListAllFailed);
+			}
+			
+			function getResumeListAllSuc(data)
+			{
+				console.log('getResumeListAllSuc:data'+JSON.stringify(data));
+				if(data.resumelist && data.resumelist.length == 0)
+				{
+					return;
+				}
+				
+				var allUl = $('#allUl');
+				var unHandledUl = $('#unHandledUl');
+				var handledUl = $('#handledUl');
+				
+				var allFrag = document.createDocumentFragment();
+				var unHandledFrag = document.createDocumentFragment();
+				var handledFrag = document.createDocumentFragment();
+				//无数据显示提示
+				
+				var resumeList = data.resumelist;
+				//有数据显示列表
+				for(var i in resumeList)
+				{
+					
+					allFrag.appendChild(NewResumeInfoLi(resumeList[i]));
+					if(resumeList[i].status == "0")
+					{
+						unHandledFrag.appendChild(NewResumeInfoLi(resumeList[i]));
+					}
+					if(resumeList[i].status == "1")
+					{
+						handledFrag.appendChild(NewResumeInfoLi(resumeList[i]));
+					}
+					
+				}
+				resumeStartSn += resumeList.length;
+				allUl[0].appendChild(allFrag);	
+				unHandledUl[0].appendChild(unHandledFrag);
+				handledUl[0].appendChild(handledFrag);
+				
+				$('#allLink').text('所有简历('+data.resumecnt+')');
+				$('#unHandledLink').text('未处理('+data.notdealedcnt+')');
+				$('#handledLink').text('已处理('+data.dealedcnt+')');
+			}
+			
+			function getResumeListAllFailed(errorThrown, options)
+			{
+				mui.toast('获取信息失败');
+			}
+
+
+		</script>
+	</body>
+
+</html>

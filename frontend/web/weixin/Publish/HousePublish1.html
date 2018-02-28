@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			
+			/*hxj*/
+			#popup {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: #fff;
+				box-sizing: border-box;
+				overflow: auto;
+				-webkit-overflow-scrolling: touch;
+				-webkit-transition-property: -webkit-transform;
+				transition-property: transform;
+				/*左右*/
+				-webkit-transform: translateX(100%);
+				transform: translateX(100%);
+				-webkit-transition: -webkit-transform .2s cubic-bezier(0,0,.25,1);
+				transition: transform .2s cubic-bezier(0,0,.25,1);
+				/*上下*/
+				/*-webkit-transform: translate3d(0,-100%,0);*/
+				/*transform: translate3d(0,-100%,0);*/
+				z-index: 999;
+			}
+			#popup.active {
+				-webkit-transform: translateX(0);
+				transform: translateX(0);
+			}
+			.mui-table-view .mui-media-object{
+				line-height: 64px!important;
+				max-width: 64px!important;
+				height: 64px!important;
+			}
+			.img-responsive{
+				display: block;
+				max-width: 100%;
+				height: auto;
+			}
+			#subject{
+				margin-top: 10px;
+				margin-bottom: 10px;
+				text-align: center;
+				position: relative;
+			}
+			nav.header-nav{
+				padding: .6rem .75rem;
+			}
+			nav.header-nav a{
+				border: 1px solid #ddd;
+				padding: .25rem 0;
+				width: 4rem;
+				display: inline-block;
+				color:#999;
+				background: #fff;
+			}
+			nav.header-nav a:first-child{
+				border-radius:.3rem 0 0 .3rem;
+				border-right: none;
+			}
+			nav.header-nav a:last-child{
+				border-radius:0 .3rem .3rem 0;
+				border-left: none;
+			}
+			nav.header-nav a.current {
+				color: #fff;
+				background: #4cd964;
+			}
+			
+			#city{
+				width:80%;
+				float:left;
+			}
+			
+			#districtName {
+				border: 1px solid rgba(0,0,0,.2);
+				width: 80%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">房源发布</h1>
+		</header>
+		
+		<div class="mui-content">
+			<section id="displayAfterLoginDiv" class="house-info-first">
+				<div id="subject">
+						<nav class="header-nav">
+							<a href="http://www.zmzfang.com/weixin/Expert/Mine/HelpPublish1.html">求助
+							<a href="http://www.zmzfang.com/weixin/Publish/RequirementPublish1.html">求购
+							<a href="http://www.zmzfang.com/weixin/Publish/RentPublish1.html">求租
+							<a class="current" href="http://www.zmzfang.com/weixin/Publish/HousePublish1.html">发房源</a>
+						</nav>
+				</div>
+				<ul id="houseInfoList1" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<p id="prompt">房源信息仅作为需求匹配，不会泄露房号和个人隐私</p>
+							
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<button id='city' class="mui-btn mui-btn-block mui-disabled" type='button'>点击选择城市</button>
+							<input id="districtName" name="districtName" type="text" placeholder="请输入小区名称" readonly="readonly">
+							<input name="districtId" class="mui-hidden" id="districtId" type="text" placeholder="请输入小区ID" >
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<input id="houseNumber" type="text" placeholder="" style="width: 100px;border:1px solid #EFEFF4;margin-bottom: 1px;">
+							<span>号</span>
+							<input id="roomNumber" type="text" placeholder="" style="width: 100px;border:1px solid #EFEFF4;;margin-bottom: 1px;">
+							<span>室</span>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<input id="buildingArea" type="text" class="mui-input-clear" placeholder="建筑面积" style="width: 80%;">
+							<span>㎡</span>
+						</div>
+					</li>
+				   
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<input id="expectSalePrice" type="text" class="mui-input-clear" placeholder="期望售价" style="width: 80%;">
+							<span>万</span>
+						</div>
+					</li>
+				</ul>
+				
+				<ul id="houseInfoList2" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>所在楼层</label>
+							<select id="storey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+								<option value="34">34</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>总楼层</label>
+							<select id="totalStorey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+								<option value="34">34</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>室</label>
+							<select id="roomCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6及以上</option>
+							</select>
+						</div>
+					</li>
+						
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>厅</label>
+							<select id="hallCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5及以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>卫</label>
+							<select id="bathroomCnt" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5及以上</option>
+							</select>
+						</div>
+					</li>
+				</ul>
+				
+				<div   id='showHousePublish2' style="padding:7px 0;border:1px solid #ccc;background:#fff;margin:15px 10px;text-align:center;"><a style="color:#666">下一步</a></div>
+			</section>
+		</div>
+		
+		<div id="popup">
+			<header class="mui-bar mui-bar-nav">
+				<button id="closePopup" class="mui-btn mui-btn-link mui-btn-nav mui-pull-left">取消</button>
+				<h1 class="mui-title"><input type="text" id="keywords" placeholder="请输入小区名称" oninput="getDistrictMatch()"></h1>
+			</header>
+			
+			<div class="mui-content">
+				<div id="district">
+				</div>
+			</div>
+		</div>
+		
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/auth.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var loginUser;
+			var city = null;
+			var toastMSG;
+			mui.init({
+				swipeBack: false
+			});
+			//初始化用户信息及检查
+			$('.mui-content').Auth({wechat:false})
+			
+			mui.ready(function() {
+				//初始化
+				loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				if(loginUser && loginUser.city)
+				{
+					city = loginUser.city;
+					byId('city').innerText = city;
+				}
+				
+				//处理从发布页面2返回到发布页面1的情况
+				initHouseInfo();
+				//初始化微信分享
+				wxShare();
+				
+				//初始化参数
+				initUrlParam();
+			});
+			
+			mui.back = function(){
+				mui.openWindow({
+					url: '../HomePage/index.html'
+				});
+			};
+			
+			//增加房源发布 下一步 按钮事件
+			document.querySelector('#showHousePublish2').addEventListener('tap', function() {
+				console.log('showHousePublish2 click');
+				checkHouseInfo();
+			}, false);
+			
+			//增加url参数处理
+			function initUrlParam()
+			{
+				localStorage.setItem('zmzfangBidMgrBackInfo',null);
+				 var requirementId = getQueryStrFromUrl("backRequirementId");
+				 var userId = getQueryStrFromUrl("userid");
+				 console.log('initUrlParam backRequirementId:'+requirementId);
+				 console.log('initUrlParam backUserId:'+userId);
+				 
+				 if(requirementId && requirementId != ' ' && userId && userId !=' ')
+				 {
+					var info = {
+						requirementid:requirementId,
+						userid:userId
+					};
+					localStorage.setItem('zmzfangBidMgrBackInfo',JSON.stringify(info));
+				 }
+			}
+			
+			function checkHouseInfo()
+			{
+				var districtid = byId('districtId').value;
+				var districtname = byId('districtName').value;
+				if(districtid == null || districtid == '')
+				{
+					prompt('请从下拉框中选择房源所属小区');
+					return;
+				}
+				if(districtname == null || districtname == '')
+				{
+					prompt('请从下拉框中选择房源所属小区');
+					return;
+				}
+				
+				var housenumber = byId('houseNumber').value;
+				var roomnumber = byId('roomNumber').value;
+				if(housenumber == null || housenumber == '')
+				{
+//					if(loginUser.agentflag == 1)
+//					{
+//						prompt('请输入房源所属楼栋号');
+//						return;
+//					}
+					housenumber = 0;
+				}
+				
+				if(roomnumber == null || roomnumber == '')
+				{
+//					if(loginUser.agentflag == 1)
+//					{
+//						prompt('请输入房源室号');
+//						return;
+//					}
+					roomnumber = 0;
+				}
+				
+				
+				var buildingarea = byId('buildingArea').value;
+				var expectsaleprice = byId('expectSalePrice').value;
+				if(buildingarea == null || buildingarea == '' || isNaN(buildingarea))
+				{
+					prompt('请输入合法房源建筑面积');
+					return;
+				}
+				
+				if(expectsaleprice == null || expectsaleprice == '' || isNaN(expectsaleprice))
+				{
+					prompt('请输入合法房源价格');
+					return;
+				}
+				enterHousePublish2();
+			}
+			
+			function enterHousePublish2()
+			{
+				//将输入信息保存到缓存中
+				saveHouseInfo();
+				mui.openWindow({
+					url: './HousePublish2.html'
+				});
+			}
+			
+			function prompt(data)
+			{
+				//byId('prompt').innerText = data;
+				mui.toast(data);
+			}
+			
+			function initHouseInfo()
+			{
+				//从缓存中获取信息，用于房源发布界面2 返回发布界面1
+			}
+			
+			//将输入信息保存到缓存中
+			function saveHouseInfo()
+			{
+				var districtid = byId('districtId').value;
+				var districtname = byId('districtName').value;
+				var housenumber = byId('houseNumber').value;
+				var roomnumber = byId('roomNumber').value;
+				var buildingarea = byId('buildingArea').value;
+				var expectsaleprice = byId('expectSalePrice').value;
+				
+				var index = byId("storey").selectedIndex;
+				var storey = byId("storey").options[index].value;
+				
+				index = byId("totalStorey").selectedIndex;
+				var totalstorey = byId("totalStorey").options[index].value;
+				
+				index = byId("roomCnt").selectedIndex;
+				var roomcnt = byId("roomCnt").options[index].value;
+				
+				index = byId("hallCnt").selectedIndex;
+				var hallcnt = byId("hallCnt").options[index].value;
+				
+				index = byId("bathroomCnt").selectedIndex;
+				var bathroomcnt = byId("bathroomCnt").options[index].value;
+				
+				localStorage.setItem("hpublish-districtid",districtid);
+				localStorage.setItem("hpublish-districtname",districtname);
+				localStorage.setItem("hpublish-housenumber",housenumber);
+				localStorage.setItem("hpublish-roomnumber",roomnumber);
+				localStorage.setItem("hpublish-buildingarea",buildingarea);
+				localStorage.setItem("hpublish-expectsaleprice",expectsaleprice);
+				localStorage.setItem("hpublish-storey",storey);
+				localStorage.setItem("hpublish-totalstorey",totalstorey);
+				localStorage.setItem("hpublish-roomcnt",roomcnt);
+				localStorage.setItem("hpublish-hallcnt",hallcnt);
+				localStorage.setItem("hpublish-bathroomcnt",bathroomcnt);
+			}
+			
+			//  hxj
+
+			$('#districtName').on('tap',function(){
+					$('#popup').addClass('active');
+					$('#keywords').focus();$('#keywords').trigger('tap');
+
+					document.body.style.overflow='hidden';
+
+			});
+			$('#closePopup').on('tap',function(){
+						$('#popup').removeClass('active');
+						document.body.style.overflow='';
+					});
+			mui('#district').on('tap','li',function(){
+					
+					var Name = this.getAttribute("data-name");
+					var Id = this.getAttribute("data-id");
+					console.log(Name);
+					console.log(Id);
+					$('#popup').removeClass('active');
+					$('#districtName').val(Name);
+					$('#districtId').val(Id);
+					document.body.style.overflow='';
+			});
+
+
+
+			function getDistrictMatch()
+			{
+				var keys = $("#keywords").val().trim();
+				if(!keys){
+					$('#district').html('<li class="mui-table-view-cell mui-media">如无小区，请公众号内留言小区名称</li>');
+					return;
+				}
+				//alert(keys);
+				ajax_to_server(getDistrictMatchByCityUrl,{keys: keys,city: city},getDistrictMathSuccess,null);
+			}
+
+			function getDistrictMathSuccess(data){
+				var district=$('#district');
+				var str = '';
+				for(var i in data)
+				{
+					var datas = fillDistrictList(data[i]);
+					// console.log('\n districtid:'+districtid);
+					str += datas;
+				}
+				var promoInfo = fillPromoInfo();
+				str += promoInfo;
+				
+				district.html(str);
+			}
+
+			function fillDistrictList(data){
+					var did = data.districtid;
+					var dname = data.districtname;
+					var address = data.address;
+
+					var liContent = '<li class="mui-table-view-cell mui-media" data-id="'+did+'" data-name="'+dname+'"">';
+					liContent += dname;
+					liContent += '(';
+					liContent += address;
+					liContent += ')';
+					
+					return liContent;
+			}
+
+			function fillPromoInfo()
+			{
+				var liContent = '<li class="mui-table-view-cell mui-media">';
+				liContent += '如无小区，请公众号内留言小区名称';
+				liContent += '</li>';
+				return liContent;
+			}
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				top: 95px;
+				bottom: 50px
+			}
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			
+		</style>
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">消息中心</h1>
+		</header>
+		<script id='msg-template' type="text/template">
+			<% var lenght = record.length;
+				for(var i=lenght-1;i>=0;i--)
+				{ 
+					var item=record[i]; 
+					var dstUserid=0; 
+					var dstNickName='';
+					var hiddenFlag='';
+					if(loginuserid == item.sender || item.sender == 'self')
+					{
+						//本人发送的消息
+						dstUserid = item.sendee;
+						dstNickName = item.sendeenickname;
+					}
+					else
+					{
+						//他人发送的消息
+						dstUserid = item.sender;
+						dstNickName = item.sendernickname;
+					}
+					
+					if(!item.num || item.num == 0)
+					{
+						hiddenFlag = 'mui-hidden';
+					}
+				%>
+			<div class="msg-item <%= (item.sender=='self'?' msg-item-self':'') %>" msg-type='<%=(item.type)%>' msg-content='<%=(item.content)%>'>
+
+				<li id="li-<%=(item.sender)%>" class="mui-table-view-cell mui-media">
+					<div class="mui-slider-right mui-disabled">
+						<a id="delete-<%=(item.sender)%>" class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div id="info-<%=dstUserid%>-<%=(dstNickName)%>" class="mui-slider-handle mui-table">
+						<img class="mui-media-object mui-pull-left" src="<%=(item.headUrl)%>" style="border-radius:50% ;width:42px;height:42px;">
+						<div class="mui-media-body">
+							<span  style="display:inline-block; width:100px; "><%=(dstNickName)%></span>
+							<font id="personid-time" size="2" class="mui-pull-right">
+								<%=(item.time)%>
+							</font>
+							<p class='mui-ellipsis' style="padding-right: 10px;">
+								<span id="personid-content" class='mui-ellipsis' style="display:inline-block; width:150px; "><%=(item.content)%></span>
+								<span id="personid-num" class="mui-badge mui-pull-right <%=(hiddenFlag)%>" style="background-color: red; color: white; "><%=(item.num)%></span>
+							</p>
+						</div>
+					</div>
+				</li>
+				<% } %>
+		</script>
+		
+		<div class="mui-content">
+			
+			
+			<div class="mui-scroll">
+				<ul id="imUl" class="mui-table-view">
+<!-- 
+					<li id="personid" class="mui-table-view-cell mui-media">
+						<div class="mui-slider-right mui-disabled">
+							<a class="mui-btn mui-btn-red">删除</a>
+						</div>
+
+						<div id="info-15800597248" class="mui-slider-handle mui-table">
+							<img id="personid-img" class="mui-media-object mui-pull-left" src="http://www.zmzfang.com/weixin/img/head/wuzy.jpg" style="border-radius:50% ;">
+							<div class="mui-media-body">
+								<span id="personid-nickname" class='mui-ellipsis' style="display:inline-block; width:100px; ">丫头片2子</span>
+								<font id="personid-time" size="2" class="mui-pull-right">09:00</font>
+								<p class='mui-ellipsis' style="padding-right: 10px;">
+									<span id="personid-content" class='mui-ellipsis' style="display:inline-block; width:150px; ">周末去不去周周末去不去周末末去不去周末周末去不去周2？</span>
+									<span id="personid-num" class="mui-badge mui-pull-right" style="background-color: red; color: white; ">1</span>
+								</p>
+							</div>
+
+						</div>
+
+					</li>
+ -->
+				</ul>
+			</div>
+
+		</div>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/arttmpl.js"></script>
+		<script src="../js/jquery.min.js"></script>
+	<!--	<script src="http://app.cloopen.com/im50/ytx-web-im-min-new.js"></script>-->
+		<script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+		<!--<script src="../js/im.listen.js"></script>-->
+		<script src="../js/common.js"></script>
+		<script src="../js/user.js"></script>
+		<!--<script src="../js/im.listen.js"></script>-->
+		<script src="../js/im.list.js?v=0.04"></script>
+		
+		<script type="text/javascript">
+		mui.ready(function() {
+			$('#msgLink').addClass('mui-active');
+			
+		});
+		</script>
+		
+	
+		
+	</body>
+
+</html>

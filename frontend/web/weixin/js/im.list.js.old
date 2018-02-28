@@ -1,0 +1,105 @@
+var byId = function(id) {
+	return document.getElementById(id);
+};
+
+var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+mui.init();
+mui.ready(function() {
+	initIm();
+	initExpertLink();
+});
+	
+mui.back = function(){
+	mui.openWindow({
+		url: '../index.html'
+	});
+};
+function initIm(){
+	if(loginUser && loginUser.id){
+		initMsgs(loginUser.id,'imUl');
+	}else{
+		mui.toast('请从公众号登陆后再重试！');
+	}
+	if(loginUser && loginUser.expertid){
+		initMsgs(loginUser.expertid,'expertMsgsUl');
+	}else{
+		$('#linkDiv').hide();
+	}
+}
+function initMsgs(userId,domId)
+{
+	var userMsg='';
+	var systemMsg='';
+	$.ajax('https://zmzf0001.wilddogio.com/'+userId+'/list.json',{
+		dataType:'jsonp',
+		type:'get',
+		timeout:10000,
+		headers:{'Content-Type':'application/json'},
+		success:function(data){
+			mui.each(data,function(index,item){
+				var dstUserId = (item.sendee === userId)?item.sender:item.sendee;
+				var dstNickname = (item.sendee === userId)?item.sendernickname:item.sendeenickname;
+				var offlinenum = item.offlinenum?'<span class="upperImg">'+item.offlinenum+'</span>':'';
+				// var offlinenum = '<span class="upperImg">1</span>';
+				var sendtime = formatStringyyyyMMddToTimeAgo(item.time);
+				if(item.sender == 'system'){
+					systemMsg += '<li class="mui-table-view-cell mui-media" dst-user-id="'+dstUserId+'" dst-nick-name="'+dstNickname+'"><a href="javascript:;">';
+					systemMsg += '<img class="mui-media-object mui-pull-left" src="'+item.headUrl+'">'+offlinenum;
+					systemMsg += '<div class="mui-media-body">'+dstNickname+'<p class="mui-ellipsis">'+item.content+'</p><p class="sendtime">'+sendtime+'</p></div></a></li>';
+				}else{
+					userMsg += '<li class="mui-table-view-cell mui-media" dst-user-id="'+dstUserId+'" dst-nick-name="'+dstNickname+'"><a href="javascript:;">';
+				userMsg += '<img class="mui-media-object mui-pull-left" src="'+item.headUrl+'">'+offlinenum;
+				userMsg += '<div class="mui-media-body">'+dstNickname+'<p class="mui-ellipsis">'+item.content+'</p><p class="sendtime">'+sendtime+'</p></div></a></li>';
+				}
+				// console.log('item:'+JSON.stringify(item));
+			})
+			// console.log(systemMsg);
+			// console.log(userMsg);
+
+			$('#'+domId).html(systemMsg+userMsg);
+			initMsgEventList(domId);
+		},
+		error:function(xhr,type,errorThrown){
+			//异常处理；
+			console.log(type);
+		}
+	});
+}
+
+function initExpertLink()
+{
+	$("#userMsgsLink").on("tap", function(){
+		//alert($(this).text());
+		$('#expertMsgsDiv').addClass('mui-hidden');
+		$('#userMsgsDiv').removeClass('mui-hidden');
+	});
+	$("#expertMsgsLink").on("tap", function(){
+		//alert($(this).text());
+		$('#expertMsgsDiv').removeClass('mui-hidden');
+		$('#userMsgsDiv').addClass('mui-hidden');
+	});
+}
+
+function initMsgEventList(domId) {
+	var msgItems = byId(domId).querySelectorAll('.mui-media');
+	[].forEach.call(msgItems, function(item, index) {
+
+		item.addEventListener('tap', function(event) {
+			var dstPhone = $(this).attr('dst-user-id');
+			var dstNickName = $(this).attr('dst-nick-name');
+			console.log("dstPhone=" + dstPhone);
+			localStorage.setItem("chatObjectId", dstPhone);
+			localStorage.setItem("chatObjectNickName", dstNickName);
+			
+			mui.openWindow({
+				url: './im-chat.html',
+				id: 'im-chat',
+				show: {
+					autoShow: true, //页面loaded事件发生后自动显示，默认为true
+					aniShow: "slide-in-left", //页面显示动画，默认为”slide-in-right“；
+					duration: 0 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+				}
+			});
+		}, false);
+	});
+};

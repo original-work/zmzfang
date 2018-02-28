@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			#beginDate,#endDate
+			{
+				width:65%;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">新增教育经历</h1>
+			<a id="saveEduInfo" class="mui-pull-right" style="color: #007aff;padding-top:10px;">保存</a>
+		</header>
+		
+		<div class="mui-content">
+			 <div class="mui-page-content">
+				<ul class="mui-table-view">
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>学校</label>
+						<input id="schoolInfo" type="text" placeholder="请填写学校名称">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>专业</label>
+						<input id="major" type="text" placeholder="请填写专业">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>学历</label>
+							<select id="education" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0" selected="selected">无</option>
+								<option value="1">中专</option>
+								<option value="2">高中</option>
+								<option value="3">大专</option>
+								<option value="4">本科</option>
+								<option value="5">研究生及以上</option>
+							
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>入学时间</label>
+						<button id='beginDate' class="btn mui-btn mui-btn-block">请选择</button>
+						
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>毕业时间</label>
+						<button id='endDate' class="btn mui-btn mui-btn-block">请选择</button>
+						
+						</div>
+					</li>
+					
+				</ul>
+				
+				<div id="oprDiv">
+					<div class="col-xs-12" style="margin-top:10px">
+						<div class="col-xs-6">
+							<button id="deleteEduInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							取消
+							</button>
+						</div>
+						<div class="col-xs-6">
+							<button id="saveEduInfoBtn" type="button" class="mui-btn" style="width: 100%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							保存
+							</button>
+						</div>
+					</div>
+				</div>
+				
+		    </div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/mui.picker.min.js"></script>
+		<script src="../../js/common.js" charset="UTF-8"></script>
+		<script src="../../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Recruit/common/common.js?v=0.01"></script>
+		<script src="../../js/Recruit/ResumeMgr/ResumeEduInfo.js?v=0.01"></script>
+		
+	</body>
+
+</html>

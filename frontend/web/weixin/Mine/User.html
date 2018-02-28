@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		
+		<style type="text/css" >
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			#follow{
+				position: absolute;
+    			right: 10px;
+    			top: 90px;
+    			font-size: 12px;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="javascript:void(0)"></a>
+			<h1 class="mui-title">用户信息</h1>
+		</header>
+
+		<footer class="mui-bar mui-bar-footer" style="background:#4cd964;">
+        	<h1 class="mui-title" id='bid' style="color:#fff;">联系他</h1>
+        </footer>
+		
+		<div class="mui-content">
+
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv">
+				<div id="userInfo" class="user-info" user-id="1">
+					
+					<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;margin-top:10px;">
+						<img id='userPic' style="width:80px; height:80px; " src="../img/head/chail.jpg" alt="个人头像" />
+					</div>
+					<hr />
+
+			        <div class="mui-media-body">
+			        	
+						<h4 class="mui-ellipsis requirement-user-nickname" style="margin-left: 0px;overflow: visible;padding-top: 10px;padding-left: 10px;"> 
+							<span id="userName" ></span>
+							<span id="agentIcon" class="mui-icon mui-icon-contact mui-hidden" style="color: royalblue;" ></span>
+							</h4>
+							
+						<h5 style="padding-top: 10px;padding-left: 10px;"><span>最近登录时间:</span> <span id="loginTime" style="padding-left:10px;"> </span> </h5>
+						<a id="follow" class="mui-hidden" href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd">关注芝麻找房</a>
+						<h5 id="tags" class="mark" style="padding-top: 10px;padding-left: 10px;">标签:</h5>
+					</div>
+				
+				</div>	
+			
+				<div style="padding: 10px 10px;">
+					<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+						<a class="mui-control-item mui-active" href="#item1">
+							他的需求
+						</a>
+						<a class="mui-control-item" href="#item2">
+							他的房源
+						</a>
+					</div>
+				</div>
+			
+				<div>
+	
+					<div id="item1" class="mui-control-content mui-active area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="requirementUl" class="mui-table-view">
+									<li class="mui-table-view-cell mui-media ">
+									    <div id="bidcnt" >
+											<h5>当前已经发布<span id="userPublishCnt"></span>条信息</h5>
+				                        </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2" class="mui-control-content area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="houseUl" class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js?v=0.01"></script>
+		<script src="../js/dom.create.js?v=0.01"></script>
+		<script src="../js/wxShare.js?v=0.01"></script>
+		<script src="../js/jquery.min.js"></script>
+		
+		<script src="https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/web-storage-cache.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			
+			var userInfo;
+			var userId;
+			var wsCache = new WebStorageCache();
+			wsCache.deleteAllExpires();//清除所有超时的缓存
+			mui.init({
+				swipeBack: false
+			});
+			
+			
+			mui.ready(function() {
+				initLoginUserInfo();
+				initUserInfo();//初始化他人信息页
+				//初始化微信分享
+				//wxShare();
+			});
+	
+	        function initUserInfo()
+	        {
+	        	var urlString = String(window.document.location.href);
+				userId = getQueryStrFromUrl("userId");
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				var loginUserId = null;
+				if(loginUser)
+				{
+					loginUserId = loginUser.id;
+				}
+				
+				ajax_get_user_info({
+					userid: userId,
+					loginuserid: loginUserId
+				});
+	        }
+
+
+	        function initLoginUserInfo(){
+
+				var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+				var regUrl = 'http://www.zmzfang.com/weixin/Mine/reg.html';
+				
+				initCheckView(shareBackUrl,regUrl);
+				loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				// console.log('info'+user.wxunionid);
+					
+				if(loginUser == null || loginUser.wxunionid.length < 1){
+					
+					var userId = getQueryStrFromUrl("userId");
+					if(mui.os.wechat){
+					   	window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=Mine/User&userId='+userId;
+					}
+					$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+					//$('#follow').removeClass("mui-hidden");
+					$('#bid').on('tap',function(){
+						showLoginDiv();
+						//window.location.href = "http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd";
+					});
+				}else{
+					$('#bid').on('tap',initBidEvent);
+				}
+			}
+
+
+			function initBidEvent(){
+				if(loginUser)
+				{
+					//没有用户手机号时的处理方式
+					var noPhoneRegAfterJumpUrl = 'http://www.zmzfang.com/?r=door/scope&view=HomePage/User.html&userId='+userId+'&type='+1;
+					var hasPhoneJumpUrl = null;
+					checkUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl);
+				
+					if((loginUser.phone && loginUser.phone.length != 11) || (!loginUser.phone))
+					{
+						mui.toast('请先绑定微信');
+					}
+					else
+					{
+						if(loginUser.datacompleterate && parseInt(loginUser.datacompleterate) >= 80)
+						{
+							var contactUserFlag = wsCache.get('zmzfangContactUserFlag'+userId);
+							if(contactUserFlag)
+							{
+								mui.toast('今天已经通知用户了，请耐心等待');
+								return;
+							}
+							else
+							{
+								wsCache.set('zmzfangContactUserFlag'+userId, true, {exp : 86400});
+								sendMsgToUserByWildog();	
+							}
+						}
+						else
+						{
+							//完整度小于80，一天只能提醒用户一次
+							var contactUserFlag = wsCache.get('zmzfangContactUserFlag');
+							if(contactUserFlag)
+							{
+								mui.toast('请完善信息80%以上，再继续联系用户');
+								return;
+							}
+							else
+							{
+								wsCache.set('zmzfangContactUserFlag', true, {exp : 86400});
+								sendMsgToUserByWildog();	
+							}
+						}
+						
+						        		
+					}
+				}
+				else
+				{
+					mui.toast('您还没有绑定微信');
+				}
+			}
+
+			
+			function sendMsgToUserByWildog()
+			{
+				console.log('sendMsgToUserByWildog');
+				var requirementPublishUser = JSON.parse(localStorage.getItem('requirementPublishUserInfo'));
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				if(!loginUser || !requirementPublishUser)
+				{
+					console.log('user info not exist');
+					return;
+				}
+				
+				var toUserid = requirementPublishUser.id;
+				var toNickname = requirementPublishUser.nickname;
+				var fromNickname = loginUser.nickname;
+				var now = new Date();
+				var content = loginUser.nickname+"对您发起联系，等待沟通中";
+				content += '时间是：'+ now.toLocaleString();
+
+				var imgsrc=loginUser.picture?loginUser.picture:"http://www.zmzfang.com/weixin/img/favicon.ico";
+				template={"imgsrc":imgsrc ,"title": loginUser.nickname+"的联系请求","url": "http://www.zmzfang.com/weixin/Message/im-chat.html?id="+loginUser.id+"&nickname="+loginUser.nickname};
+				
+				sendSystemMsgToWildog(toUserid,content,template,'zmzs',sendSystemMsgCallback);
+			}
+
+			function sendSystemMsgCallback()
+			{
+				mui.toast('已向用户发送请求');
+			}
+			
+			function bidFailed(data)
+			{
+				mui.toast('提醒用户失败');
+			}
+
+
+	        function getUserInfoSuccess(data)
+			{
+				//localStorage.setItem('zmzfangLoginUserInfo',JSON.stringify(data));
+				
+				userInfo = data;
+				var logintime = userInfo.logintime;
+				var timearray=logintime.split(" ");
+		
+	        	byId("loginTime").innerText = timearray[0];
+	        	
+	        	byId("userPic").src = userInfo.picture;
+	        	byId("userName").innerText = userInfo.nickname;
+	        	//byId("loginTime").innerText = userInfo.logintime;
+	        	wxShare({"title":'这是'+userInfo.nickname+'的名片',"desc":'芝麻找房普通用户',"imgUrl":userInfo.picture,'link':window.document.location.href});
+	        	var split = userInfo.tags.split(',');
+				var tags='';
+				var s='';
+				for(i in split){
+					switch(split[i]){
+						case '1':
+						s ='二手房';
+						break;
+						case '2':
+						s ='一手房';
+						break;
+						case '3':
+						s ='商业办公';
+						break;	
+						case '4':
+						s ='厂房土地';
+						break;					
+					}
+					if(i==0){
+						tags+= s
+					}else{
+						tags+= ','+s
+					}
+					
+				}
+				byId("tags").innerText = tags;
+	        	if(userInfo.agentflag=="1"){
+	        		byId("agentIcon").classList.remove("mui-hidden");
+	        	}
+				//获取历史发布需求
+	        	ajax_get_publish_history({
+					userid: userId
+				});
+				//获取历史发布房源
+				ajax_get_houselist(
+					{
+						userid:userId
+					}
+				);
+			}
+			
+	        function getPublishHistorySuccess(data)
+	        {
+	        	var requirementUl=document.getElementById('requirementUl');
+	        	
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillHistoryRequirementListLi(data[i],userInfo));
+				}
+				
+				//requirementUl.innerHTML = "";
+				requirementUl.appendChild(firstFrag);
+				if(data)
+				{
+					byId("userPublishCnt").innerText = data.length;
+				}
+				
+	        }
+	        
+	        function getPublishHistoryFail(data)
+	        {
+	        	
+	        }
+	        
+	        function getHouseListSuccess(data)
+			{
+				console.log('getHouseListSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					// showPromptInfo();
+					return;
+				}
+				
+				var houseUl=document.getElementById('houseUl');
+				var firstFrag = document.createDocumentFragment();
+				
+				for(var i in data)
+				{
+					var houseid=data[i].houseid;
+					console.log('\n houseid:'+houseid);
+					firstFrag.appendChild(fillHouseListLi(data[i]));
+				}
+				
+				//houseUl.innerHTML = "";
+				houseUl.appendChild(firstFrag);
+			}
+	
+	        //增加房源列表中tap事件
+			mui('#houseUl').on('tap', '.house-brief', function() {
+				var houseId = this.getAttribute('house-id');
+				console.log('houseId:'+houseId);
+				var dstUrl = '../HomePage/HouseDetail.html?houseid='+houseId;
+				mui.openWindow({
+					url: dstUrl
+				});
+			});
+			
+			 //增加需求列表中tap事件
+			mui('#requirementUl').on('tap', '.requirement-brief', function() {
+				var requirementId = this.getAttribute('requirement-id');
+				console.log('requirementId:'+requirementId);
+				localStorage.setItem("requirementId", requirementId);
+				var dstUrl = '../HomePage/RequirementDetail.html?requirementId='+requirementId;
+				dstUrl += '&userId=' + userInfo.id;
+				mui.openWindow({
+					url: dstUrl
+				});
+			});
+			
+			
+			
+		</script>
+	</body>
+
+</html>

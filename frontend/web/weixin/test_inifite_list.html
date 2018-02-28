@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="email=no"/>
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name=”apple-mobile-web-app-status-bar-style” content=black”/>
+<meta content="telephone=no" name="format-detection"/>
+<title>浏览房源</title>
+<meta name="keywords" content="真二网 真二网房产 真二网买房 真二网卖房 二手房 真实二手房 无中介费 卖房 买房 郑州二手房 真二郑州二手房 真二网郑州 真二">
+<meta name="Description" content="真二网，没有中介费的真实二手房交易平台。颠覆传统，让买卖房屋更加方便快捷，省钱省力。卖房省劲，一分钟快速发布房源，这里保护您的隐私，隐藏手机号码，避免骚扰。买房省钱，直接沟通卖家，无中介费用。买房卖房，用真二网！">
+<link rel="stylesheet" type="text/css" href="./css/mui.min.css">
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+
+<style type="text/css">
+.circle-img{
+	width: 42px;
+	height: 42px;
+}
+#result-list-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 10;
+}
+#result-list-wrapper ul {
+    position: absolute;
+    width: 100%;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+}
+#result-list-wrapper li.mui-table-view-cell {
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+    height: 125px;
+    overflow: hidden;
+    width: 100%
+}
+</style>
+</head>
+<body>
+<div id="result-list-wrapper">
+	<ul id="result-list">
+	</ul>
+</div>
+<script type="text/template" id="tmpl-result-item">
+	<li class="mui-table-view-cell mui-media">
+		<div>
+			<div style="width:42px; height:42px;position:relative;overflow:hidden;float:left;">
+				<img class="mui-media-object circle-img" src="http://www.zmzfang.com/weixin/img/headpic/201706141742429470.jpg" alt="个人头像">
+			</div>
+			<div style="margin-left: 50px;overflow:hidden;">
+				<p class="nickname" style="margin-left: 0px;color:#000;">张悦</p>
+				<p><span>发布一条求购信息</span></p>
+			</div>
+		</div>
+		<div id="requirementBrief" class="requirement-brief quote-brief" publishuser-id="15530" city="北京市" requirement-id="713">
+			<div style="overflow:hidden;">
+				<p class="requirement-subject" style="margin-left: 0px;color:#000;">北京市八达岭孔雀城</p>
+				<p><span>3室</span> - <span>300-399万</span></p>
+				<p style="text-overflow: ellipsis;white-space:nowrap;overflow:hidden;">高层，洋房。面积75平-106平，均价1.5万-1.7万，联排别墅，连排面积135-157平，赠送花园30---110平，露台，车位，均价两万二----两万三中式合院，面积230---250平，赠送花园50--80平，露台，私家车位大产权70年</p>
+			</div>
+			<p class="mui-badge mui-badge-danger" style="position:absolute;right:15px;top:62px;">分佣&nbsp;40000</p><p class="publish-date" style="position:absolute;right:3px;top:12px">7小时前</p>
+		</div>
+		<div class="flag bflag"></div>
+	</li>
+</script>
+<div id="ajax"></div>
+<script src="./js/jquery.js"></script>
+<script src="./js/mui.min.js"></script>
+<script src="./iscroll/iscroll-infinite.js"></script>
+<script src="./iscroll/search-list.js"></script>
+</body>
+</html>
+

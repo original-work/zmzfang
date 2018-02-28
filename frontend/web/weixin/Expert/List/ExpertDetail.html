@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			body{
+				background-color: #ffffff;
+			}
+			.mui-content {
+				padding-bottom: 50px;
+				background-color: #ffffff;
+			}
+			
+			.mui-card{
+				margin:0 75px;
+			}
+			.col-xs-6{
+				text-align:right;
+				padding-top: 5px;
+			}
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:0px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			li,.col-xs-6
+			{
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			
+			.question,#commnent
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			#like{
+				width: 14px;
+				height: 14px;
+				color: #FFD306;
+			}
+			#favorite{
+				color: #FFD306;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				top:50px;
+				bottom: 50px
+			}
+			#introduction{
+				padding: 5px 5px;
+				text-indent:2em;
+				font-size:14px;
+			}
+			.subscribe{
+			    padding: .35rem 0;
+			    width: 6rem;
+			    display: inline-block;
+			    color: #fff;
+			    background: #4cd964;
+			    border-radius: .3rem .3rem .3rem .3rem;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">专家信息</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/Expert/expert.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		<!--<footer class="mui-bar mui-bar-footer" style="background:#4cd964;">
+        	<div class="col-xs-6">
+        		<h1 class="mui-title" id='qustionOnline'>线上提问</h1>
+        	</div>
+        	<div class="col-xs-6">
+        		<h1 class="mui-title" id='qustionOffline'>线下约见</h1>
+        	</div>
+		</footer>-->
+		 	
+        	
+		<div class="mui-content">	
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+				
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv" class="mui-scroll-wrapper">
+			<div id="mui-scroll">
+				<div id="subscribeDiv" class="mui-hidden" style="margin-bottom: 10px;text-align: center;padding-top: 5px;">
+					<h5 style="font-size:.75rem;">请先关注公众号</h5>
+					
+					<a id="subscribe" class="subscribe" href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd">芝麻找房</a>
+					<hr/>
+				</div>
+				
+				<div class="user-info" style="border-bottom:1px solid #ddd;margin-bottom:5px;">
+					<div id="head-info">
+						<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;">
+					    	<img id="headPic" style="width:80px; height:80px; " src="../../img/shuijiao.jpg" alt="个人头像" />
+						</div>
+						<h5 class="mui-text-center" id="name" style="width:100%;display:block;font-size:11px;"></h5>
+					</div>
+									
+			       	<div class="mui-text-center" style="">
+			        	<h5>
+			        		<span id="anserCnt">0</span>人回应 <span id="appointmentCnt">0</span>人见过
+			        	</h5>
+			       		<div id='area'>
+							
+						</div>
+			       	</div>
+					
+					<div>
+						 <div class="col-xs-8">
+						 	
+						 </div> 
+						 <div class="col-xs-4 mui-text-right">
+						 	<h5>
+						 		<span id="praiseCnt">0</span>个赞
+						 		<svg class="icon favorite" aria-hidden="true">
+								    <use id="favorite" xlink:href="#icon-fav-o"></use>
+								</svg>
+						 	</h5>	
+						 </div> 
+					</div>
+	
+			    	<div class="mui-clearfix"></div>
+			   	</div>	
+				<div class="introduction mui-table-view-cell" style="padding-left: 15px;padding-right: 15px;">
+					<h5>个人介绍</h5>
+					<div class="mui-input-row">
+						<p id="introduction"></p>
+					</div>
+					<h5 class="mui-hidden">所属领域： <span id="domain"> </span></h5>
+					<h5>任职机构： <span id="organization" class="mui-badge mui-badge-purple"> </span></h5>
+				</div>
+				
+				<div class="introduction mui-table-view-cell mui-hidden">
+					<label>专长介绍</label>
+					<div class="mui-input-row">
+						<textarea id="expertisen" rows="5" placeholder="公积金贷款政策" disabled="disabled"></textarea>
+					</div>
+				</div>
+				
+				<div class="mui-table-view-cell col-xs-12">
+					<ul class="row">
+			    		<li class="col-xs-6 mui-text-right">
+			    			<h5><span id="onlinecharge"></span>元/每次</h5>
+			    		</li>
+			    		
+			    		<li class="col-xs-6 mui-text-center">
+			    			<button id="askQuestionOnline" type="button" class="mui-btn" style="width: 80%;height: 40px;background-color: #4cd964;color: #fff;">
+								问TA
+							</button>
+			    		</li>
+			    		
+			    		<li class="col-xs-6 mui-text-right">
+			    			<h5><span id="offlinecharge"></span>元/<span id="offlinetime"></span></h5>
+			    		</li>
+			    		
+			    		<li class="col-xs-6 mui-text-center">
+			    			<button id="appointmentOffline" type="button" class="mui-btn" style="width: 80%;height: 40px;background-color: #4cd964;color: #fff;">
+								约TA
+							</button>
+			    		</li>
+			    		
+			    	</ul>
+				</div>
+				
+				<div style="padding: 10px 10px;">
+					<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+						<a id="historyLink" class="mui-control-item mui-active" href="">
+							历史答复
+						</a>
+						<a id="commentLink" class="mui-control-item" href="">
+							用户评价
+						</a>
+					</div>
+				</div>
+				
+				<div class="mui-slider-group" style="clear: both;">
+					<div id="history">
+							<!--数据列表-->
+						<ul id="anserUl" class="mui-table-view">
+						</ul>
+					</div>
+					
+					<div id="comment" class="mui-hidden">
+						<!--数据列表-->
+						<ul id="commentUl" class="mui-table-view">
+						</ul>
+					</div>
+					
+				</div>	
+			<!--<div>
+				<div id="history" class="mui-control-content mui-active">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div id="anserCntDiv" style="">
+								<h5>
+								    <span>
+										当前共有
+									</span>
+									<span id="anserCnt">
+										3
+									</span>
+									<span>
+										答复
+									</span>
+								</h5>
+							</div>
+							<ul id="anserUl" class="mui-table-view">
+							
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div id="comment" class="mui-control-content area-div">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul id="commentUl" class="mui-table-view">
+							
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		-->
+		</div>
+		</div>
+		</div>
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js"></script>
+		
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertData.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/common/wxpay.js?v=0.01"></script>
+		<script src="../../js/wxShare.js"></script>
+		<script src="../../js/loginCheck.js"></script>
+		<script src="../../js/subscribe.js"></script>
+		<script src="../../js/Expert/List/ExpertDetail.js?v=0.01"></script>
+		
+	</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:10px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.subject
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			.mui-scroll-wrapper
+			{
+				top: 95px;
+				bottom: 50px
+			}
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我答</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/mine.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a id="waitAffirmLink" class="mui-control-item" href="">
+						待确认
+					</a>
+					<a id="waitPayLink" class="mui-control-item" href="">
+						待支付
+					</a>
+					<a id="waitAnswerLink" class="mui-control-item mui-active" href="">
+						待处理
+					</a>
+					<a id="alreadyAnswerLink" class="mui-control-item" href="">
+						已完成
+					</a>
+				</div>
+			</div>
+			
+			<div class="mui-slider-group">
+				<div id="waitAffirm" class="mui-content mui-scroll-wrapper mui-hidden">
+					<div class="mui-scroll">
+						<ul id="waitAffirmUl" class="mui-table-view">
+							<!--<li class="mui-table-view-cell mui-media" >
+									<div id="appointmentMeBrief" class="col-xs-12">
+										<div id="userPicBrief" class="col-xs-2 mui-text-center">
+											<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+												<img style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+											</div>
+										</div>
+										<div class="col-xs-10">
+											<div class="appointment-me-brief" publishuser-id="5320" expert-id="474">
+												<div>
+													<div class="col-xs-7">
+														<span>王大锤</span>
+													</div>
+													<div class="col-xs-5">
+														<p class="type mui-text-right" style="font-size:11px">线下约见</p>
+													</div>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>约见主题</h5>
+													</div>
+												</div>
+												<div class="subject" style="">
+													<p>名下上海无房，但以前在外地有贷款记录，在上海再次购买房屋，算首套了，还是二套</p>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>价格:<span>200元/每小时</span></h5>
+													</div>
+													<div class="col-xs-6">
+														<h5>状态:<span>待确认</span></h5>
+													</div>
+												</div>
+											
+											</div>
+											
+											<div style="clear:both">
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														确认
+													</button>
+												</div>
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														拒绝
+													</button>
+												</div>
+											
+											</div>
+											
+											
+											<div class="col-xs-12">
+												<h5 class="mui-text-right" style="font-size:11px">1天以前</h5>
+											</div>
+										</div>
+									</div>	
+							</li>				-->
+						</ul>
+					</div>
+				</div>
+				
+				<div id="waitPay" class="mui-content mui-scroll-wrapper mui-hidden">
+					<div class="mui-scroll">
+						<ul id="waitPayUl" class="mui-table-view">
+							<!--<li class="mui-table-view-cell mui-media" >
+									<div id="appointmentMeBrief" class="col-xs-12">
+										<div id="userPicBrief" class="col-xs-2 mui-text-center">
+											<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+												<img style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+											</div>
+										</div>
+										<div class="col-xs-10">
+											<div class="appointment-me-brief" publishuser-id="5320" expert-id="474">
+												<div>
+													<div class="col-xs-7">
+														<span>王大锤</span>
+													</div>
+													<div class="col-xs-5">
+														<p class="type mui-text-right" style="font-size:11px">线下约见</p>
+													</div>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>约见主题</h5>
+													</div>
+												</div>
+												<div class="subject" style="">
+													<p>名下上海无房，但以前在外地有贷款记录，在上海再次购买房屋，算首套了，还是二套</p>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>价格:<span>200元/每小时</span></h5>
+													</div>
+													<div class="col-xs-6">
+														<h5>状态:<span>待确认</span></h5>
+													</div>
+												</div>
+											
+											</div>
+											
+											<div style="clear:both">
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														确认
+													</button>
+												</div>
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														拒绝
+													</button>
+												</div>
+											
+											</div>
+											
+											
+											<div class="col-xs-12">
+												<h5 class="mui-text-right" style="font-size:11px">1天以前</h5>
+											</div>
+										</div>
+									</div>	
+							</li>				-->
+						</ul>
+					</div>
+				</div>
+				
+				<div id="waitAnswer" class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul id="waitAnswerUl" class="mui-table-view">
+							<!--<li class="mui-table-view-cell mui-media" >
+									<div id="appointmentMeBrief" class="col-xs-12">
+										<div id="userPicBrief" class="col-xs-2 mui-text-center">
+											<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+												<img style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+											</div>
+										</div>
+										<div class="col-xs-10">
+											<div class="appointment-me-brief" publishuser-id="5320" expert-id="474">
+												<div>
+													<div class="col-xs-7">
+														<span>王大锤</span>
+													</div>
+													<div class="col-xs-5">
+														<p class="type mui-text-right" style="font-size:11px">线下约见</p>
+													</div>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>约见主题</h5>
+													</div>
+												</div>
+												<div class="subject" style="">
+													<p>名下上海无房，但以前在外地有贷款记录，在上海再次购买房屋，算首套了，还是二套</p>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>价格:<span>200元/每小时</span></h5>
+													</div>
+													<div class="col-xs-6">
+														<h5>状态:<span>待确认</span></h5>
+													</div>
+												</div>
+											
+											</div>
+											
+											<div style="clear:both">
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														确认
+													</button>
+												</div>
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														拒绝
+													</button>
+												</div>
+											
+											</div>
+											
+											
+											<div class="col-xs-12">
+												<h5 class="mui-text-right" style="font-size:11px">1天以前</h5>
+											</div>
+										</div>
+									</div>	
+							</li>							-->
+						</ul>
+					</div>
+				</div>
+			
+				<div id="alreadyAnswer" class="mui-content mui-scroll-wrapper mui-hidden">
+					<div class="mui-scroll">
+						<ul id="alreadyAnswerUl" class="mui-table-view">
+							<!--<li class="mui-table-view-cell mui-media" >
+									<div id="appointmentMeBrief" class="col-xs-12">
+										<div id="userPicBrief" class="col-xs-2 mui-text-center">
+											<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+												<img style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+											</div>
+										</div>
+										<div class="col-xs-10">
+											<div class="appointment-me-brief" publishuser-id="5320" expert-id="474">
+												<div>
+													<div class="col-xs-7">
+														<span>王大锤</span>
+													</div>
+													<div class="col-xs-5">
+														<p class="type mui-text-right" style="font-size:11px">线下约见</p>
+													</div>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>约见主题</h5>
+													</div>
+												</div>
+												<div class="subject" style="">
+													<p>名下上海无房，但以前在外地有贷款记录，在上海再次购买房屋，算首套了，还是二套</p>
+												</div>
+											
+												<div>
+													<div class="col-xs-6">
+														<h5>价格:<span>200元/每小时</span></h5>
+													</div>
+													<div class="col-xs-6">
+														<h5>状态:<span>待确认</span></h5>
+													</div>
+												</div>
+											
+											</div>
+											
+											<div style="clear:both">
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														确认
+													</button>
+												</div>
+												<div class="col-xs-6">
+													<button id="listen" type="button" class="mui-btn" style="width: 90%;height: 30px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+														拒绝
+													</button>
+												</div>
+											
+											</div>
+											
+											
+											<div class="col-xs-12">
+												<h5 class="mui-text-right" style="font-size:11px">1天以前</h5>
+											</div>
+										</div>
+									</div>	
+							</li>							-->
+						</ul>
+					</div>
+				</div>
+			</div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/Mine/AppointmentMeList.js?v=0.01"></script>
+		
+	</body>
+
+</html>

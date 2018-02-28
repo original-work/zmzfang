@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+				top:50px;
+				bottom: 50px
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			#keywords
+			{
+				border-top-left-radius:2em;
+				border-top-right-radius:2em;
+				border-bottom-right-radius:2em;
+				border-bottom-left-radius:2em;
+			}
+			
+			#detail {
+				position:relative;
+				line-height: 1.4rem;
+				height:4.2rem;
+				overflow:hidden;
+			}
+			
+			/*#detail::after {
+				content:"...";
+				font-weight: bold;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				padding: 0 20px 1px 45px;
+			}*/
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">
+				<input type="text" id="keywords" placeholder="搜索感兴趣的求购/求租/求助"  onkeydown="enterPress()">
+			</h1>
+			<button id="searchBtn" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">搜索</button>
+		</header>
+		
+		<div class="mui-content">
+
+			<div class="mui-scroll-wrapper">
+				<div id="mui-scroll">
+					<div id="noDataDiv" class="mui-text-left mui-hidden" style="padding-left:15px;margin-top: 20px;">
+						<h5 id="noDataPrompt">没有找到匹配的记录，换个关键词试试</h5>
+					</div>
+					<div id="matchRequirementDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;position: relative;margin-left: 15px;">
+				    		<h5 id="prompt">搜索的求购需求</h5>
+				    	</div>
+				
+				    	<div>
+								<!--数据列表-->
+							<ul id="matchRequirementUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreRequirementDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreRequirement" style="">搜索更多求购需求</h5>
+				    	</div>
+				    </div>
+				    
+				    <div id="matchRentDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;position: relative;margin-left: 15px;">
+				    		<h5 id="prompt">搜索的求租需求</h5>
+				    	</div>
+				
+				    	<div>
+								<!--数据列表-->
+							<ul id="matchRentUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreRentDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreRent" style="">搜索更多求租需求</h5>
+				    	</div>
+				    </div>
+				    
+						    
+				    <div id="matchHelpDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;margin-left: 15px;position: relative;">
+				    		<h5 id="prompt">搜索的求助</h5>
+				    	</div>
+				
+				    	<div>
+							<!--数据列表-->
+							<ul id="matchHelpUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreHelpDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreHelp" style="">搜索更多求助</h5>
+				    	</div>
+				    </div>
+				    
+				    <div id="matchAgentDiv" class="mui-hidden" style="">
+				    	<div class="mui-text-left" style="clear: both;margin-top: 10px;margin-left: 15px;position: relative;">
+				    		<h5 id="prompt">搜索的经纪人</h5>
+				    	</div>
+				
+				    	<div>
+							<!--数据列表-->
+							<ul id="matchAgentUl" class="mui-table-view">
+							</ul>
+						</div>
+						<div id="moreAgentDiv" class="mui-text-center mui-hidden" style="font-size:1.1rem;margin-top: 10px;margin-bottom: 10px;margin-left: 15px;margin-right: 15px;padding: 5px 10px;border: 1px solid #8f8f94;">
+				    		<h5 id="moreAgent" style="">搜索更多经纪人</h5>
+				    	</div>
+				    </div>
+				     
+				</div>
+			</div>
+		</div>
+		
+        <script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js?v=0.01"></script>
+		<script src="../js/wxShare.js?v=0.01"></script>
+		<script src="../js/commonAjax.js?v=0.01"></script>
+		<script src="../js/dom.create.js?v=0.01"></script>
+		<script src="../js/HomePage/search.js?v=0.01"></script>
+		<script type="text/javascript" charset="UTF-8">
+		mui.ready(function() {
+				//初始化
+				pullupRefresh();
+				wxShare({'title':'买房，找人比找房更重要，靠谱房产中介都在这里',"desc":'芝麻找房 - 服务买家的精准找房平台！','link':window.document.location.href})
+			});
+		</script>
+		
+	</body>
+</html>

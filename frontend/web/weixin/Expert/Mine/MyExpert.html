@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/mui.poppicker.css" />
+        
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			.mui-card{
+				margin:0 75px;
+			}
+			.col-xs-4
+			{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			.show {
+				padding-left: 10px;
+				margin-top: 10px;
+				margin-bottom: 5px;
+			}
+			.offlinetime-label{
+				padding-left: 5px;
+				padding-right: 5px;
+				font-size:14px;
+			}
+			
+			.offlinetime-radio{
+				left: 5px;
+			}
+		
+			#reasonDiv
+			{
+				width:100%;
+				font-size:12px;
+				padding-left: 15px;
+				color: red;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">我的专家</h1>
+			
+			<button id="save" type="button" class="mui-btn mui-pull-right mui-hidden" style="width: 50px;height: 30px;background-color: #4cd964;color: #fff;">
+				提交
+			</button>
+		</header>
+		
+		<div class="mui-content">	
+			<section id="applyExperDiv1" class="">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row" >
+						<label class="mui-text-center" style="width:100%">基本信息</label>
+						<p class="mui-text-left mui-hidden" id="reasonDiv">拒绝原因: <span id="reason"></span></p>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>姓名</label>
+						<input id="name" type="text" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>任职机构</label>
+						<input id="organization" type="text" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>从业年限</label>
+							<select id="workperiod" class="mui-btn mui-btn-block" disabled="disabled" style="float:left;width:50%">
+								<option value="1-3">1-3年</option>
+								<option value="3-5" selected="selected">3-5年</option>
+								<option value="5-8">5-8年</option>
+								<option value="8-10">8-10年</option>
+								<option value="10-30">10年以上</option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>头衔/职位</label>
+						<input id="position" type="text" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+						<label>邮箱</label>
+						<input id="email" type="text" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<div id="regionPickerDiv" style="height:40px" class="mui-hidden">
+								<div class="col-xs-5" >
+									<label style="padding-left:0px;width: 100%;">活动区域</label>
+								</div>
+								<div class="col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+									<button id='showRegionPicker' class="mui-btn mui-btn-block" type='button' disabled="disabled" style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;">点击选择（可多选）</button>
+								</div>
+							</div>
+							
+							<div id='regionResult' class="" style="clear:both;"></div>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<div id="domainPickerDiv" style="height:40px" class="mui-hidden">
+								<div class="col-xs-5" >
+									<label style="padding-left:0px;width: 100%;">领域</label>
+								</div>
+								<div class="col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+									<button id='showDomainPicker' disabled="disabled" class="mui-btn mui-btn-block" type='button' style="float:left;width: 100%;margin-bottom: 0px;padding:10px 5px;">点击选择（可多选）</button>
+								</div>
+							</div>
+							
+							<div id='domainResult' class="" style="clear:both;"></div>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<label>上传名片</label>
+						<div style="width:120px; height:80px;  overflow:hidden;margin-left: auto;margin-right: auto;">
+						    <img id="businessCardPic" disabled="disabled" style="width:120px; height:80px; " src="" alt="名片" />
+						</div>
+					</li>
+					
+				</ul>
+				<div style="text-align: center;padding-top: 10px;">
+					<button id="nextStep" type="button" class="mui-btn" style="width: 80%;height: 40px;background-color: #4cd964;color: #fff;">
+						更多信息
+					</button>
+				</div>
+			</section>
+				
+			<section id="applyExperDiv2" class="mui-hidden">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<label class="mui-text-center" style="width:100%;display:block;margin-bottom: 10px;">专长介绍</label>
+						<div style="width:80px; height:80px; border-radius:50%; overflow:hidden;margin-left: auto;margin-right: auto;">
+						    <img id="headPic" disabled="disabled" style="width:80px; height:80px; " src="" alt="个人头像" />
+						</div>
+						<label class="mui-text-center" style="width:100%;display:block;font-size:11px;">个人头像</label>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<label>个人介绍</label>
+						<div class="mui-input-row">
+							<textarea id="introduction" rows="5" placeholder="请输入您的具体需求描述" disabled="disabled"></textarea>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell mui-hidden">
+						<label>专长介绍</label>
+						<div class="mui-input-row">
+							<textarea id="expertisen" rows="5" placeholder="请输入您的具体需求描述" disabled="disabled"></textarea>
+						</div>
+					</li>
+										
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<span>线上语音答复</span> 
+							<input id="onlinecharge" type="text" placeholder="20" disabled="disabled" style="width: 60px;height: 30px;border:1px solid #EFEFF4;margin-bottom: 1px;1px solid #777；">
+							<span>元每次</span>
+							<!--<span style="font-size:8px;padding-left: 10px;">建议1-50元</span>-->
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<span>线下约见</span> </br>
+							<span>见面时长</span>
+							</br>
+							<div id="offlineTimeDiv">
+								<div class="mui-input-row mui-radio  mui-left col-xs-4">
+									<label class="offlinetime-label" style="padding-left: 38px;">1小时</label>
+									<input class="offlinetime-radio" disabled="disabled" name="radio1" style="left: 5px;" type="radio" data="1" checked>
+								</div>
+								<div class="mui-input-row mui-radio mui-left col-xs-4" style="clear:none">
+									<label class="offlinetime-label"  style="padding-left: 38px;">2小时</label>
+									<input class="offlinetime-radio" disabled="disabled" name="radio1" style="left: 5px;" type="radio" data="2">
+								</div>
+								<div class="mui-input-row mui-radio mui-left col-xs-4" style="clear:none">
+									<label class="offlinetime-label"  style="padding-left: 38px;">3小时</label>
+									<input class="offlinetime-radio" disabled="disabled" name="radio1" style="left: 5px;" type="radio" data="3">
+								</div>
+							</div> 
+
+							<div class="mui-input-row">
+								<lable>价格</lable>
+								<input id="offlinecharge" disabled="disabled" type="text" placeholder="20" style="width: 60px;height: 30px;border:1px solid #EFEFF4;margin-bottom: 1px;1px solid #777；">
+								<span>元每次</span>
+								<!--<span style="font-size:8px;padding-left: 10px;">建议1-1000元</span>-->
+							</div>
+							<!--<input id="onlinecharge" type="text" placeholder="20" style="width: 60px;height: 30px;border:1px solid #EFEFF4;margin-bottom: 1px;1px solid #777；">-->
+							
+						</div>
+					</li>
+					
+					<div style="text-align: center;padding-top: 10px;">
+						<button id="preStep" type="button" class="mui-btn" style="width: 80%;height: 40px;background-color: #4cd964;color: #fff;">
+							上一页
+						</button>
+					</div>
+				
+				</ul>
+			</section>	
+		</div>
+
+
+	    
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/mui.picker.js"></script>
+		<script src="../../js/mui.poppicker.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/Expert/common/common.js"></script>
+		<script src="../../js/Expert/common/expertData.js"></script>
+		<script src="../../js/Expert/common/expertAjax.js"></script>
+		<script src="../../js/Expert/Mine/MyExpert.js"></script>
+	
+	</body>
+</html>

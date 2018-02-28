@@ -1,0 +1,52 @@
+.left-div
+{
+	width:42px; 
+	height:60px;
+	position:relative;
+	overflow:hidden;
+	float:left;
+}
+.left-div #bottomName{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align:center;
+	margin-top:-4px;
+	font-size:.5rem;
+	overflow: hidden;
+}
+
+.right-div
+{
+	margin-left: 50px;
+	overflow:hidden;
+}
+
+#positionSubject
+{
+	margin-left: 0px;
+	color:#000;
+}
+#publishUserPosition,#workperiod
+{
+	margin-left: 10px;
+}
+
+#salary
+{
+	position:absolute;
+	right:10px;
+	top:12px;
+}
+#publishUserOrganization
+{
+	position:absolute;
+	right:10px;
+	top:32px;
+}
+
+#workCity
+{
+	position:absolute;
+	right:10px;
+	bottom:10px;
+}

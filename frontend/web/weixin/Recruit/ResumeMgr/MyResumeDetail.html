@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			.left-div,#headPic
+			{
+				width: 64px;
+				height:64px;
+			}
+			.right-div
+			{
+				margin-left: 80px;
+			}
+			
+			.mui-table-view-cell{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的简历详情</h1>
+		</header>
+		
+		<div class="mui-content">
+			<div id="noResumePromptDiv" class="card mui-hidden">
+				<p class="mui-text-center">
+					<span id="publishBasicInfo" class="mui-icon mui-icon-plus active" style=""></span>添加简历基本信息
+				</p>
+			</div>
+			
+			<div id="basicInfoDiv" class="card mui-hidden" style="position: relative;">
+				<h5>基本信息</h5>
+				<div id="basicBrief">
+					<div class="left-div">
+						<img id="headPic" class="mui-media-object circle-img" src="http://www.zmzfang.com/weixin/img/headpic/5505.jpg" alt="个人头像" />
+					</div>
+					<div class="right-div">
+						<ul class="row">
+							<li class="col-xs-6">
+								<p>
+									<span style="color:#999;">姓名：</span>
+									<span id="realName" style="color: #333;">无</span>
+								</p>
+							</li>
+							<li class="col-xs-6">
+								<p>
+									<span style="color:#999;">最高学历：</span>
+									<span id="education" style="color: #333;">无</span>
+								</p>
+							</li>
+							<li class="col-xs-12">
+								<p>
+									<span style="color:#999;">现工作单位：</span>
+									<span id="organization" style="color: #333;">无</span>
+								</p>
+							</li>
+							<li class="col-xs-6">
+								<p>
+									<span style="color:#999;">籍贯：</span>
+									<span id="homeCity" style="color: #333;">无</span>
+								</p>
+							</li>
+							<li class="col-xs-6">
+								<p>
+									<span style="color:#999;">出生：</span>
+									<span id="age" style="color: #333;">无</span>
+								</p>
+							</li>
+							<li class="col-xs-12">
+								<p>
+									<span style="color:#999;">手机：</span>
+									<span id="phone" style="color: #333;">无</span>
+								</p>
+							</li>
+						</ul>
+						
+					</div>
+					<p>
+						<span id="modifyBasicInfo" class="mui-icon mui-icon-compose" style="position:absolute;top:5px;right: 25px;"></span>
+					</p>
+					<div class="card">
+						<h5>求职附言</h5>
+						<p id="resumeDetail" style="padding-top: 10px;color: #333;">
+							
+						</p>
+					</div>
+
+				</div>
+			</div>
+			
+						
+			
+			<div id="workDiv" class="card mui-hidden">
+				<h5>职业经历</h5>
+				<div>
+					<ul id="workUl" class="mui-table-view">
+						<!--<li class="mui-table-view-cell mui-media">
+							<div class="card">
+								<ul class="row">
+									<li class="col-xs-12">
+										<p>
+											<span id="name" style="color: #333;">上海中原地产莘庄店</span>
+										</p>
+									</li>
+									<li class="col-xs-12">
+										<p>
+											<span id="name" style="color: #333;">2011.4-2014.6</span>
+										</p>
+									</li>
+									<li class="col-xs-12">
+										<p>
+											<span id="name" style="color: #333;">销售代表</span>
+										</p>
+									</li>
+								
+									<li class="col-xs-12">
+										<p><span style="color:#999;">工作简介</span></p>
+										<p>
+											<span id="name" style="color: #333;">负责xx楼盘的销售</span>
+										</p>
+									</li>
+								</ul>
+								<p>
+									<span id="modifyWorkInfo" class="mui-icon mui-icon-compose" style="position:absolute;top:5px;right: 5px;"></span>
+								</p>
+							</div>
+						</li>-->
+						
+					</ul>
+									
+				</div>
+				<div>
+					<p class="mui-text-center" style="padding-top: 10px;">
+						<span id="publishWorkInfo" class="mui-icon mui-icon-plus active" style=""></span>添加工作经历
+					</p>
+				</div>
+			</div>
+			
+			<div id="eduDiv" class="card mui-hidden">
+				<h5>教育经历</h5>
+				<div>
+					<ul id="eduUl" class="mui-table-view">
+					
+					</ul>
+				</div>
+				
+				<div>
+					<p class="mui-text-center" style="padding-top: 10px;">
+						<span id="publishEduInfo" class="mui-icon mui-icon-plus active" style=""></span>添加教育经历
+					</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		<div style="height: 50px;">
+		</div>
+
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../../js/ajax.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Recruit/common/common.js?v=0.01"></script>
+		<script src="../../js/Recruit/ResumeMgr/MyResumeDetail.js?v=0.01"></script>
+		
+	</body>
+
+</html>

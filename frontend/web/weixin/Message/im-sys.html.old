@@ -1,0 +1,496 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/im.chat.css" rel="stylesheet" />
+		<link href="../css/style.css?v=0.01" rel="stylesheet" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a href="./im-list.html" class="mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+			<h1 id="subject" class="mui-title"></h1>
+		</header>
+		<pre id='h'></pre>
+		<script id='msg-template' type="text/template">
+			<% for(var i in record){ var item=record[i]; %>
+			<div class="msg-item <%= (item.sender=='self'?' msg-item-self':'') %>" msg-type='<%=(item.type)%>' msg-content='<%=(item.content)%>'>
+
+				<% if(item.sender=='self' ) { %>
+				<img class="msg-user msg-user-img " src="<%=(item.headUrl)%>"></img>
+				<% } else { %>
+				<img class="msg-user-img" src="<%=(item.headUrl)%>" alt="" />
+				<% } %>
+				<div class="msg-content">
+					<div class="msg-content-inner">
+						<% if(item.type=='text' ) { %>
+						<%=( item.content|| '&nbsp;&nbsp;') %>
+						<% } else if(item.type=='image' ) { %>
+						<img class="msg-content-image" src="<%=(item.content)%>" style="max-width: 100px;" />
+						<% } else if(item.type=='sound' ) { %>
+						<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
+						<span class="play-state">点击播放</span>
+						<% } %>
+					</div>
+					<div class="msg-content-arrow"></div>
+				</div>
+				<div class="mui-item-clear"></div>
+			</div>
+			<% } %>
+		</script>
+		<div class="mui-content">
+			<div id='msg-list'>
+			</div>
+		</div>
+		<footer>
+			<div class="footer-left">
+				<i id='msg-image' class="mui-icon mui-icon-camera mui-hidden" style="font-size: 28px;"></i>
+				<p style="font-size: 18px;margin-top: 6px;">消息</p>
+			</div>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+				<button id='msg-sound' type="button" class='input-sound' style="display: none;">按住说话</button>
+			</div>
+			<label for="" class="footer-right">
+				<!--<i id='msg-type' class="mui-icon mui-icon-mic"></i>-->
+				<i id='msg-type' class="mui-icon mui-icon-paperplane"></i>
+				
+			</label>
+		</footer>
+		<div id='sound-alert' class="rprogress">
+			<div class="rschedule"></div>
+			<div class="r-sigh">!</div>
+			<div id="audio_tips" class="rsalert">手指上滑，取消发送</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/arttmpl.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/mui.imageViewer.js"></script>
+		<!--<script src="http://app.cloopen.com/im50/ytx-web-im-min-new.js"></script>-->
+		<script src="https://cdn.wilddog.com/js/client/current/wilddog.js"></script>
+		<!--<script src="../js/im.message.js?v=0.02"></script>-->
+		<script src="../js/ajax.js?v=0.04"></script>
+		<script src="../js/common.js?v=0.04"></script>
+		<script type="text/javascript">
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var wilddogioRef;
+			var wilddogioListRef;
+			var dstWilddogioRef;
+			var dstWilddogioListRef;
+			var phone;
+			var dstPhone;
+			var srcNickName;
+			var dstNickName;
+
+			//var headUrl = "http://www.zmzfang.com/weixin/img/head/wuzy.jpg";
+			var headUrl = "http://www.zmzfang.com/weixin/img/favicon.ico";
+
+			var ui = {
+				body: document.querySelector('body'),
+				footer: document.querySelector('footer'),
+				footerRight: document.querySelector('.footer-right'),
+				footerLeft: document.querySelector('.footer-left'),
+				btnMsgType: document.querySelector('#msg-type'),
+				boxMsgText: document.querySelector('#msg-text'),
+				boxMsgSound: document.querySelector('#msg-sound'),
+				btnMsgImage: document.querySelector('#msg-image'),
+				areaMsgList: document.querySelector('#msg-list'),
+				boxSoundAlert: document.querySelector('#sound-alert'),
+				h: document.querySelector('#h'),
+				content: document.querySelector('.mui-content'),
+				subject: document.querySelector('#subject')
+			};
+
+			var record = [];
+
+			(function() {
+				mui.init({
+					gestureConfig: {
+						tap: true, //默认为true
+						doubletap: true, //默认为false
+						longtap: true, //默认为false
+						swipe: true, //默认为true
+						drag: true, //默认为true
+						hold: true, //默认为false，不监听
+						release: true //默认为false，不监听
+					}
+				});
+
+				mui.ready(function() {
+					//phone = localStorage.getItem("phone");
+					initUrlParam();
+			        phone = 'system';
+					dstPhone = localStorage.getItem("chatObjectId") ;
+					//alert('dstPhone:'+dstPhone);
+					dstNickName = localStorage.getItem("chatObjectNickName") ;
+					srcNickName = '系统消息';
+					
+					//ui.subject.innerText =  localStorage.getItem("chatObjectSubject");
+					ui.subject.innerText = dstNickName;
+					//byId("title-chat").innerText = dstPhone;
+					//byId("title-chat").innerText = 'test';
+					wilddogioRef = new Wilddog("https://zmzf0001.wilddogio.com/" + phone);
+					wilddogioListRef = new Wilddog("https://zmzf0001.wilddogio.com/" + phone + "/list");
+					dstWilddogioRef = new Wilddog("https://zmzf0001.wilddogio.com/" + dstPhone);
+					dstWilddogioListRef = new Wilddog("https://zmzf0001.wilddogio.com/" + dstPhone + "/list");
+					
+					var stateRef = wilddogioRef.child('stateinfo');
+					stateRef.set("1");
+					stateRef.onDisconnect().set("0");
+					//IM.initSDK();
+					//IM._login(phone);
+
+					ui.h.style.width = ui.boxMsgText.offsetWidth + 'px';
+					var footerPadding = ui.footer.offsetHeight - ui.boxMsgText.offsetHeight;
+					var msgItemTap = function(msgItem, event) {
+						var msgType = msgItem.getAttribute('msg-type');
+						var msgContent = msgItem.getAttribute('msg-content')
+
+					};
+					var imageViewer = new mui.ImageViewer('.msg-content-image', {
+						dbl: false
+					});
+					var bindMsgList = function() {
+						//绑定数据:
+						/*tp.bind({
+							template: 'msg-template',
+							element: 'msg-list',
+							model: record
+						});*/
+						ui.areaMsgList.innerHTML = template('msg-template', {
+							"record": record
+						});
+						var msgItems = ui.areaMsgList.querySelectorAll('.msg-item');
+						[].forEach.call(msgItems, function(item, index) {
+							item.addEventListener('tap', function(event) {
+								msgItemTap(item, event);
+							}, false);
+						});
+						imageViewer.findAllImage();
+						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
+					};
+
+					//从野狗云获取聊天记录
+					getMsgFromWilddog();
+					updateWilddogList();
+
+					window.addEventListener('resize', function() {
+						ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
+					}, false);
+					var send = function(msg) {
+						//			record.push(msg);
+						//			bindMsgList();
+						toRemote(msg);
+					};
+
+					function msgTextFocus() {
+						ui.boxMsgText.focus();
+						setTimeout(function() {
+							ui.boxMsgText.focus();
+						}, 150);
+					}
+					//解决长按“发送”按钮，导致键盘关闭的问题；
+					ui.footerRight.addEventListener('touchstart', function(event) {
+						if (ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+							msgTextFocus();
+							event.preventDefault();
+						}
+					});
+					//解决长按“发送”按钮，导致键盘关闭的问题；
+					ui.footerRight.addEventListener('touchmove', function(event) {
+						if (ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+							msgTextFocus();
+							event.preventDefault();
+						}
+					});
+
+					ui.footerRight.addEventListener('release', function(event) {
+						if (ui.btnMsgType.classList.contains('mui-icon-paperplane')) {
+							//showKeyboard();
+							ui.boxMsgText.focus();
+							setTimeout(function() {
+								ui.boxMsgText.focus();
+							}, 150);
+							//							event.detail.gesture.preventDefault();
+							console.log("test srcNickName:"+srcNickName+" dstNickName:"+dstNickName);
+							send({
+								headUrl: headUrl,
+								time: getTimeStamp(),
+								sender: 'self',
+								type: 'text',
+								content: ui.boxMsgText.value.replace(new RegExp('\n', 'gm'), '<br/>'),
+								sendernickname:srcNickName,
+								sendeenickname:dstNickName
+							});
+
+							ui.boxMsgText.value = '';
+							mui.trigger(ui.boxMsgText, 'input', null);
+						} else if (ui.btnMsgType.classList.contains('mui-icon-mic')) {
+							ui.btnMsgType.classList.add('mui-icon-compose');
+							ui.btnMsgType.classList.remove('mui-icon-mic');
+							ui.boxMsgText.style.display = 'none';
+							ui.boxMsgSound.style.display = 'block';
+							ui.boxMsgText.blur();
+							document.body.focus();
+						} else if (ui.btnMsgType.classList.contains('mui-icon-compose')) {
+							ui.btnMsgType.classList.add('mui-icon-mic');
+							ui.btnMsgType.classList.remove('mui-icon-compose');
+							ui.boxMsgSound.style.display = 'none';
+							ui.boxMsgText.style.display = 'block';
+							//--
+							//showKeyboard();
+							ui.boxMsgText.focus();
+							setTimeout(function() {
+								ui.boxMsgText.focus();
+							}, 150);
+						}
+					}, false);
+
+					ui.boxMsgText.addEventListener('input', function(event) {
+						ui.btnMsgType.classList[ui.boxMsgText.value == '' ? 'remove' : 'add']('mui-icon-paperplane');
+						ui.btnMsgType.setAttribute("for", ui.boxMsgText.value == '' ? '' : 'msg-text');
+						ui.h.innerText = ui.boxMsgText.value.replace(new RegExp('\n', 'gm'), '\n-') || '-';
+						ui.footer.style.height = (ui.h.offsetHeight + footerPadding) + 'px';
+						ui.content.style.paddingBottom = ui.footer.style.height;
+					});
+					var focus = false;
+					ui.boxMsgText.addEventListener('tap', function(event) {
+						ui.boxMsgText.focus();
+						setTimeout(function() {
+							ui.boxMsgText.focus();
+						}, 0);
+						focus = true;
+						setTimeout(function() {
+							focus = false;
+						}, 1000);
+						event.detail.gesture.preventDefault();
+					}, false);
+					//点击消息列表，关闭键盘
+					ui.areaMsgList.addEventListener('click', function(event) {
+						if (!focus) {
+							ui.boxMsgText.blur();
+						}
+					})
+
+					function getMsgFromWilddog() {
+			//			console.log("getMsgFromWilddog dstPhone=" + dstPhone);
+						var childRef = wilddogioRef.child(dstPhone);
+						console.log("getMsgFromWilddog childRef=" + childRef.toString());
+						childRef.orderByChild("time").limitToLast(15).on("child_added", function(snapshot) {
+			//				console.log(JSON.stringify(snapshot.val()));
+							record.push(snapshot.val());
+							bindMsgList();
+							updateWilddogList();
+						});
+
+					}
+
+				});
+
+			})();
+
+			function toRemote(info) {
+
+				var sendinfo = {
+					"headUrl": info.headUrl,
+					"sender": 'self',
+					"time": info.time,
+					"sendee": dstPhone,
+					"type": "text",
+					"content": info.content,
+					"sendernickname": info.sendernickname,
+					"sendeenickname": info.sendeenickname
+				};
+
+				sendMsgToWilddog(sendinfo);
+				//sendMsgToYtx(sendinfo);
+				sendListInfoToWilddog(sendinfo);
+			 	// sendMsgToWx(sendinfo);
+			};
+
+			function sendMsgToWilddog(sendinfo) {
+				//var childRef = wilddogioRef.child(dstPhone + "/" + sendinfo.time);
+				var childRef = wilddogioRef.child(sendinfo.sendee + "/" + sendinfo.time);
+				console.log(" 1 childRef=" + childRef.toString());
+				childRef.set(sendinfo);
+				
+				
+				childRef = dstWilddogioRef.child(phone + "/" + sendinfo.time);
+				console.log(" dstWilddogioRef childRef=" + childRef.toString());
+				if(sendinfo.sender == 'self')
+				{
+					sendinfo.sender = phone;
+				}
+				childRef.set(sendinfo);
+
+			}
+
+			function sendRecvMsgToWilddog(recvinfo) {
+				//var childRef = wilddogioRef.child(dstPhone + "/" + sendinfo.time);
+				var childRef = wilddogioRef.child(recvinfo.sender + "/" + recvinfo.time);
+				console.log(" childRef=" + childRef.toString());
+				childRef.set(recvinfo);
+			}
+
+			//将收到的消息保存到list中
+			function sendRecvMsgToWilddogList(recvinfo) {
+				//var childRef = wilddogioRef.child(dstPhone + "/" + sendinfo.time);
+				console.log("sendRecvMsgToWilddogList begin ");
+				var childRef = wilddogioListRef.child(recvinfo.sender);
+				console.log(" childRef=" + childRef.toString());
+				childRef.set(recvinfo);
+				console.log("sendRecvMsgToWilddogList end ");
+			}
+
+			//更新list中num的数量
+			function updateWilddogList() {
+				//var childRef = wilddogioRef.child(dstPhone + "/" + sendinfo.time);
+				console.log("updateWilddogList begin ");
+				var childRef = wilddogioListRef.child(dstPhone);
+				console.log(" childRef=" + childRef.toString());
+				childRef.once("value", function(data) {
+			  		// 执行业务处理，此回调方法只会被调用一次
+			  		console.log("data:"+JSON.stringify(data.val()));
+			  		var listInfo = data.val();
+			  		if(listInfo && listInfo.num > 0)
+			  		{
+			  			console.log("updateWilddogList reset num 0");
+			  			childRef.update({"num":0});
+			  		}
+			  	})
+				
+				console.log("updateWilddogList end ");
+			}
+
+
+			/**
+			 * 添加PUSH消息，只做页面操作 供push和拉取消息后使用
+			 * 
+			 * @param obj
+			 * @constructor
+			 */
+			function ReviceNewMsg(obj) {
+				var you_sender = obj.msgSender; //消息发送人
+				var you_Receiver = obj.msgReceiver; //接收者群组Im消息时，接收者为群组id
+
+				// 是否为mcm消息 0普通im消息 1 start消息 2 end消息 3发送mcm消息
+				var you_msgContent = obj.msgContent;
+
+				var version = obj.msgId;
+				var msgTime = obj.msgDateCreated;
+				if (0 == obj.mcmEvent) { // 0普通im消息
+					var msgType = obj.msgType;
+					var str = '';
+
+					// obj.msgType; //消息类型1:文本消息 2：语音消息 3：视频消息 4：图片消息 5：位置消息 6：文件
+					if (1 == msgType || 0 == msgType) {
+
+						if (you_Receiver == IM._user_account) {
+							contens = you_msgContent.split("#-#");
+							var reciveInfo = {
+								"headUrl": contens[1],
+								"sender": you_sender,
+								"time": getTimeStamp(),
+								"sendee": you_Receiver,
+								"type": "text",
+								'num':0,
+								"content": contens[0],
+								"sendernickname" : contens[2],
+								"sendeenickname" : contens[3]
+							};
+							console.log("reciveInfo="+JSON.stringify(reciveInfo));
+							if (reciveInfo.headUrl != null) {
+								//sendMsgToWilddog(reciveInfo);
+								sendRecvMsgToWilddog(reciveInfo);
+								sendRecvMsgToWilddogList(reciveInfo);
+							}
+						}
+
+					}
+
+				}
+			}
+
+			/**
+			 * 获取当前时间戳 YYYYMMddHHmmss
+			 * 
+			 * @returns {*}
+			 */
+			function getTimeStamp() {
+				var now = new Date();
+				var timestamp = now.getFullYear() + '' + ((now.getMonth() + 1) >= 10 ? "" + (now.getMonth() + 1) : "0" + (now.getMonth() + 1)) + (now.getDate() >= 10 ? now.getDate() : "0" + now.getDate()) + (now.getHours() >= 10 ? now.getHours() : "0" + now.getHours()) + (now.getMinutes() >= 10 ? now.getMinutes() : "0" + now.getMinutes()) + (now.getSeconds() >= 10 ? now.getSeconds() : "0" + now.getSeconds());
+				return timestamp;
+			}
+
+			function sendListInfoToWilddog(message) {
+				var childRef = wilddogioListRef.child(message.sendee);
+				console.log("sendListInfoToWilddog childRef=" + childRef.toString());
+				message.num = 0;//add by chail on 20160804
+				message.offlinenum = 0;//add by chail on 20160804
+				console.log("message="+JSON.stringify(message));
+				childRef.set(message);
+				mui.toast("向[" + message.sendeenickname + "]发送的一条消息");
+				
+				//更新对方节点
+				childRef = dstWilddogioListRef.child(phone);
+				console.log("sendListInfoToWilddog dstWilddogioListRef childRef=" + childRef.toString());
+				message.num = 1;//add by chail on 20160804
+				message.offlinenum = 0;//add by chail on 20160804
+				if(message.sender == 'self')
+				{
+					message.sender = phone;
+				}
+				
+				console.log("message="+JSON.stringify(message));
+				childRef.once("value", function(data) {
+			  		// 执行业务处理，此回调方法只会被调用一次
+			  		console.log("data:"+JSON.stringify(data.val()));
+			  		var listInfo = data.val();
+			  		if(listInfo && listInfo.num)
+			  		{
+			  			//存在在原值基础上加1
+			  			console.log("num:"+listInfo.num);
+			  			var num = parseInt(listInfo.num) + 1;
+			  			message.num = num;
+			  			childRef.set(message);
+			  		}
+			  		else
+			  		{
+			  			childRef.set(message);
+			  		}
+				})
+				
+			}
+
+			//增加url参数处理
+			function initUrlParam()
+			{
+				  
+				var chatObjectId = getQueryStrFromUrl("id");
+				var chatObjectNickName = getQueryStrFromUrl("nickname");
+				var chatObjectNickName = decodeURI(chatObjectNickName);
+				console.log('chatObjectId chatObjectId:'+chatObjectId);
+				console.log('chatObjectId chatObjectNickName:'+chatObjectNickName);
+				 
+				if(chatObjectId && chatObjectId != ' ')
+				{
+					localStorage.setItem('chatObjectId',chatObjectId);
+				}
+				 
+				if(chatObjectNickName && chatObjectNickName != ' ')
+				{
+					localStorage.setItem('chatObjectNickName',chatObjectNickName);
+				} 
+			}
+		</script>
+	</body>
+
+</html>

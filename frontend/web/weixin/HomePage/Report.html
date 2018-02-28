@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../css/image.upload.css" />
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+			}
+			#bidlist {
+				padding-top: 10px;
+			}
+			.clear {
+				clear:left;
+			}
+			#bid {
+				width: 100%;
+				border-right: 1px solid #EFEFF4;
+				right: 0px;
+				left:0px;
+				float: left;
+				position:relative;
+			}
+			#sendMsg {
+				width: 100%;
+				right: 0px;
+				left:0px;
+				position:relative;
+			}
+			.no-active {
+				background-color:#eeeeff;
+			}
+			.mui-bar{
+				padding:0;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">你还没有绑定微信公众号</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">请绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+		    <div id="requirementInfo" class="requirement-info" requirement-id="1">
+		    	<ul class="row">
+
+			        <li class="col-xs-12">
+			            <div class="mui-input-row">
+			            	<p></p>
+			            	<p></p>
+							<p>举报内容：</p>
+							<div>
+							    <textarea id="detail" rows="5" placeholder="请详细描述举报内容"></textarea>
+						    </div>
+						</div>
+			        </li>
+			    </ul>	
+			</div>
+			<div id="" class="upload">
+					<p>图片(必填,提供聊天截图,最多9张)</p>
+					<div id='image-list' class="row image-list"></div>
+			</div>
+			<div>
+				<button id="imageUploadBtn" type="button" class="mui-hidden">图片上传</button>
+			</div>
+			<footer id="" class="mui-bar mui-bar-footer" style="background:#4cd964;">
+	        	<h1 class="mui-title" id='report_requirement'>举报</h1>
+	        </footer>
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/requirement.js"></script>
+		<script src="../js/user.js"></script>
+		<script src="../js/bid.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="../js/report.image.upload.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			
+		    
+			mui.init({
+				swipeBack: false
+			});
+			
+			
+			mui.ready(function() {
+
+			});
+			
+	        
+			document.querySelector('#report_requirement').addEventListener('tap', function() {
+				console.log('report_requirement click');
+				//用户未登陆，则无法看到
+				var reportFalseRequirement = localStorage.getItem('reportFalseRequirement');
+				// alert(reportFalseRequirement);
+				
+				if(reportFalseRequirement=='true'){//举报需求
+					// alert(111111);
+
+					localStorage.setItem('reportFalseRequirement', 'false');
+					//判断用户是否选中了图片 无选中图片 直接发布，有选中图片，则需要上传图片
+	                var picCnt = upload.getFileInputArray().length; 
+	                // alert("picCnt:"+picCnt);
+	                if(picCnt > 1)
+	                {
+	                	// alert("picCnt>1 reportRequirement");
+	                	upload.uploadPics(reportRequirement);
+	                }
+	                else
+	                {
+	                	// alert("reportRequirement");
+	                	mui.toast("请上传聊天截图");
+	                	return;
+	                	// reportRequirement();
+	                }
+
+				}else{//举报房源
+
+					//判断用户是否选中了图片 无选中图片 直接发布，有选中图片，则需要上传图片
+	                var picCnt = upload.getFileInputArray().length; 
+	                // alert("picCnt:"+picCnt);
+	                if(picCnt > 1)
+	                {
+	                	// alert("picCnt>1 reportHouse");
+	                	upload.uploadPics(reportHouse);
+	                }
+	                else
+	                {
+	                	// alert("reportHouse");
+	                	mui.toast("请上传聊天截图");
+	                	return;
+	                	// reportHouse();
+	                }
+
+				}
+
+				$("#report_requirement").attr("disabled","disabled");
+
+			}, false);
+
+
+			function reportRequirement()//举报需求
+	        {
+					console.log("举报需求");
+					// alert('举报需求');
+
+					reportdetail = byId("detail").value;
+					var UserInfo = localStorage.getItem('zmzfangLoginUserInfo');
+					var PublishUserInfo = localStorage.getItem('requirementPublishUserInfo');
+					var requirementId = localStorage.getItem('requirementId');
+					
+					
+					// var houseid = localStorage.getItem('houseId');
+					var houseid = '';
+
+					console.log("UserInfo:"+UserInfo+" PublishUserInfo:"+PublishUserInfo+" requirementId:"+requirementId);
+
+					UserInfo=JSON.parse(UserInfo);
+					PublishUserInfo=JSON.parse(PublishUserInfo);
+					
+
+					var pictures = new Array();
+					var picCnt = upload.files.length;
+					// alert('picCnt is '+picCnt);
+					for(var i=0;i<picCnt;i++)
+					{
+						pictures[i] = {picture:upload.files[i].path.toString(),sn:i.toString()};
+					}
+
+					ajax_add_report({
+						userid: UserInfo.id,
+						nickname: UserInfo.nickname,
+						reporttype: '1',
+						publishuserid: PublishUserInfo.id,
+						publishnickname: PublishUserInfo.nickname,
+						requirementid: requirementId,
+						houseid: houseid,
+						reportdetail: reportdetail,
+						picture: pictures
+					});
+	        }
+
+
+	        function reportHouse()//举报房源
+	        {
+					console.log('举报房源');
+					// alert('举报房源');
+
+
+					reportdetail = byId("detail").value;
+					var UserInfo = localStorage.getItem('zmzfangLoginUserInfo');
+					var PublishUserInfo = localStorage.getItem('requirementPublishUserInfo');
+					// var requirementId = localStorage.getItem('requirementId');
+					var requirementId = '';
+
+					var BidHouse = localStorage.getItem('zmzfangBidByRequiement');
+					var houseid = localStorage.getItem('houseId');
+
+					console.log("UserInfo:"+UserInfo+" PublishUserInfo:"+PublishUserInfo+" requirementId:"+requirementId+" BidHouse:"+BidHouse);
+
+					UserInfo=JSON.parse(UserInfo);
+					PublishUserInfo=JSON.parse(PublishUserInfo);
+					BidHouse=JSON.parse(BidHouse);
+
+
+					if(!BidHouse)
+					{
+						// alert('BidHouse null');
+						console.log("BidHouse null");
+						return;
+					}
+					else
+					{
+						for(var i in BidHouse)
+						{
+							
+							console.log("houseid:"+BidHouse[i].houseid + "  houseid:" + houseid + "  status:" + BidHouse[i].bidstatus + "  nickname:" + BidHouse[i].nickname + "  biduserid:" + BidHouse[i].biduserid);
+							// alert('11111111111');
+					
+							if((BidHouse[i].bidstatus == 2)&&(BidHouse[i].houseid == houseid))
+							{
+								// alert('222222222222');
+								console.log("ajax_add_report");
+
+								var pictures = new Array();
+								var picCnt = upload.files.length;
+								for(var i=0;i<picCnt;i++)
+								{
+									pictures[i] = {picture:upload.files[i].path.toString(),sn:i.toString()};
+								}
+
+								ajax_add_report({
+									userid: UserInfo.id,
+									nickname: UserInfo.nickname,
+									reporttype: '2',
+									publishuserid: BidHouse[0].biduserid,
+									publishnickname: BidHouse[0].nickname,
+									requirementid: requirementId,
+									houseid: houseid,
+									reportdetail: reportdetail,
+									picture: pictures
+								});
+							}
+							break;
+						}
+					}
+
+
+	        }
+
+
+	        
+	        function addReportSuccess(data)
+	        {
+	        	mui.toast("举报成功！");
+	        	console.log("config  " + JSON.stringify(data));
+
+	        	localStorage.setItem('ReportRequirement',JSON.stringify(data));
+
+	        	mui.back();
+	        }
+
+	        function addReportFailed()
+	        {
+	        	toastMSG = '网络异常，信息提交失败，请重试！';
+			    mui.toast(toastMSG);
+			    $("#report_requirement").removeAttr("disabled");
+			    return;
+	        }
+
+
+		</script>
+	</body>
+
+</html>

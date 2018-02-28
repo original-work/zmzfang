@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:10px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				top: 95px;
+				bottom: 50px
+			}
+			#estateSalesDiv
+			{
+				margin-top: 0.1rem;
+				margin-bottom: 2rem;
+				
+			}
+			.prompt a{
+		    	padding: 0.5rem 0;
+		    	width: 7rem;
+		    	display: inline-block;
+		    	background-color: #4cd964;
+		    	color:#fff;
+		    	border-radius:.5rem .5rem .5rem .5rem;
+		    }
+		    
+		    #subject{
+		    	margin-top: 0px;
+		    	margin-bottom:0.3rem;
+		    	text-align: center;
+		    	position: relative;
+		    }
+		    
+		    nav.header-nav{
+		    	padding-top: .2rem;
+		    	padding-bottom: .2rem;
+		    	padding-left: .3rem;
+		    	padding-right: .3rem;
+		    }
+		   
+		    nav.header-nav button{
+		    	border: 1px solid #ddd;
+		    	padding: .4rem 0;
+		    	width: 32.5%;
+		    	display: inline-block;
+		    	color:#999;
+		    	background: #fff;
+		    	margin-bottom:0px;
+		    }
+		    nav.header-nav button:first-child{
+		    	border-radius:.3rem 0 0 .3rem;
+		    	border-right: none;
+		    }
+		    nav.header-nav button:last-child{
+		    	border-radius:0 .3rem .3rem 0;
+		    	border-left: none;
+		    }
+		    nav.header-nav button.current {
+			    color: #fff;
+			    background: #4cd964;
+			}
+			
+			#estateSalesDiv .estate-name {
+				position: absolute;
+				bottom: 0.2rem;
+				left:0.4rem;
+			}
+			
+			#estateSalesDiv .estate-location {
+				position: absolute;
+				bottom: 0.2rem;
+				right:0.4rem;
+			}
+			
+			#estateSalesDiv .estate-pic {
+				height: 100px;
+				background-size: cover;
+			}
+			
+			
+			
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">楼盘代销</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/mine.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a id="estateSalesLink" class="mui-control-item mui-active" href="">
+						分销楼盘
+					</a>
+					<a id="myEstateSalesLink" class="mui-control-item" >
+						我的分销
+					</a>
+				</div>
+			</div>
+			
+			<div class="mui-slider-group">
+				<div id="estateSales" class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div id="subject">
+					    	<nav class="header-nav">
+					    		<button id="cityLink" class="mui-btn mui-btn-block">省市</butten>
+					    		<button id="" class="mui-btn mui-btn-block">城市</button>
+					    		<button class="mui-btn mui-btn-block current">最新</button>
+					    		
+					    	</nav>
+					    	<h5 class="mui-text-left" style="padding-left: 0.75rem;">当前城市：<span id="cityResult" class="mui-badge mui-badge-success">上海市浦东新区</span></h5>
+						</div>
+						
+						<ul id="estateSalesUl" class="mui-table-view">
+							<li id="estateSalesLi" class="mui-table-view-cell mui-media mui-text-center mui-hidden">
+								<div id="estateSalesDiv" class="prompt">
+									<h5>暂未获取到代销楼盘</h5>
+									
+								</div>
+							</li>
+							
+							<li id="estateSalesLi" class="mui-table-view-cell mui-media mui-text-center">
+								<div id="estateSalesDiv" class="prompt">
+									<div id="estatePicDiv" estate-id='1' class="mui-slider estate-pic" style="background-image: url('http://www.zmzfang.com/weixin/img/zhuanjia1.jpg');">
+			   			
+		    						</div>
+									<div>
+										<h5 id="estateName" class="estate-name" style="">仁恒河滨花园</h5>
+										<h5 id="estateLocation" class="estate-location" style="">上海.浦东</h5>
+									</div>
+									
+								</div>
+							</li>
+							
+							<li id="estateSalesLi" class="mui-table-view-cell mui-media mui-text-center">
+								<div id="estateSalesDiv" class="prompt">
+									<div id="estatePicDiv" estate-id='1' class="mui-slider estate-pic" style="background-image: url('http://www.zmzfang.com/weixin/img/zhuanjia1.jpg');">
+			   			
+		    						</div>
+									<div>
+										<h5 id="estateName" class="estate-name" style="">仁恒河滨花园</h5>
+										<h5 id="estateLocation" class="estate-location" style="">上海.浦东</h5>
+									</div>
+								</div>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/city.data.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		
+		<script src="../js/common.js?v=0.01"></script>
+		<script src="../js/EstateSales/EstateSales.js?v=0.01"></script>
+		
+		
+	</body>
+
+</html>

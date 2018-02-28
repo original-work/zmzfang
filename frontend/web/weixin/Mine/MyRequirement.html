@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" src="img/favicon.ico">
+		<style type="text/css">
+			.flush-requirement {
+				width:80px;padding-bottom: 0px;
+                padding-top: 0px;
+                display: inline;
+                margin-bottom: 5px;
+			}
+			
+			.flush-rent-requirement {
+				width:80px;padding-bottom: 0px;
+                padding-top: 0px;
+                display: inline;
+                margin-bottom: 5px;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的需求</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="requirement">
+				<ul id='requirementUl' class="mui-table-view">					
+					<li id="promptDivLi" class="mui-table-view-cell mui-media mui-hidden">
+						<div id="promptDiv" class="prompt-div" style="text-align: center; margin-top: 1px;">
+							<span style="color: gray; font-size: 0.9em;">无需求</span>
+							<br />
+							<button id="publishRequirement" type="button" class="mui-btn " style="margin-top: 5px; padding: 5px 20px;background-color: #4cd964;color: #fff;">发布需求</button>
+						</div>
+					</li>
+
+			    </ul>
+			
+			</div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/dom.create.js"></script>
+		<script src="../js/requirement.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false
+			});
+			var loginUser;
+			
+			mui.back = function(){
+				mui.openWindow({
+					url: '../mine.html'
+				});
+			};
+			
+			mui.ready(function() {
+				$('#mineLink').addClass('mui-active');
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				loginUser = JSON.parse(data);
+				
+				var userid = loginUser.id;
+				console.log("userid:"+userid);
+				
+				//获取
+				ajax_to_server(getRequirementByUserIdByCityUrl,{userid:userid},getRequirementByUserIdSuccess,null);
+				//获取
+				//初始化微信分享
+				wxShare();
+			});
+			
+			//获取需求列表成功后的处理方法，新建li元素
+			function getRequirementByUserIdSuccess(data)
+			{
+				console.log('getRequirementByUserIdSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					//showPromptInfo();
+					initRentInfo();
+					return;
+				}
+				var helpId;
+				var requirementUl=document.getElementById('requirementUl');
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillMyRequirementListLi(data[i]));
+				}
+				
+				//requirementUl.innerHTML = "";
+				requirementUl.appendChild(firstFrag);
+				initFlushEvent();
+				//初始化租房相关信息
+				initRentInfo();
+			}
+	
+	        //增加需求列表中tap事件
+			mui('#requirementUl').on('tap', '.requirement-brief', function() {
+				var requirementId = this.getAttribute('requirement-id');
+				console.log('requirementId:'+requirementId);
+				localStorage.setItem("requirementId", requirementId);
+				var city = this.getAttribute('city');
+				var dstUrl = './MyRequirementDetail.html?requirementId='+requirementId+"&city="+city;
+				mui.openWindow({
+					url: dstUrl,
+					id: 'RequirementDetail.html'
+				});
+			});
+			
+			//增加需求列表中 求租相关的 tap事件
+			mui('#requirementUl').on('tap', '.rent-requirement-brief', function() {
+				var requirementId = this.getAttribute('requirement-id');
+				var city = this.getAttribute('city');
+				console.log('requirementId:'+requirementId);
+				
+				var dstUrl = './MyRentRequirementDetail.html?requirementId='+requirementId+"&city="+city;;
+				mui.openWindow({
+					url: dstUrl,
+					id: 'MyRentRequirementDetail.html'
+				});
+			});
+			
+			
+			function showPromptInfo()
+			{
+				var cnt = $('#requirementUl .mui-table-view-cell').length;
+				if(cnt > 1)
+				{
+					return;
+				}
+				
+				$('#promptDivLi').removeClass('mui-hidden');
+				//增加投标 tap事件
+				document.querySelector('#publishRequirement').addEventListener('tap', function() {
+					console.log('publishRequirement click');
+					//发布房源
+					mui.openWindow({
+						url: "../Publish/RequirementPublish1.html"
+					});
+				},false);
+			}
+			
+			function initFlushEvent()
+	        {
+	        	mui('#requirementUl').on('tap', '.flush-requirement', function() {
+	        		console.log('flush click');
+					var requirementId = this.getAttribute('requirement-id');
+					//console.log('recommendInfo houseId:'+houseId);
+					ajax_flush_requirement(
+						{
+							requirementid:requirementId,
+							userid:loginUser.id
+						}
+					)
+	        	});
+	        	
+	        	mui('#requirementUl').on('tap', '.flush-rent-requirement', function() {
+	        		console.log('flush click');
+					var requirementId = this.getAttribute('requirement-id');
+					//console.log('recommendInfo houseId:'+houseId);
+					var options = new Object();
+					options.rentid = requirementId;
+					
+					ajax_to_server(flushRentUrl,options,flushRentRequirementSuccess,flushRentRequirementFailed);
+					
+	        	});
+	        }
+	        
+	        function flushRequirementSuccess(data)
+	        {
+	        	if(data.rscode == 0)
+	        	{
+	        		mui.toast('刷新成功！');
+	        		console.log('flush requirement success');
+	        	}
+	        	else
+	        	{
+	        		mui.toast('刷新失败了！请检查网络');
+	        		console.log('flush requirement wrong');
+	        	}
+	        }
+	        
+	        function initRentInfo()
+	        {
+	        	var options = new Object();
+				options.userid = loginUser.id;
+				options.start = 0;
+				options.count = 30;
+				
+				ajax_to_server(getRentListByUseridByCityUrl,options,getRentRequirementByUserIdSuccess,getRentRequirementByUserIdFailed);
+	        }
+	        
+	        //获取需求列表成功后的处理方法，新建li元素
+			function getRentRequirementByUserIdSuccess(data)
+			{
+				console.log('getRentRequirementByUserIdSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					//showPromptInfo();
+					initHelpInfo();
+					return;
+				}
+				
+				var requirementUl=document.getElementById('requirementUl');
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillMyRentRequirementListLi(data[i]));
+				}
+				
+				requirementUl.appendChild(firstFrag);
+				initHelpInfo();
+			}
+	
+			function getRentRequirementByUserIdFailed(data)
+			{
+				console.log('getRentRequirementByUserIdFailed data:'+JSON.stringify(data));
+				mui.toast('获取求租需求列表失败:'+JSON.stringify(data));
+			}
+	        
+	         //创建我的求租列表li元素
+			function fillMyRentRequirementListLi(data) 
+			{	
+				console.log(JSON.stringify(data));
+				
+				var userStr = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(userStr);
+				
+				var ele = document.createElement("li");
+				ele.className = "mui-table-view-cell mui-media";
+				ele.id = "requirementid-" + data.requirementid;
+				
+				console.log('date:'+data.publishdate);
+				var updatetime = data.publishdate;
+				var timearray=updatetime.split(" ");
+				var newupdatetime=timearray[0];
+				timearray=data.createdate.split(" ");
+				var createtime=timearray[0];
+		
+				var subject = '求租' +data.city+ data.subject + data.housetype + '室';
+				
+				var liContent = '';
+				liContent += '<div >';
+				liContent += '<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;float:left;">';
+				liContent += '<img style="width:42px; height:42px; " src="'+user.picture+'" alt="个人头像" />';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body" style="padding-left: 10px;">';
+				liContent += '<div id="rentBrief" class="rent-requirement-brief" requirement-id="'+data.requirementid+'" city="'+data.city+'" style="float: left;width: 70%;">';
+				liContent += '<h5 class="requirement-subject" style="margin-left: 0px;">'+subject+'</h5>';
+				liContent += '<h5><span>预期租金：'+data.price+'元/月</span> </h5>';
+				liContent += '<h5><span>'+data.bidcnt+'人感兴趣</span> </h5>';
+				liContent += '<h5><span>发布时间：'+createtime+'</span></h5>';
+				liContent += '<h5><span>最近更新时间：'+newupdatetime+'</span></h5>';
+		
+				liContent += '</div>';
+				liContent += '<div style="width: 30%;float: right;">';
+//				liContent += '<h5 class="publish-date" style="float:left;font-size:12px">'+newupdatetime+'</h5>';	
+				liContent += '<button id="flushRequirement" class="mui-btn mui-btn-block flush-rent-requirement" type="button" requirement-id="'+data.requirementid+'">刷新</button>';
+				liContent += '</div>';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				ele.innerHTML = liContent;
+				return ele;
+			}
+			
+	        function flushRentRequirementSuccess(data)
+	        {	
+	        	if(data.rscode == 0)
+	        	{
+	        		mui.toast('刷新成功！');
+	        		console.log('flush requirement success');
+	        	}
+	        	else
+	        	{
+	        		mui.toast('刷新失败了！请检查网络');
+	        		console.log('flush requirement wrong');
+	        	}
+	        }
+	        
+	        function flushRentRequirementFailed(data)
+	        {
+	        	mui.toast('刷新异常');
+	        }
+	        
+	        function initHelpInfo()
+	        {
+	        	var options = new Object();
+				options.userid = loginUser.id;
+				options.start = 0;
+				options.count = 30;
+				
+				ajax_to_server(getHelpListByUseridUrl,options,getHelpRequirementByUserIdSuccess,getHelpRequirementByUserIdFailed);
+	        }
+	        
+	        //获取需求列表成功后的处理方法，新建li元素
+			function getHelpRequirementByUserIdSuccess(data)
+			{
+				console.log('getHelpRequirementByUserIdSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					showPromptInfo();
+					initReferralInfo();
+					return;
+				}
+
+				var requirementUl=document.getElementById('requirementUl');
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillMyHelpRequirementListLi(data[i]));
+				}
+				
+				requirementUl.appendChild(firstFrag);
+				showPromptInfo();
+
+				mui('.mui-table-view-cell').on('tap', '#helpBrief', function() {
+					console.log('helpid is '+$(this).attr('help-id'));
+		        	var dstUrl = './MyHelpDetail.html?helpId='+$(this).attr('help-id');
+	        		mui.openWindow({
+						url: dstUrl,
+						id: 'MyHelpDetail.html'
+					});
+				});
+				initReferralInfo();
+			}
+
+	
+			function getHelpRequirementByUserIdFailed(data)
+			{
+				console.log('getHelpRequirementByUserIdFailed data:'+JSON.stringify(data));
+				mui.toast('获取求助需求列表失败:'+JSON.stringify(data));
+			}
+	        
+	         //创建我的需求列表li元素
+			function fillMyHelpRequirementListLi(data) 
+			{	
+				console.log(JSON.stringify(data));
+				
+				var userStr = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(userStr);
+				
+				var ele = document.createElement("li");
+				ele.className = "mui-table-view-cell mui-media";
+				ele.id = "requirementid-" + data.requirementid;
+				
+				console.log('date:'+data.publishdate);
+				var updatetime = data.publishdate;
+				var timearray=updatetime.split(" ");
+				var newupdatetime=timearray[0];
+				
+				var subject = '求助：' + data.forhelpsubject;
+				
+				var liContent = '';
+				liContent += '<div >';
+				liContent += '<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;float:left;">';
+				liContent += '<img style="width:42px; height:42px; " src="'+user.picture+'" alt="个人头像" />';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body" style="padding-left: 10px;">';
+				liContent += '<div id="helpBrief" class="help-requirement-brief" help-id="'+data.requirementid+'"style="float: left;width: 70%;">';
+				liContent += '<p class="requirement-subject" style="margin-left: 0px;">'+subject+'</p>';
+				
+				liContent += '<h5><span>奖励：'+data.price+'</span>元</h5>';
+				
+				liContent += '<h5><span>'+data.bidcnt+'人已答复</span> </h5>';
+				
+				liContent += '</div>';
+				liContent += '<div style="width: 30%;float: right;">';
+				liContent += '<h5 class="publish-date" style="float:left;font-size:12px">'+newupdatetime+'</h5>';	
+				liContent += '<button id="flushRequirement" class="mui-btn mui-btn-block flush-help-requirement mui-hidden" type="button" requirement-id="'+data.id+'">刷新</button>';
+				liContent += '</div>';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				ele.innerHTML = liContent;
+				return ele;
+			}
+			
+			function initReferralInfo()
+	        {
+	        	var options = new Object();
+				options.userid = loginUser.id;
+				
+				ajax_to_server(getRequirementReferralListByUseridUrl,options,getReferralRequirementByUserIdSuccess,getReferralRequirementByUserIdFailed);
+	        }
+	        
+	        //获取需求列表成功后的处理方法，新建li元素
+			function getReferralRequirementByUserIdSuccess(data)
+			{
+				console.log('getHelpRequirementByUserIdSuccess data:'+JSON.stringify(data));
+				if(!data || data.length == 0)
+				{
+					showPromptInfo();
+					return;
+				}
+
+				var requirementUl=document.getElementById('requirementUl');
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data.data)
+				{
+					//var id=data[i].requirementid;
+					console.log('\n i:'+i);
+					firstFrag.appendChild(fillMyReferralRequirementListLi(data.data[i]));
+				}
+				
+				requirementUl.appendChild(firstFrag);
+				showPromptInfo();
+
+				mui('#requirementUl').on('tap', '.referral-brief', function() {
+					var requirementId = this.getAttribute('requirement-id');
+					console.log('requirementId:'+requirementId);
+					
+					var dstUrl = '../Referral/MyRequirementReferral.html?requirementId='+requirementId;
+					mui.openWindow({
+						url: dstUrl
+					});
+				});
+			}
+
+	
+			function getReferralRequirementByUserIdFailed(data)
+			{
+				console.log('getHelpRequirementByUserIdFailed data:'+JSON.stringify(data));
+				mui.toast('获取求助需求列表失败:'+JSON.stringify(data));
+			}
+	        
+	         //创建我的需求列表li元素
+			function fillMyReferralRequirementListLi(data) 
+			{	
+				console.log(JSON.stringify(data));
+				
+				var userStr = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(userStr);
+				
+				var ele = document.createElement("li");
+				ele.className = "mui-table-view-cell mui-media";
+				ele.id = "requirementid-" + data.id;
+				
+				
+//				var updatetime = data.publishdate;
+//				var timearray=updatetime.split(" ");
+//				var newupdatetime=timearray[0];
+				var timearray=data.createtime.split(" ");
+				var createtime=timearray[0];
+				
+				var subject = '求购' +data.subject + data.housetype + '室';
+				
+				var liContent = '';
+				liContent += '<div >';
+				liContent += '<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;float:left;">';
+				liContent += '<img style="width:42px; height:42px; " src="'+user.picture+'" alt="个人头像" />';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body" style="padding-left: 10px;">';
+				liContent += '<div id="requirementBrief" class="referral-brief" requirement-id="'+data.id+'" style="float: left;width: 70%;">';
+				liContent += '<h5 class="requirement-subject" style="margin-left: 0px;">'+subject+'</h5>';
+				liContent += '<h5><span>价格：'+data.budget+'万</span></h5>';
+				liContent += '<h5><span>发布时间：'+createtime+'</span></h5>';
+				
+				
+				liContent += '</div>';
+				liContent += '<div style="width: 30%;float: right;">';
+				/*
+				liContent += '<h5 class="publish-date" style="float:left;font-size:12px">'+newupdatetime+'</h5>';	
+				*/
+				liContent += '<button id="flushRequirement" class="mui-btn mui-hidden mui-btn-block flush-requirement" type="button" requirement-id="'+data.requirementid+'">刷新</button>';
+				liContent += '</div>';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				ele.innerHTML = liContent;
+				return ele;
+			}
+			
+		</script>
+	</body>
+
+</html>

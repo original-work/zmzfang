@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的需求详情</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="requirementInfo" class="requirement-info card" requirement-id="1">
+				<div class="mui-input-row">
+					<div style="width:80%;float: left;">
+							<h4 id="requiremenSubject" class="" style="margin-left: 0px;overflow: visible;padding-top: 10px;padding-left: 10px;">求购某小区 </h4>
+					</div>
+					
+				    <div style="width:20%;float: left;padding-top: 10px;">
+				    	<span id="modifyrequirement" class="mui-icon mui-icon-compose" style="float:right;padding-right: 10px;"></span>
+				    	<span id="deleteRequirement" class="mui-icon mui-icon-close" style="padding-right: 5px;float:right;"></span>
+				    </div>
+				</div>
+				    	<ul class="row">
+				    		<li class="col-xs-12">
+				    			<p style="color:#000;font-size:1.1rem;" id="requiremenSubject"></p>
+				    		</li>
+
+							<li class="col-xs-12">
+				    			<p style="font-weight:700;color:#fc6000;font-size:1.1rem;" id="fee"></p>
+				    		</li>
+					        <li class="col-xs-6">
+					            <p><span style="color:#999;">预算：</span><span id="budget"></span>万</p>
+					        </li>
+							<li class="col-xs-6">
+					            <p><span style="color:#999;">楼层：</span><span id="storey"></span>层</p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">户型：</span><span id="housetype"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">房产类型：</span><span id="buildingtype"></span></p>
+					        </li>	
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+									<p>详情描述：</p>
+									<div>
+									    <textarea id="detail" rows="5" placeholder="" disabled="disabled"></textarea>
+								    </div>
+								</div>
+					        </li>
+					    </ul>
+					
+				</div>
+		</div>		
+
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var page = 0;
+			var statusStr = '';
+			var subject;
+			var regions;
+			var datas;
+			var requirementId = null;
+			var requirementCity = '上海市';
+			
+			//初始化url参数来获取需求id,如果没有继续执行
+		    initUrlParam();
+		    
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.back = function(){
+				mui.openWindow({
+					url: '../Mine/MyRequirement.html'
+				});
+			};
+			
+			mui.ready(function() {
+				//初始化需求详细信息
+				initRequirementDetail();
+				//初始化已经投标的信息  部分显示，支持下拉刷新
+				
+				initWxShareBackUrl();//分享后的返回键处理
+				
+			});
+			
+			
+	        //增加需求修改按钮事件
+			document.querySelector('#modifyrequirement').addEventListener('tap', function() {
+				console.log('modifyrequirement click');
+				mui.openWindow({
+					url: './MyRequirementModifyReferral.html'
+				});
+			}, false);
+			
+			//增加需求删除按钮事件
+			document.querySelector('#deleteRequirement').addEventListener('tap', function() {
+				console.log('deleteRequirement click');
+				if(confirm("确认要删除此需求吗？"))
+				{
+					console.log('begin delete requirement');
+								
+					var options = {id: requirementId};
+					ajax_to_server(deleteRequirementReferralUrl,options,deleteRequirementSuccess,null);
+				}
+				else
+				{
+					console.log('cancel delete requiement');
+				}
+				
+			}, false);
+			
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 requirementId = getQueryStrFromUrl("requirementId");
+				 console.log('initUrlParam requirementId:'+requirementId);		 
+			}
+			
+			//增加微信分享处理
+			function initWxShare()
+			{
+				var requirementId = requirementId; 
+				var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+				var requirementInfo = JSON.parse(localStorage.getItem("zmzfangMyRequirement"));
+				
+				var userId = loginUser.id;
+				//var calledUrl = String(window.document.location.href);
+				var link = 'http://www.zmzfang.com/weixin/HomePage/RequirementDetail.html?requirementId='+requirementId+'&userId='+userId;
+				var imgUrl = 'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg';
+				var param = new Object();
+				// param.getJssdkConfUrl = calledUrl;
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				if(requirementInfo && loginUser)
+				{
+					imgUrl = loginUser.picture;
+					title = '求购'+requirementInfo.subject;
+					if(requirementInfo.housetype != '5-10')
+					{
+						title += requirementInfo.housetype+'房';
+					}
+					if(requirementInfo.budget == '1000-90000')
+					{
+						title += '1000万以上';
+					}
+					else
+					{
+						title +=  requirementInfo.budget + '万';
+					}
+					//desc = '具体描述：' + requirementInfo.detail + '[芝麻找房]';
+				}
+				
+				param.title = title;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+				
+			
+			//增加需求修改按钮事件
+			document.querySelector('#modifyrequirement').addEventListener('tap', function() {
+				console.log('modifyrequirement click');
+				mui.openWindow({
+					url: './MyRequirementModifyReferral.html'
+				});
+			}, false);
+			
+			
+			function initRequirementDetail()
+			{
+				
+				byId("requirementInfo").setAttribute("requirement-id",requirementId);
+				var options = {id: requirementId};
+				var url = getRequirementDetailReferralUrl;
+				ajax_to_server(url,options,getRequirementDetailSuc,null);
+//				ajax_get_requirement_detail({
+//					requirementid: requirementId
+//				});
+			}
+			
+			function getRequirementDetailSuc(data)
+			{
+				if(data && data.data)
+				{
+					fillRequiementInfo(data.data);
+				}
+			}
+			
+			//填充需求信息
+	        function fillRequiementInfo(data)
+	        {
+	        	console.log("fillRequiementInfo xxxx");
+	        	//将我的需求详情写入到缓存中去；方便修改页面使用
+	        	localStorage.setItem("zmzfangMyRequirementReferral",JSON.stringify(data));
+	        	regions =  data.regions;
+	        
+	        	subject='求购'+data.subject+data.housetype+'室';
+	        	byId("requiremenSubject").innerText = subject;
+	        	byId("budget").innerText = data.budget;
+	        	if(data.storey == '0-300')
+	        	{
+	        		byId("storey").innerText = '不限';
+	        	}
+	        	else
+	        	{
+	        		byId("storey").innerText = data.storey+'层';
+	        	}
+	        	
+	        	byId("housetype").innerText = data.housetype + '室';
+	        	// alert(data.buildingtype);
+	        	byId("buildingtype").innerText = data.buildingtype;
+	        	byId("budget").innerText = data.budget;
+	        	byId("detail").innerText = data.detail;
+	        	
+				//初始化微信分享
+				initWxShare();
+	        }    
+						
+			
+			function deleteRequirementSuccess(data)
+			{
+				if(data && data.rscode == 0)
+				{
+					mui.toast("删除需求成功");
+					mui.openWindow({
+						url: '../Mine/MyRequirement.html'
+					});
+
+				}
+				else
+				{
+					mui.toast("删除需求失败，请重试");
+				}
+			}
+			
+		
+		
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper{
+				top: 44px;
+				bottom: 50px
+			}
+			.topic-picture{
+				line-height: 60px;
+				max-width: 100px;
+				height: 84px;
+				width: 100px;
+			}
+			/*修正下拉提示位移*/
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket{top:0;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" >
+			<a href="../HomePage/index.html" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="topicTitle">行业观点</h1>
+		</header>
+		
+		<div class="mui-content">
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<!--数据列表-->
+			<div class="mui-scroll">
+				<ul id="new" class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+		</div>
+
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			var startSn = 0;
+			var initparams = JSON.parse(sessionStorage.getItem('topic_list_params'));
+			var isOver = false;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: function(){window.location.reload()}
+					},
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+			mui.ready(function() {
+				//初始化
+				if(initparams && initparams.count){
+					getTopicCList(0,initparams.count);//获取需求列表
+					console.log('sessionStorage works')
+				}else{
+					getTopicCList(0);
+				}
+				wxShare({"title":"芝麻找房 - 主题列表","desc":"芝麻找房","imgUrl":'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg','link':window.document.location.href});
+			});
+			
+			function getTopicCList(start,countsn){
+				var count = countsn?countsn:10;
+				console.log("getTopicList count:"+count);
+				var options = new Object();
+				options.start = start;
+				options.count = count;
+				
+				ajax_to_server(getInterfaceUrl()+"?r=topic/get-topic-list",options,getTopicListSuc,getListFailed);
+				// ajax_to_server("http://zm.front?r=topic/get-topic-list",options,getTopicListSuc,getListFailed);
+			}
+			function getTopicListSuc(res){
+				console.log('getRequirementListSuccess');
+				//return;
+				if(res.data && res.data.length < 10 ){
+					isOver = true;
+					if(startSn == 0)
+					{
+						$("#new").html('<div style="color:#ccc;padding:30px 0;text-align:center">暂无数据;</div>');
+					}
+					return;
+				}
+				if(startSn == 0){ //首次加载
+					if(initparams && initparams.offset){
+						console.log('scroll to '+initparams.offset);
+						mui('#pullrefresh').pullRefresh().scrollTo(0,initparams.offset,0);
+						sessionStorage.removeItem('topic_list_params')
+					}
+				}
+				startSn =startSn+res.data.length;
+
+				var Html='';
+				for (i in res.data){
+					var picture = res.data[i].picture?'http://www.zmzfang.com/assets/topic/'+res.data[i].picture:'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg';
+					// if(screen.width <= 320){
+					// 	var str = res.data[i].short_desc.length<=25?res.data[i].short_desc:res.data[i].short_desc.substr(0,25)+'...';
+					// 	$('#topic li').css('pading-right','56px');
+					// }else if(screen.width <= 375){
+					// 	var str = res.data[i].short_desc.length<=32?res.data[i].short_desc:res.data[i].short_desc.substr(0,32)+'...';
+					// }else{
+					// 	var str = res.data[i].short_desc;
+					// }
+					// var acount = res.data[i].count?res.data[i].count:0;
+					var aread = res.data[i].read?res.data[i].read:0;
+					Html+='<li class="mui-table-view-cell mui-media" tid="'+res.data[i].id+'"><div id="requirementBrief" class="requirement-brief"><div style="width:100px; height:84px;overflow:hidden;float:left;position:relative;"><img class="topic-picture" class="mui-media-object" src="'+picture+'" alt="话题"></div></div><div style="margin-left: 110px;overflow:hidden;"><p id="topic-title" class="requirement-subject" style="margin-left: 0px;color:#000;font-size:15px">'+res.data[i].title+'</p>'+'<p style="position: absolute;left:125px;bottom: 10px;"><svg class="icon"><use xlink:href="#icon-views"></use></svg> <span id="topic-gdcount">'+aread+'</span></span></p></div></li>';
+					}
+				$("#new").append(Html);
+			}
+			function getListFailed(){
+				mui.toast('获取信息失败');
+			}
+			mui('#new').on('tap', 'li', function() {
+				var id = $(this).attr('tid'); 
+				var offset = parseInt($(".mui-scroll").css('transform').split(",")[5]);
+				// history.replaceState({}, "房源列表页", "index.html?offset="+offset);
+
+				sessionStorage.setItem("topic_list_params" , '{"count":'+startSn+',"offset":'+offset+'}');
+				mui.openWindow({
+					url: './index.html?tid='+id,
+					id: 'Topic'
+				});
+			});
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				var that = this
+				setTimeout(function() {
+					getTopicCList(startSn);
+					that.endPullupToRefresh(isOver);  //在setTimeout中 this无指代
+				}, 200);
+			}
+		</script>
+	</body>
+
+</html>

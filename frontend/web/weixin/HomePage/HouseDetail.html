@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+		<style type="text/css">
+			.house-info{
+				/*padding:20px;*/
+			}
+			p{
+				font-size: 16px!important;
+			}
+			.row p span{color:#000}
+			
+			.not-allow{
+				color: #999;
+			    background-color: #c7c7cc;
+			    cursor: not-allowed;
+			    font-weight: 400;
+			}
+			.allow{
+			    background: #4cd964;
+			}
+			.head-row{
+				padding:0;
+				margin:0 1%;
+			}
+			.head-row .col-xs-2{
+				padding-right: 2%;
+   				padding-left: 2%;
+			}
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="isWechat" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title" house-id="0">房源详情页</h1>
+			
+		</header>
+		
+		<!-- <footer id="sendMsgDiv" class="mui-bar mui-bar-footer mui-hidden" style="background-color: #4cd964;">
+        	<h1 class="mui-title" id='sendMsg'>发消息</h1>
+        </footer> -->
+        
+        <footer id="bidDiv" class="mui-bar mui-bar-footer allow">
+        	<h1 class="mui-title" id='bid'>联系他</h1>
+        </footer>
+        
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			<div id="displayAfterLoginDiv">
+				<div class="user-info" style="border-bottom:1px solid #ddd;margin-bottom:20px;">
+					<h4 style="margin-left:20px" class="mui-ellipsis requirement-subject">
+							<span>发布人信息</span> 
+					</h4>
+					<div style="width:42px; height:42px;overflow:hidden;float:left;margin-left:20px">
+						<img id="userPic" class="circle-img" user-id="1" width="42px" height="42px" data-lazyload-id="0" src="../img/shuijiao.jpg">
+					</div>
+			       	<div class="user-info-content" style="float:left;margin-left: 0px;padding-left: 10px;">
+			        <p class="mui-ellipsis requirement-user-nickname" style="font-size:1.2rem;margin-bottom:5px;"> 
+							<span id="userName" ></span>&nbsp;
+							<span id="userType" class="mui-hidden" style="font-size:0.3rem;color:green;">经纪人</span>
+							<span id="agentIcon" class="mui-icon mui-icon-contact mui-hidden" style="color: royalblue;" ></span>
+					</p>
+					<p>
+						<span>最近登录时间</span> <span id="loginTime"> </span>
+					</p>
+					</div>
+					
+	
+			    	<div class="mui-clearfix"></div>
+			   	</div>
+			   	<div id="slider" class="mui-slider" >
+			    
+		    	</div>
+			   	
+			   	<div id="houseInfo" class="house-info">
+					<div class="card">
+						<h4 style="margin-bottom:10px" class="mui-ellipsis requirement-subject">
+							<span id="districtName"></span> 
+						</h4>
+						<p><span>售价:</span> <span id="expectSalePrice" style="color:red;"></span>万元 (<span id="avgPrice" style="color:red;"></span>元/㎡)</h5>
+						<h5 id="tags"></p>
+						<button id=report type="button" class="mui-btn mui-btn-danger mui-hidden">虚假房源举报</button>
+					</div>
+					<div class="card">
+						<ul class="row">
+					        <li class="col-xs-6">
+					            <p><span style="color:#999;">户型：</span><span id="roomCnt"></span>室<span id="hallCnt" ></span>厅<span id="bathRoomCnt"></span>卫</p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">面积：</span><span id="buildingArea"></span>㎡</p>
+					        </li>
+							<li class="col-xs-6">
+					            <p><span style="color:#999;">楼层：</span><span id="storey"></span>/<span id="totalStorey" ></span>层</p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">房龄：</span><span id="houseAge"></span>年</p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">装修：</span><span id="decorationType"></span></p>
+					        </li>	
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">朝向：</span><span id="orientation"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					            <p><span style="color:#999;">房产类型：</span><span id="buildingType"></span></p>
+					        </li>
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+									<p>详情描述：</p>
+									<div>
+									    <p id="detail" style="margin-bottom: 10px;color:#000;text-indent: 1.5rem;"></p>
+								    </div>
+								</div>
+					        </li>
+					    </ul>
+					</div>	
+				
+					<div class="bid-info card">
+						<p class="mui-ellipsis" style="padding-top: 3px;padding-left: 10px;font-size:1.1rem;color:#000;">
+							感兴趣的人 <small>(<span id="bidCnt" style="color:#007D2C;">0</span>人)</small>
+						</p>	
+						<div id="bidlist">
+							<ul class="head-row" id="bidUl">
+								<li style="text-align:center;list-style: none;"><span class="mui-pull-loading mui-icon mui-spinner"></span></li>
+							</ul>
+						</div>
+					</div>
+				
+				</div>	
+			</div>		   
+		</div>		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/house.js"></script>
+		<script src="../js/user.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/common.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="../js/web-storage-cache.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		    var houseId;
+		    var houseUserId;
+		    var houseUserName;
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var districtname;
+			var urlString;
+			var publishUserid;
+			
+		    //初始化url参数来获取需求id和用户id,如果没有继续执行
+		    initUrlParam();
+		    var wsCache = new WebStorageCache();
+			wsCache.deleteAllExpires();//清除所有超时的缓存
+			
+			mui.init({
+				swipeBack: false
+			});
+			
+			var slider = mui("#slider");
+			slider.slider({
+				interval: 5000
+			});
+
+			//在举报按钮上增加tap事件
+			document.querySelector('#report').addEventListener('tap', function() {
+				console.log('report click');
+				//用户未登陆，则无法看到
+
+				mui.openWindow({
+					url: './Report.html',
+					id: 'Report.html'
+				});
+			}, false);
+	
+	        mui.ready(function() {
+				houseId = localStorage.getItem("houseId");
+				
+				console.log("houseId:"+houseId);
+				byId("houseInfo").setAttribute("house-id",houseId);
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				var userid = null;
+				if(loginUser)
+				{
+					userid = loginUser.id;
+				}
+				
+				ajax_get_house_detail({
+					houseid: houseId,
+					userid: userid
+				});
+				
+				
+				//初始化微信分享页面返回按钮事件
+				initWxShareBackUrl();
+				
+				var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+				var regUrl = 'http://www.zmzfang.com/weixin/Mine/reg.html';
+				initCheckView(shareBackUrl,regUrl);
+				
+			});
+			
+			//在头像上增加增加用户信息 tap事件
+			document.querySelector('#userPic').addEventListener('tap', function() {
+				console.log('userInfo click');
+				//用户未登陆，则无法看到
+				
+				var userid = $("#userPic").attr("user-id");
+				console.log('userid 1:'+userid);
+				var type = 2;//1需求页中点击 2 房源页中点击
+				var dstUrl = '../Mine/User.html?userId='+userid+'&type='+type;
+				
+				if(!$('#userType').hasClass('mui-hidden'))
+				{
+					dstUrl = '../Agent/AgentInfo.html?userId='+userid;
+				}
+				
+				mui.openWindow({
+					url: dstUrl,
+					id: 'User.html'
+				});
+				
+			}, false);
+			
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 urlString = String(window.document.location.href);
+				 var houseId = getQueryStr("houseId");
+				
+				 console.log('initUrlParam houseId:'+houseId);
+				 if(houseId && houseId != ' ')
+				 {
+				 	localStorage.setItem('houseId',houseId)
+				 }
+			}
+			
+			//增加微信分享处理
+			function initWxShare()
+			{
+				var houseId = $("#houseInfo").attr('house-id'); 
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			
+				//var calledUrl = String(window.document.location.href);
+				var link = 'http://www.zmzfang.com/weixin/HomePage/HouseDetail.html?houseId='+houseId;
+				var imgUrl = 'http://www.zmzfang.com/weixin/img/favicon.ico';
+				var param = new Object();
+				// param.getJssdkConfUrl = calledUrl;
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				
+				var housetype = $("#roomCnt").text()+'室'+$("#hallCnt").text()+'厅'+$("#bathRoomCnt").text()+'卫';
+				
+				title = $("#districtName").text() + housetype;
+				
+				title += $("#decorationType").text();
+				title += $("#expectSalePrice").text() + '万元';
+				//imgUrl = $("#userPic").attr("src");
+				
+				
+				param.title = title;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+			
+			function checkBidStatus()
+			{
+				var bidInfo = JSON.parse(localStorage.getItem('zmzfangBidByRequiement'));
+				if(!bidInfo)
+				{
+					return;
+				}
+				else
+				{
+					for(var i in bidInfo)
+					{
+						console.log("houseid:"+bidInfo[i].houseid + "status:" + bidInfo[i].bidstatus)
+						if(bidInfo[i].houseid == houseId)
+						{
+							if(bidInfo[i].bidstatus == 2)
+							{
+								//显示发送消息
+								// byId("sendMsgDiv").classList.remove("mui-hidden");
+								byId("report").classList.remove("mui-hidden");
+								// initSendMsgEvent();
+							}
+							break;
+						}
+					}
+				}
+			}
+			//增加发消息tap事件
+			function initSendMsgEvent() {
+				//console.log('aaaa');
+				//增加发消息按钮的显示
+				document.querySelector('#sendMsg').addEventListener('tap', function() {
+					console.log('sendMsg click');
+					
+					//只有登陆的情况下才可以聊天；
+					var house = JSON.parse(localStorage.getItem("zmzfangOthersHouse"));
+					var publishUser = JSON.parse(localStorage.getItem("housePublishUserInfo"));
+					var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+					if(publishUser.id == loginUser.id)
+					{
+						mui.toast('不能和自己聊天');
+						return;
+					}
+					localStorage.setItem("chatObjectId",publishUser.id);
+					localStorage.setItem("chatObjectNickName",publishUser.nickname);
+					localStorage.setItem("chatObjectSubject",house.districtname);
+					
+					mui.openWindow({
+						url: '../Message/im-chat.html',
+						id: '../Message/im-chat.html'
+					});
+				}, false);
+			}
+			
+			
+			function getHouseDetailSuccess(data)
+			{
+				console.log("getHouseDetailSuccess xxxx");
+	        	//将我的需求详情写入到缓存中去；方便修改页面使用
+	        	localStorage.setItem("zmzfangOthersHouse",JSON.stringify(data));
+	        	districtname = data.districtname;
+	        	byId("title").innerText = data.districtname;
+				byId("avgPrice").innerText = Math.floor(data.expectsaleprice * 10000 / data.buildingarea);
+	        	byId("districtName").innerText = data.districtname;
+	        	byId("buildingArea").innerText = data.buildingarea;
+	        	byId("expectSalePrice").innerText = data.expectsaleprice;
+	        	byId("storey").innerText = data.storey;
+	        	byId("totalStorey").innerText = data.totalstorey;
+	        	byId("roomCnt").innerText = data.roomcnt;
+	        	byId("hallCnt").innerText = data.hallcnt;
+	        	byId("bathRoomCnt").innerText = data.bathroomcnt;
+	        	byId("houseAge").innerText = data.houseage;
+	        	byId("buildingType").innerText = data.buildingtype;
+	        	byId("decorationType").innerText = data.decorationtype;
+	        	byId("orientation").innerText = data.orientation;
+	        	byId("detail").innerText = data.detail;
+	        	houseUserId = data.userid;
+	        	//处理特色字段
+	        	
+	        	//处理房源图片
+	        	getHouseDetailListSuccess(data.picture);
+	        	checkBidStatus();
+	        	
+	        	//初始化微信分享接口
+	        	initWxShare();
+	        	//初始化用户信息
+	        	initUserInfo(data.userid);
+	        	
+	        	//初始化投标按钮
+	        	initBidBtn();
+	        	//初始化感兴趣的人
+				initBidInfo();
+			}
+			
+			function getQueryStr(str) {
+				var rs = new RegExp("(^|)" + str + "=([^&]*)(&|$)", "gi").exec(urlString), tmp;
+				if (tmp = rs) {
+				return tmp[2];
+				}
+				// parameter cannot be found
+				return "";
+			}
+		/*
+	    function initWxShareBackUrl()
+		{
+			var shareBackUrl = 'http://www.zmzfang.com/weixin/HomePage/index.html';
+			//var user = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			//console.log('info'+user.wxunionid);
+			console.log('window.history.length:'+window.history.length);
+			if(window.history.length <= 1){
+				$('#isWechat').attr('href',shareBackUrl).removeClass('mui-action-back');
+				// byId('follow').classList.remove("mui-hidden");
+			}
+		}
+		*/
+		
+		function initUserInfo(userid)
+        {
+        	ajax_get_user_info({
+				userid: userid
+			});
+        }
+	    
+	    //填充用户信息
+        function getUserInfoSuccess(data)
+        {
+        	if(data.agentflag=="1"){
+        		//经纪人
+        		//byId("agentIcon").classList.remove("mui-hidden");//暂不显示图像
+        		//byId("userType").innerText = "经纪人";
+        		byId("userType").classList.remove("mui-hidden");
+        		// initSendMsgByAgent();
+        	}
+        	byId("userPic").src = data.picture;
+        	byId("userName").innerText = data.nickname;
+        	publishUserid = data.id;
+        	var logintime = data.logintime;
+			var timearray=logintime.split(" ");
+	
+        	byId("loginTime").innerText = timearray[0];
+        	$("#userPic").attr("user-id",data.id);
+        	//保存到内存中
+        	localStorage.setItem("housePublishUserInfo", JSON.stringify(data));
+        	//获取需求信息
+        	//initRequirmentInfo();
+        }
+	        
+		//初始化经纪人登陆时，发送消息按钮
+		function initSendMsgByAgent()
+		{
+			//如果登陆人是经纪人，而且房源发布人是经纪人，则显示聊天按钮
+//			var user = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+//			if(user && user.agentflag == "1" && user.phone.length == 11)
+//			{
+				if ($('#sendMsgDiv').hasClass('mui-hidden')) 
+				{
+					console.log('initSendMsgByAgent ok');
+					byId("sendMsgDiv").classList.remove("mui-hidden");
+					initSendMsgEvent();
+				}
+//			}
+		}
+		
+		//初始化 投标（提醒）
+		function initBidBtn()
+		{
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				
+			if(!loginUser)
+			{
+				//用户信息不存在，未登陆绑定
+				return;
+			}
+			
+			if(loginUser && loginUser.id == houseUserId)
+			{
+				//本人发布不需要提醒
+				return;
+			}
+			else
+			{
+				$('#bid').removeClass('mui-hidden');
+			}
+			
+			$('#bid').on('tap', function(event) {
+				
+				var noPhoneRegAfterJumpUrl = 'http://www.zmzfang.com/?r=door/scope&view=HomePage/HouseDetail&houseId='+houseId;
+				var hasPhoneJumpUrl = null;
+				checkUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl);
+				if((loginUser.phone && loginUser.phone.length != 11) || (!loginUser.phone))
+				{
+					mui.toast('请先注册绑定');
+					return;	
+				}
+				
+				if($('#bidDiv').hasClass('allow'))
+				{			
+					if($('#userType').hasClass('mui-hidden'))
+					{
+						//不是经纪人发布的房源，避免完整度80一下的用户骚扰
+						if(loginUser.datacompleterate && parseInt(loginUser.datacompleterate) < 80)
+						{
+							var contactUserFlag = wsCache.get('zmzfangContactUserFlag');
+							if(contactUserFlag)
+							{
+								mui.toast('请完善信息80%以上，再继续联系用户');
+								event.stopPropagation(); 
+								return;
+							}
+							else
+							{
+								wsCache.set('zmzfangContactUserFlag', true, {exp : 86400});
+							}
+						}
+					}
+					
+					ajax_bid(
+						{
+							requirementid: 0,
+							requirementuserid: 0,
+							houseid: houseId,
+							biduserid: loginUser.id,
+							bidtype : 2
+						}
+					);
+				
+					$(this).html('已提醒');
+					$('#bidDiv').removeClass('allow').addClass('not-allow');
+				}
+				else
+				{
+					mui.toast('您已经提醒了');
+				}
+			
+				event.stopPropagation(); 
+			});
+
+		}
+		
+		function bidSuccess(data)
+		{
+			if(data.rscode === 0){
+				mui.toast('对方已收到，会及时联系您');
+				sendMsgToUserByWxTpl();
+				sendMsgToUserByWildog();
+				initBidInfo();
+			}
+			else
+			{
+				mui.toast('提醒对方失败'+JSON.stringify(data));
+			}
+			
+			
+		}
+		
+		function sendMsgToUserByWxTpl() {
+			//向房源发布人发送模板消息
+			console.log('sendMsgToUserByWxTpl');
+			
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			if(!loginUser)
+			{
+				console.log('user info not exist');
+				return;
+			}
+			
+			var content = '用户'+loginUser.nickname+"对您的房源感兴趣";
+			var toUserid = houseUserId;
+			var fromUserid = loginUser.id;//chail
+			var templateId = 2;//投标模板消息
+			var toNickname = byId("userName").innerText;
+			var fromNickname = loginUser.nickname;
+			var url = 'http://www.zmzfang.com/?r=door/scope&view=Mine/MyHouseDetail&houseId='+houseId+'&city='+loginUser.city;
+			var col = [];
+			
+			ajax_send_template_message({
+				toUserid:toUserid,
+				toNickname:toNickname,
+				fromUserid:fromUserid,
+				fromNickname:fromNickname,
+				templateId:templateId,
+				content:content,
+				col:col,
+				url:url
+				
+			});
+		}
+					
+		function sendTplMsgSuccess(data){
+			if(data.rscode==0){
+				//mui.toast("提交成功");
+				//mui.back();
+				console.log('发送模板消息成功');
+			}else{
+				//mui.toast("提交失败，请重试！");
+				console.log('发送模板消息失败');
+			}
+		}
+					
+		function sendMsgToUserByWildog()
+		{
+			console.log('sendMsgToUserByWildog');
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			if(!loginUser)
+			{
+				console.log('user info not exist');
+				return;
+			}
+			
+			var toUserid = houseUserId;
+			var toNickname = byId("userName").innerText;
+			var fromNickname = loginUser.nickname;
+			var now = new Date();
+			var content = '「'+fromNickname+'」对您'+districtname+' 感兴趣，快来联系Ta吧。';
+//			content += '时间是：'+ now.toLocaleString();
+			var imgsrc = loginUser.picture?loginUser.picture:'http://www.zmzfang.com/weixin/img/favicon.ico';
+			var template = {"imgsrc":imgsrc ,"title": "收到新的房源提醒","url": "http://www.zmzfang.com/weixin/Message/im-chat.html?id="+loginUser.id}
+			sendSystemMsgToWildog(toUserid,content,template,'zmzs',null);	
+		}
+		
+		function initBidInfo()
+        {
+        						
+			ajax_get_bid_by_houseid({
+				houseid: houseId,
+				limitflag: 1
+			});
+        }
+			        
+        function getBidByHouseIdSuccess(data)
+		{
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			console.log('getBidByHouseIdSuccess.data:'+JSON.stringify(data));
+			var bidflag = false;
+		    $('#bidUl').html('');
+			for(var i in data.data)
+			{
+				$('#bidUl').append(fillBidListLi(data.data[i]));
+				if(data.data[i].biduserid == loginUser.id)
+				{
+					bidflag = true;
+				}
+			}
+			
+			byId("bidCnt").innerText = data.count?data.count:0;
+			
+			if(!data || data.data.length == 0)
+			{
+				$('#bidUl').html('<li style="list-style:none;color:#aaa;font-size:.85rem;text-align:center;padding:10px 0;">暂无人响应</li>');
+			}
+			
+			if(bidflag)
+			{
+				$('#bid').html('已提醒');
+				$('#bidDiv').removeClass('allow').addClass('not-allow');
+			}
+		}
+								
+		//填充投标信息
+		function fillBidListLi(data)
+		{								
+			var liContent = '<li class="col-xs-2">';
+			liContent += '<div id="bidInfo" class="bid-info" user-id="'+data.id+'">';
+			if( 1 == data.agentflag)
+			{
+				liContent += '<a href="../Agent/AgentInfo.html?userId='+data.biduserid+'"><img style="width:42px; height:42px; border-radius:50%; overflow:hidden;" src="'+data.picture+'" alt="个人头像" /></a>';
+			}
+			else
+			{
+				liContent += '<a href="../Mine/User.html?userId='+data.biduserid+'"><img style="width:42px; height:42px; border-radius:50%; overflow:hidden;" src="'+data.picture+'" alt="个人头像" /></a>';
+			}
+			
+			
+			liContent += '<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">'+data.nickname+'</div>';
+			liContent += '</div></li>';	
+			return liContent;
+		}
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+ 		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-content {
+				padding-bottom: 50px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			#subjectDiv {
+				margin-top: 5px;
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+			#subject {
+				margin-bottom:5px;
+			}
+			
+			#detailDiv {
+				margin-top: 0px;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 5px;
+			}
+			.mui-content{
+				background-image: url('http://www.zmzfang.com/weixin/img/invite_bg.jpg');
+				/*background-size:cover;*/
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">邀请直通车</h1>
+		</header>
+		
+		<div class="mui-content" style="">		
+			<div style="margin-top: 100px;">
+				<h5 style="padding-left:100px;font-size:22px;">知识有价</h5>
+			</div>
+			<div class="mui-text-right" style="margin-top: 50px;">
+				<h5 style="padding-right:100px;font-size:22px;">分享无界</h5>
+			</div>
+			
+			<div class="mui-text-left" style="margin-left: 70px;margin-top: 50px;">
+				<h5 style="font-size:18px;"><span id="expertName"></span>邀请您成为芝麻找房专家</h5>
+			</div>
+			
+			<div class="mui-text-left" style="margin-left: 120px;margin-top: 30px;">
+				<h5 style="font-size:18px;">和TA一起分享您的行业经验</h5>
+			</div>
+			
+			<div id="applyDiv" style="margin-top: 70px;text-align: center;padding-top: 5px;">
+				<button id="apply" type="button" class="mui-btn" style="width: 30%;height: 40px;background-color: #4cd964;color: #fff;">
+					申请
+				</button>
+				<h5 style="font-size:14px;">申请步骤:1 关注公众号 2 注册用户 3 填写申请资料</h5>
+				
+				<a id="follow" href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989307&idx=1&sn=fc8c338ca17db652e84219687c3b171c#rd">关注芝麻找房</a>
+			</div>
+			
+			<div id="homeDiv" class="mui-hidden" style="margin-top: 70px;text-align: center;padding-top: 5px;">
+				<h5 style="font-size:14px;">您已经申请了专家</h5>
+				<button id="home" type="button" class="mui-btn" style="width: 30%;height: 40px;background-color: #4cd964;color: #fff;">
+					返回首页
+				</button>
+				
+			</div>
+			
+		</div>
+
+        <script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js"></script>
+		<script src="../../js/Expert/common/expertAjax.js"></script>
+		<script src="../../js/Expert/User/AcceptInvite.js?v=0.01"></script>
+		
+	</body>
+</html>

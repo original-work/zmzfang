@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+
+		<link href="../css/mui.min.css" rel="stylesheet" />
+			<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">投诉建议</h1>
+			<button id="submitAdviceBtn" type="button" class="mui-btn mui-btn-link mui-pull-right">发送</button>
+
+		</header>
+		<div class="mui-content">
+			<h4>您的批评和建议能帮助我们更好的完善产品，请留下您的宝贵意见！</h4>
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<input id="adviseTheme" type="text" placeholder="请输入投诉主题" >
+			</div>
+			
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="adviseDetail" rows="5" placeholder=""></textarea>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			var userid;
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			//初始化微信分享
+			wxShare();
+			mui.init();
+			mui.plusReady(function() {
+				//userid=localStorage.getItem("zmzfangLoginUserId");
+				//console.log('submitAdvice userid xxxx:'+userid);
+			});
+			
+			byId("submitAdviceBtn").addEventListener('tap', function() {
+				//userid=localStorage.getItem("zmzfangLoginUserId");
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				userid = user.id;
+				console.log("userid:"+userid);
+				
+				var advisetheme = byId("adviseTheme").value;
+				var advisedetail = byId("adviseDetail").value;
+				
+				console.log('submitAdvice userid:'+userid);
+				console.log('submitAdvice content:'+advisedetail);
+				
+				if( advisedetail.length>5){
+					ajax_submit_advice({
+						userid:userid,
+						advisetheme:advisetheme,
+						advisedetail:advisedetail
+					});
+				}else{
+					mui.toast("请最少输入五个字！");
+				}
+			}, false);
+			
+			function submitAdviceSuccess(data){
+				if(data.rscode==0){
+					mui.toast("提交成功");
+					mui.back();
+				}else{
+					mui.toast("提交失败，请重试！");
+				}
+			}
+		</script>
+	</body>
+
+</html>

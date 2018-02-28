@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+
+		<style type="text/css">
+		    
+		    /*hxj*/
+			#popup {
+				position: absolute;
+			    left: 0;
+			    top: 0;
+			    width: 100%;
+			    height: 100%;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translate3d(-100%,0,0);
+			    transform: translate3d(-100%,0,0);
+			    -webkit-transition: -webkit-transform .2s ease;
+			    transition: transform .2s ease;
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    opacity: 0;
+			    z-index: -1;
+			}
+			#popup.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			}
+			#gname{
+				font-size: .4rem;
+				color:#ccc;
+				margin-left: 10px; 
+			}
+			@-webkit-keyframes niceIn {
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@keyframes niceIn {
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@-o-keyframes niceIn{
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			@-moz-keyframes niceIn{
+				0% {bottom:10px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+				25% {bottom:20px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				50% {bottom:30px;opacity: 1;filter: Alpha(opacity=100);-moz-opacity:1;}
+				75% {bottom:40px;opacity: 0.5;filter: Alpha(opacity=50);-moz-opacity:0.5;}
+				100% {bottom:50px;opacity: 0;filter: Alpha(opacity=0);-moz-opacity:0;}
+			}
+			.niceIn {
+				opacity: 0;
+    			filter: Alpha(opacity=0);
+   				-moz-opacity:0;
+				position: absolute;
+				margin-left: -20px;
+				bottom: 10px;
+				animation: niceIn 0.5s;
+                -moz-animation: niceIn 0.5s;
+   				-webkit-animation: niceIn 0.5s;
+   				-o-animation: niceIn 0.5s;
+   				color:#333;			
+   			}
+			#topic-title,.count{
+				text-align:center;
+				color:#fff;
+				font-size: 20px;
+				font-weight: 700;
+			}
+			.count{
+				font-size: 16px;
+			}
+			#topic-title{
+				margin-bottom: 10px
+			}	
+			.wrap{
+				padding:54px 0px 30px;
+				
+			}
+			#topic-desc{
+				padding:0 10px;
+				color:#666;
+			}
+			.card{
+				padding:10px;
+			}
+			#submitTopic{
+				color:#fff;
+				border-radius: 50%;
+				background: rgba(0,0,0,.3);
+				position: fixed;
+				bottom:10px;
+				right:10px;
+				width:50px;
+				height:50px;
+				z-index: 3;
+				line-height: 50px;
+    			text-align: center;
+   				font-size: 3rem;
+			}
+			h3,h4{
+				font-weight: 400;
+			}
+			#recommend li,#new li{
+				position: relative;
+			}
+			#recommend,#new{
+				list-style: none;
+				margin: 0;
+			}
+			.mui-table-view .mui-media-object{
+				height:45px;
+				width: 45px;
+			}
+			.mui-table-view-chevron .mui-table-view-cell{
+				padding-right:10px;
+			}
+			.dp{
+				color: #777;
+				text-align: right;
+				margin-top:20px;
+			}
+			.dp .zan,.dp .cai,.dp .pl{
+				padding-right:20px;
+			}
+			.zan i,.cai i, .pl i{
+				margin-left:8px; 
+				font-size:.8rem;
+			}
+			.pub-faces span {
+				text-align: center;
+				width: 14.28%;
+				float: left;
+				display: block;
+				margin:3px 0;
+			}  	
+			.mui-table-view .mui-media, .mui-table-view .mui-media-body{
+				overflow: inherit!important
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img{width:auto;}
+			.mui-table-view:after{height:0;}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-transparent" >
+			<a href="../HomePage/index.html" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="topicTitle"></h1>
+		</header>
+		
+		<div class="mui-content">
+		<div id='submitTopic'>+</div>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+			
+			<div class="card" style="padding-bottom:0;margin-bottom:0">
+				<h4>最新动态</h4>
+				
+						<!--数据列表-->
+						<ul id="new" class="mui-table-view mui-table-view-chevron">
+						</ul>
+			</div>
+		</div>
+		</div>
+		</div>
+		<div id="popup">
+		<header class="mui-bar mui-bar-nav" >
+			<h1 class="mui-title" id="topicTitle">发布话题</h1>
+			<a id="submit" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">发布</a>
+		</header>
+		
+		<div class="mui-content" style="background: #fff;">
+			<div class="ui-page">
+				<div class="mui-input-row">
+					<textarea id="content" rows="5"></textarea>
+				</div>
+			</div>
+			<div class="pub-faces" id="slider">
+			</div>
+			<div style="text-align: center;">
+				<button id="closePopup">取消</button>
+			</div>
+		</div>
+		</div>
+		
+		<div class="mui-popup mui-popup-in" style="display: none;"><div class="mui-popup-inner"><div class="mui-popup-title">芝麻找房</div><div class="mui-popup-text">请先取一个昵称吧</div><div class="mui-popup-input"><input type="text" autofocus="" readonly="readonly" placeholder="" id="niname"></div></div><div class="mui-popup-buttons"><span class="mui-popup-button" id="yesName">确定</span><span class="mui-popup-button mui-popup-button-bold" id="heyClick">换一换</span></div></div>
+		<div class="mui-popup-backdrop mui-active" style="display: none;"></div>
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/jquery.qqFace.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			var page = 1;
+			var end = 0;
+			var topicId;
+			mui.init({
+				swipeBack: false,
+				pullRefresh: {
+					container: '#pullrefresh',
+					// down: {
+					// 	callback: pulldownRefresh
+					// },
+					up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh,
+					}
+				}
+			});
+			mui.ready(function() {
+				//初始化
+				//处理从发布页面2返回到发布页面1的情况
+				wxShare({"title":'你好，匿名者',"desc":'来芝麻找房一吐为快',"imgUrl":'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg','link':window.document.location.href});
+				initUrlParam();
+				getTopicCList();
+				//初始化微信分享
+
+				mui('.mui-slider').slider();
+			});
+			
+			function getTopicCList(){
+				$.ajax({
+					type:"POST",
+					url:"http://www.zmzfang.com/?r=topic/shuoshuo-list",
+					// url:"http://zm.com/?r=topic/content-list",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1,
+						page : page
+					},
+					success: function(res){
+						var recommendHtml='',topicList='';
+						
+						if(res.data.length < 10){
+							end = 1;
+						}
+						for (j in res.data){
+							// <a style="width:100%;height:calc(100% - 20px)" href="http://www.zmzfang.com/weixin/Topic/shuoshuoList.html?id="'+res.data[j].id+'>
+							topicList+='<li class="mui-table-view-cell mui-media" id="'+res.data[j].id+'"> <a style="width:100%;height:calc(100% - 20px)" href="http://www.zmzfang.com/weixin/Topic/shuoshuoList.html?id="'+res.data[j].id+'> <div id="requirementBrief" class="requirement-brief"> <div style=" width:40px; height:40px;  border-radius:20px;border:1px solid #ccc;float:left;"><span style="height:40px; line-height:40px; display:block; text-align:center;">'+res.data[j].niname.substr(0,1)+'</span></div><div style="float:left;padding-left: 10px;width:80%;overflow:hidden;"><p class="requirement-subject" style="margin-left: 0px;color:#000;margin-top:10px">'+res.data[j].niname+'</p>'+
+								'<p class="requirement-subject" style="margin-left: 0px;color:#000;"></p></div><p class="publish-date" style="position:absolute;right:28px;">'+getTimeAgo(res.data[j].time)+'</p></div>'
+								+'<div style="clear:both;"></div><div style="margin:15px 0 0 8px;word-wrap:break-word;word-break:break-all">'+replace_em(res.data[j].describe)+'</div></a><div class="dp"><span class="mui-icon iconfont icon-zan zan"><i>'+res.data[j].zan+'</i></span><span class="mui-icon iconfont icon-cai cai"><i>'+res.data[j].cai+'</i></span><span class="mui-icon iconfont icon-pinglun pl"><i>'+res.data[j].count+'</i></span><div style="clear:both;"></div></div></div></li>';
+						}
+						$("#new").append(topicList);
+						$('.zan').off('tap',{type:'zan'},dp);
+						$('.cai').off('tap',{type:'cai'},dp);
+						$('.zan').on('tap',{type:'zan'},dp);
+						$('.cai').on('tap',{type:'cai'},dp);
+						$('.pl').off('tap',pl);
+						$('.pl').on('tap',pl);
+						page++;
+					},
+					 error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}
+				});
+			}
+			function pl(){
+				var id = $(this).parent().parent().attr('id');
+				var tid = topicId?topicId:1;
+				window.location = 'http://www.zmzfang.com/weixin/Topic/shuoshuoList.html?id='+id;
+			}
+			$('#submitTopic').on('tap',function(){
+				$('#popup').addClass('active');
+				mui.scrollTo(0,50,function(){$('#content').focus();$('#content').trigger('tap');});
+				document.body.style.overflow='hidden';
+			});
+			$('#closePopup').on('tap',function(){
+				$('#popup').removeClass('active');
+				document.body.style.overflow='';
+			});
+			$('#submit').on('tap',function(){
+				if($("#content").val().trim() == ''){
+					mui.toast('请先填写评论哦')
+					return false;
+				}
+
+				$('#popup').removeClass('active');
+				document.body.style.overflow='';
+				if(loginUser){
+					userid = loginUser.id;
+				}else{
+					userid = -1;
+				}
+				$.ajax({
+					type:"POST",
+					url:"http://www.zmzfang.com/?r=topic/add-topic",
+					// url:"http://zm.com/?r=topic/add-topic",
+					dataType:"json",
+					data:{
+						id : topicId?topicId:1,
+						// userid :loginUser.userid,
+						userid : userid,
+						nickname : nickname,
+						describe : $("#content").val()
+					},
+					success: function(res){
+						var lastHtml;
+						if(res.code == 1){
+							
+							// mui('#pullrefresh').scroll().scrollTo(0,-1085,100);
+							mui.toast("发表话题成功！");
+							lastHtml =
+							'<li class="mui-table-view-cell mui-media" id="'+res.newId+'"><div id="requirementBrief" class="requirement-brief"> <div style=" width:40px; height:40px;  border-radius:20px;border:1px solid #ccc;float:left;"><span style="height:40px; line-height:40px; display:block; text-align:center;">'+nickname.substr(0,1)+'</span></div><div style="float:left;padding-left: 10px;width:80%;overflow:hidden;"><p class="requirement-subject" style="margin-left: 0px;color:#000;margin-top:10px">'+nickname+'</p>'+
+								'<p class="requirement-subject" style="margin-left: 0px;color:#000;"></p></div><p class="publish-date" style="position:absolute;right:28px;">刚刚</p></div>'
+								+'<div style="clear:both;"></div><div style="margin:15px 0 0 8px;word-wrap:break-word;word-break:break-all">'+replace_em($("#content").val())+'</div><div class="dp"><span class="mui-icon iconfont icon-zan zan"><i>0</i></span><span class="mui-icon iconfont icon-cai cai"><i>0</i></span><span class="mui-icon iconfont icon-pinglun pl">0</span><div style="clear:both;"></div></div></li>';
+							$("#new").prepend(lastHtml);
+							$('.zan').off('tap',{type:'zan'},dp);
+							$('.cai').off('tap',{type:'cai'},dp);
+							$('.zan').on('tap',{type:'zan'},dp);
+							$('.cai').on('tap',{type:'cai'},dp);
+							$('.pl').off('tap',pl);
+							$('.pl').on('tap',pl);
+							$('#content').val('');
+						}else{
+							mui.toast("发表话题失败，请稍后重试！");
+						}
+					},
+					 error: function(jqXHR){
+						mui.toast("发表话题发生错误"+ jqXHR.status);
+					}
+				});
+			});
+			function dp(e){
+				// console.log(e);
+				var id = $(this).parent().parent().attr('id');
+				var dom = $(this).find('i');
+				var html = '+1';
+				if($(this).parent().hasClass('active')){
+					mui.toast('您已点评过了！');
+					return;
+				}
+				$(this).parent().addClass('active');
+				$.ajax({
+					type:"POST",
+					url:"http://www.zmzfang.com/?r=topic/dp",
+					// url:"http://zm.com/?r=topic/dp",
+					dataType:"json",
+					data:{
+						topic : topicId?topicId:1,
+						id : id,
+						type: e.data.type
+					},
+					success: function(res){
+						if(res.code == 1){
+							// alert(id+"被"+e.data.type);
+							var adddom = dom.after('<span class="niceIn">'+html+'</span>');
+							setTimeout(function(){
+								dom.siblings('.niceIn').remove();
+								var value = dom.text()
+								dom.text(parseInt(value)+1);
+							},500);
+						}
+					},
+					 error: function(jqXHR){
+						mui.toast("点评发生错误"+ jqXHR.status);
+					}
+				});
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(end===1); //参数为true代表没有更多数据了。
+					getTopicCList();
+				}, 1500);
+			}
+
+			//替换表情
+			function replace_em(str){
+				str = str.replace(/\</g,'&lt;');
+				str = str.replace(/\>/g,'&gt;');
+				str = str.replace(/\n/g,'<br/>');
+				str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
+				return str;
+			}
+			function getTimeAgo(time){
+				var timestamp = Date.parse(new Date());
+				// console.log(timestamp);
+				var timeago = timestamp/1000 - time;
+				// console.log(timeago);
+				if (timeago < 20){
+					return '刚刚';
+				}
+				if (timeago < 60){
+					return timeago + '秒前';
+				}
+				if (timeago < 3600){
+					return Math.floor(timeago/60) + '分钟前'
+				}
+				if (timeago < 86400){
+					return Math.floor(timeago/3600) + '小时前'
+				}
+				if (timeago < 604800){
+					return Math.floor(timeago/86400) + '天前'
+				}
+				if (timeago < 31536000){
+					return Math.floor(timeago/604800) + '周前'
+				}else{
+					return '1年前'
+				}
+			}
+			function initUrlParam(){
+				topicId = 9;
+
+				if(localStorage.getItem('niname')){
+					nickname = localStorage.getItem('niname');
+					
+				}else{
+					$('.mui-popup').show();
+					$('.mui-popup-backdrop').show();
+					getName();
+				}
+			}
+			$('#heyClick').on('tap',function(){
+				getName();
+			})
+			$('#yesName').on('tap',function(){
+				nickname = $('#niname').val();
+				localStorage.setItem('niname',nickname);
+				$('.mui-popup').hide();
+				$('.mui-popup-backdrop').hide();
+				mui.toast('welcome,'+nickname+'!');
+			})
+			// $('#gname').on('tap',function(){
+			// 	$('.mui-popup').show();
+			// 	$('.mui-popup-backdrop').show();
+			// 	getName();
+			// })
+
+			function getName(){
+				var firstname=["温柔","狂野","跳跃","战斗","史诗","疯狂","快乐","惊奇","超能","懒散","黄金","迷茫","隐秘","暗夜","华丽","致命","普通","闪亮","善良","奇迹","野蛮","聪明","卑鄙","为了","幸运","恐惧","青铜","沉默","正义","邪恶","笨笨","乖巧","暴躁","阴险","无辜","合体","有钱","行走","认真","沉睡","奔跑","飞翔","郁闷","崭新","无礼","礼貌","民主","和谐","文明","假","打倒"];
+				var nameq=["外套","裤子","杯子","牙刷","绅士","青蛙","充电器","拖鞋","猴子","马","痔疮","鸡翅","肘子","鸭脖","牛","肌肉","胃","蛋挞","熊孩子","南瓜","西红柿","河马","工资","男友","女友","路飞","火锅","烤肉","麻雀","啤酒","细胞","豌豆","汪星人","喵星人","香菜","锤子","香蕉","木棍","石头","司机","火星人","辣条","熊猫","蜗牛","鼠","跳跳虎","火柴"]
+				var xingxing = firstname[Math.floor(Math.random() * (firstname.length))];
+				var mingming = nameq[Math.floor(Math.random() * (nameq.length))];
+					if(xingxing == '为了' || xingxing == '打倒'){
+					    var lastName = xingxing+mingming
+					}else{
+					    var lastName = xingxing+"的"+mingming
+					}
+				$('#niname').val(lastName);
+			}
+			function getQueryStr(str){
+				var rs = new RegExp("(^|)" + str + "=([^&]*)(&|$)", "gi").exec(urlString), tmp;
+				if (tmp = rs) {
+					return tmp[2];
+				}
+				// parameter cannot be found
+				return "";
+			}
+	       
+		</script>
+	</body>
+
+</html>

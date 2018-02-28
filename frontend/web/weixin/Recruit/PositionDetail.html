@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../css/recruit.css?v=0.01" />
+		<style type="text/css">	
+			.left-div {
+				width:80px;
+				height:80px;
+			}
+			.fakepic {
+			    border: 1px solid #ccc;
+			    border-radius: 5px;
+			    padding: 10px;
+			    width: 2.9rem;
+			    height: 2.9rem;
+			    text-align: center;
+			    font-size: 12px;
+			    line-height: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">职位详情</h1>
+		</header>
+		<div class="mui-content">
+			 <div id="positionBrief" class="card">
+			 	<ul class="row">
+			 		<li class="col-xs-12">
+				    	<p style="color:#000;font-size:1.1rem;"><span id="positionSubject"></span></p>
+				    </li>
+				    		
+			 		<li class="col-xs-4">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-position"></use></svg>
+			 			<span id="recruitPosition"></span></p>
+			 		</li>
+			 		<li class="col-xs-8">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-salary"></use></svg>
+			 			<span id="recruitSalary"></span></p>
+			 		</li>
+			 		<!--<li class="col-xs-4">
+			 			<p></p>
+			 		</li>-->
+			 		
+			 		<li style="clear:both;height:0"></li>
+			 		<li class="col-xs-4">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-workperiod"></use></svg> <span id="workPeriod"></span></p>
+			 		</li>
+			 		<li class="col-xs-4">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-education"></use></svg> <span id="education"></span></p>
+			 		</li>
+			 		<li class="col-xs-4">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-position"></use></svg>
+			 			<span id="recruitCount"></span></p>
+			 		</li>
+			 		<li class="col-xs-12">
+			 			<p><svg class="icon" aria-hidden="true" style="font-size: 14px;"><use xlink:href="#icon-location"></use></svg> <span id="location"></span></p>
+			 		</li>
+			 		
+			 		
+			 	</ul>
+			 </div>
+			 
+			 <div id="organizationBrief" class="card">
+			 	<div class="col-xs-4" style="overflow:hidden;float:left;">
+			 		<img id="organizationPic" class="mui-hidden" src="http://www.zmzfang.com/weixin/img/favicon.ico" width="80" height="80"/>
+			 		<div id="fake1" class="fakepic mui-hidden"> - 地产</div>
+			 	</div>
+			 	<div class="col-xs-8">
+			 		<p id="organizationInfo">
+			 			
+			 		</p>
+			 	</div>
+			 
+			 </div>
+			 
+			 <div id="organizationBrief" class="card">
+			 	<p>职位描述</p>
+		 		<p id="positionDetail"></p>
+			 </div>
+			 
+			<div id="publisUserBrief" class="card">
+				<p>发布人</p>
+				<div class="left-div">
+					<img id="publishUserPic" class="mui-media-object circle-img" src="http://www.zmzfang.com/weixin/img/favicon.ico" alt="个人头像" width="70" height="70"/>
+				</div>
+				<div class="right-div">
+					<p id="publishUserName"></p>
+					<p>
+						<span id="organization"></span> 
+						<span id="publishUserPosition"></span>
+					</p>
+					
+				</div>
+			
+			</div>
+			<div id="organizationBrief" class="card">
+				<div class="col-xs-6">
+					<div id='applyBtn' class="submit-btn btn-green">申请</div>
+				</div>
+				<div class="col-xs-6">
+					<div id='favoriteBtn' class="submit-btn btn-green">收藏</div>
+				</div>
+		 		
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<!-- <script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script> -->
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/common.js" charset="UTF-8"></script>
+		<script src="../js/commonAjax.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/auth.js"></script>
+		<script type="text/javascript" src="../js/wxShare.js"></script>
+		
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="../js/Recruit/common/common.js?v=0.01"></script>
+		<script src="../js/Recruit/PositionDetail.js?v=0.01"></script>
+	</body>
+</html>

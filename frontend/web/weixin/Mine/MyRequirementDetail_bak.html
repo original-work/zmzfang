@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+
+		<style type="text/css">
+			.requirement-info h5{
+				padding-left: 15px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			#bidlist {
+				padding-top: 10px;
+			}
+			
+			#bidInfo{
+				width: 70%;
+    			float: left;
+			}
+			
+			#rejectBid {
+			    width: 80%;
+			    padding-bottom: 0px;
+			    padding-top: 0px;
+			    display: inline;
+			    margin-bottom: 5px;
+			}
+			#eventInfo
+			{
+				float: left;
+			}
+			
+			#acceptBid {
+			    width: 80%;
+			    padding-bottom: 0px;
+			    padding-top: 0px;
+			    display: inline;
+			    margin-bottom: 5px;
+			}
+			
+			#sendMsgBnt{
+				color: green;
+				left: 0px;
+				top: 10px;
+				position: relative;
+				font-size: 28px;
+			}
+
+			#refuse{
+				left: 0px;
+				top: 16px;
+				position: relative;
+				font-size: 12px;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			
+			
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的需求详情</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="requirementInfo" class="requirement-info card" requirement-id="1">
+				<div class="mui-input-row">
+					<div style="width:80%;float: left;">
+							<h4 id="requiremenSubject" class="" style="margin-left: 0px;overflow: visible;padding-top: 10px;padding-left: 10px;">求购某小区 </h4>
+					</div>
+					
+				    <div style="width:20%;float: left;padding-top: 10px;">
+				    	<span id="modifyrequirement" class="mui-icon mui-icon-compose" style="float:right;padding-right: 10px;"></span>
+				    	<span id="deleteRequirement" class="mui-icon mui-icon-close" style="padding-right: 5px;float:right;"></span>
+				    </div>
+				</div>
+				    	<ul class="row">
+				    		<li class="col-xs-12">
+				    			<p style="color:#000;font-size:1.1rem;" id="requiremenSubject"></p>
+				    		</li>
+
+							<li class="col-xs-12">
+				    			<p style="font-weight:700;color:#fc6000;font-size:1.1rem;" id="fee"></p>
+				    		</li>
+					        <li class="col-xs-6">
+					            <p><span style="color:#999;">预算：</span><span id="budget"></span>万</p>
+					        </li>
+							<li class="col-xs-6">
+					            <p><span style="color:#999;">楼层：</span><span id="storey"></span>层</p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">户型：</span><span id="housetype"></span></p>
+					        </li>
+					        <li class="col-xs-6">
+					        	<p><span style="color:#999;">房产类型：</span><span id="buildingtype"></span></p>
+					        </li>	
+					        <li class="col-xs-12">
+					            <div class="mui-input-row">
+									<p>详情描述：</p>
+									<div>
+									    <textarea id="detail" rows="5" placeholder="" disabled="disabled"></textarea>
+								    </div>
+								</div>
+					        </li>
+					    </ul>
+					
+					<div id="agentUserFeeDiv" class="mui-hidden">
+						<h5><span>分佣比例:</span> <span id="divideRate" style=""> </span></h5>
+						<h5><span>预期分佣:</span> <span id="agentfee" style=""> </span>元 </h5>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a id="item1Link" class="mui-control-item mui-active" href="#item1">
+						感兴趣的人
+					</a>
+					<a id="item2Link" class="mui-control-item" href="#item2">
+						系统匹配
+					</a>
+				</div>
+			</div>
+
+			<div>
+
+				<div id="item1" class="mui-control-content mui-active area-div">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div id="bidcnt" style="">
+								<h5>
+								    <span>
+										当前共有
+									</span>
+									<span id="bidCnt">
+										0
+									</span>
+									<span>
+										人感兴趣
+									</span>
+								</h5>
+							</div>
+							<ul id="bidUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div id="item2" class="mui-control-content area-div">
+					<div id="scroll" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul id="systemBidUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		
+		
+
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/common.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+		
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var page = 0;
+			var statusStr = '';
+			var subject;
+			var regions;
+			var datas;
+			//初始化url参数来获取需求id,如果没有继续执行
+		    initUrlParam();
+		    
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.back = function(){
+				mui.openWindow({
+					url: './MyRequirement.html'
+				});
+			};
+			
+			mui.ready(function() {
+				//初始化需求详细信息
+				initRequirementDetail();
+				//初始化已经投标的信息  部分显示，支持下拉刷新
+				//initEventListener();
+				initBidInfo();
+				
+				
+			});
+			
+			
+	        //增加需求修改按钮事件
+			document.querySelector('#modifyrequirement').addEventListener('tap', function() {
+				console.log('modifyrequirement click');
+				mui.openWindow({
+					url: './MyRequirementModify.html'
+				});
+			}, false);
+			
+			//增加需求删除按钮事件
+			document.querySelector('#deleteRequirement').addEventListener('tap', function() {
+				console.log('deleteRequirement click');
+				if(confirm("确认要删除此需求吗？"))
+				{
+					console.log('begin delete requirement');
+					var requirementId = localStorage.getItem("requirementId");
+										
+					ajax_delete_requirement({
+						requirementid: requirementId
+					});
+				
+				}
+				else
+				{
+					console.log('cancel delete requiement');
+				}
+				
+			}, false);
+			
+			//增加url参数处理
+			function initUrlParam()
+			{
+				 var requirementId = getQueryStrFromUrl("requirementId");
+				 console.log('initUrlParam requirementId:'+requirementId);
+				 if(requirementId && requirementId != ' ')
+				 {
+				 	localStorage.setItem('requirementId',requirementId)
+				 }
+			}
+			
+			//增加微信分享处理
+			function initWxShare()
+			{
+				var requirementId = localStorage.getItem('requirementId'); 
+				var loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+				var requirementInfo = JSON.parse(localStorage.getItem("zmzfangMyRequirement"));
+				
+				var userId = loginUser.id;
+				//var calledUrl = String(window.document.location.href);
+				var link = 'http://www.zmzfang.com/weixin/HomePage/RequirementDetail.html?requirementId='+requirementId+'&userId='+userId;
+				var imgUrl = 'http://www.zmzfang.com/assets/frontend/images/logo-common.jpg';
+				var param = new Object();
+				// param.getJssdkConfUrl = calledUrl;
+				var title = '我要买房，快来约我';
+				var desc = '芝麻找房-服务买家的精准找房平台';
+				if(requirementInfo && loginUser)
+				{
+					imgUrl = loginUser.picture;
+					title = '求购'+requirementInfo.subject;
+					if(requirementInfo.housetype != '5-10')
+					{
+						title += requirementInfo.housetype+'房';
+					}
+					if(requirementInfo.budget == '1000-90000')
+					{
+						title += '1000万以上';
+					}
+					else
+					{
+						title +=  requirementInfo.budget + '万';
+					}
+					//desc = '具体描述：' + requirementInfo.detail + '[芝麻找房]';
+				}
+				
+				param.title = title;
+				param.desc = desc;
+				param.link = link;
+				param.imgUrl = imgUrl;
+				wxShare(param);
+			}
+			
+			function initEventListener()
+			{
+				//增加房源详情查看事件
+				initHouseViewEvent();
+				//增加 接受按钮事件
+				//增加 拒绝按钮事件
+				initBidDealEvent();
+				//增加发送消息按钮事件
+				initSendMsgEvent();
+				//增加未看中消息按钮事件
+				initRefuseEvent();
+			}
+			
+			function initHouseViewEvent()
+			{
+				//增加房源详情查看事件
+				if(!byId("bidUl"))
+				{
+					return;
+				}
+				mui('#bidUl').on('tap', '.bid-info', function() {
+					console.log('houseInfo click');
+					var houseId = this.getAttribute('house-id');
+					localStorage.setItem("houseId",houseId);
+					console.log('houseInfo houseId:'+houseId);
+					
+					var housePublishUserid = this.getAttribute('house-publish-user-id');
+					localStorage.setItem("chatObjectId",housePublishUserid);
+					console.log("house publish userid(chatObjectId):"+housePublishUserid);
+					//localStorage.setItem("chatObjectId",publishUser.userid);
+					
+					var housePublishNickName = this.getAttribute('house-publish-nickname'); 
+					localStorage.setItem("chatObjectNickName",housePublishNickName);
+					
+					var dstUrl = '../HomePage/HouseDetail.html?houseId=' + houseId;
+					mui.openWindow({
+						url: dstUrl
+					});	
+				});
+			}
+			
+			function initBidDealEvent()
+			{
+				//增加 接受按钮事件
+				//增加 拒绝按钮事件
+				if(!byId("acceptBid") || !byId("rejectBid"))
+				{
+					return;
+				}
+				
+				//document.querySelector('#acceptBid').addEventListener('tap', function() {
+				mui('#bidUl').on('tap', '.accept-bid', function(){
+					console.log('acceptBid click');
+					var bidId = this.getAttribute('bid-id');
+					var houseId = this.getAttribute('house-id');
+					var housePublishUserId = this.getAttribute('house-publish-user-id');
+					var housePublishNickName = this.getAttribute('house-publish-nickname');
+					console.log('bidId:'+bidId);
+					acceptBid(bidId,houseId,housePublishUserId,housePublishNickName);
+				}, false);
+				
+				
+				//document.querySelector('#rejectBid').addEventListener('tap', function() {
+				mui('#bidUl').on('tap', '.reject-bid', function(){
+					console.log('rejectBid click');
+					var bidId = this.getAttribute('bid-id');
+					var houseId = this.getAttribute('house-id');
+					var housePublishUserId = this.getAttribute('house-publish-user-id');
+					var housePublishNickName = this.getAttribute('house-publish-nickname');
+					console.log('bidId:'+bidId);
+					//rejectBid(bidId,houseId,housePublishUserId,housePublishNickName);
+					var type = 1;// 1表示拒绝 2表示未看中
+					//其他参数写入内存
+					var bidInfo = new Object();
+					bidInfo.bidId = bidId;
+					bidInfo.houseId = houseId;
+					bidInfo.housePublishUserId = housePublishUserId;
+					bidInfo.housePublishNickName = housePublishNickName;
+					bidInfo.subject = subject;
+					localStorage.setItem('zmzfangBidInfo',JSON.stringify(bidInfo));
+					openResuseUrl(bidId,type);
+				
+				}, false);
+			}
+
+			//增加需求修改按钮事件
+			document.querySelector('#modifyrequirement').addEventListener('tap', function() {
+				console.log('modifyrequirement click');
+				mui.openWindow({
+					url: './MyRequirementModify.html'
+				});
+			}, false);
+			
+			function initSendMsgEvent()
+			{
+				if(!byId("sendMsgBnt"))
+				{
+					return;
+				}
+				//增加发送消息按钮事件
+				//document.querySelector('#sendMsgBnt').addEventListener('tap', function() {
+				mui('#bidUl').on('tap', '.send-msg', function(){
+					console.log('sendMsgBnt click');
+					var bidId = this.getAttribute('bid-id');
+					var bidStatus = this.getAttribute('bid-status');
+					
+					var housePublishUserid = this.getAttribute('house-publish-user-id');
+					var housePublishNickname = this.getAttribute('house-publish-nickname');
+					var houseSubject = this.getAttribute('house-districtname');
+					//alert('bidStatus:'+bidStatus);
+					if(bidStatus == 2)
+					{
+						localStorage.setItem("chatObjectId",housePublishUserid);
+						//alert('chatObjectId:'+publishUser.id);
+						localStorage.setItem("chatObjectNickName",housePublishNickname);
+						localStorage.setItem("chatObjectSubject",houseSubject);
+						
+						mui.openWindow({
+							url: '../Message/im-chat.html',
+							id: '../Message/im-chat.html'
+						});
+					
+					}
+					else
+					{
+						mui.toast("对方未同意，您无法与其联系");
+					}
+				}, false);
+			}
+			
+			function initRefuseEvent()
+			{
+				console.log('initRefuseEvent');
+				if(!byId("refuse"))
+				{
+					return;
+				}
+				mui('#bidUl').on('tap', '.refuse', function(){
+					console.log('refuse click');
+					var bidId = this.getAttribute('bid-id');
+					console.log('bidId:'+bidId);
+					
+					var houseId = this.getAttribute('house-id');
+					var housePublishUserId = this.getAttribute('house-publish-user-id');
+					var housePublishNickName = this.getAttribute('house-publish-nickname');
+					
+					
+					//rejectBid(bidId,houseId,housePublishUserId,housePublishNickName);
+					//其他参数写入内存
+					var bidInfo = new Object();
+					bidInfo.bidId = bidId;
+					bidInfo.houseId = houseId;
+					bidInfo.housePublishUserId = housePublishUserId;
+					bidInfo.housePublishNickName = housePublishNickName;
+					bidInfo.subject = subject;
+					localStorage.setItem('zmzfangBidInfo',JSON.stringify(bidInfo));
+					
+					var type = 2;// 1表示拒绝 2表示未看中
+					openResuseUrl(bidId,type);
+				}, false);
+				
+			}
+			
+			function openResuseUrl(bidid,resuseType)
+			{
+				var bidId = bidid;
+				var type = resuseType;// 1表示拒绝 2表示未看中
+				var dstUrl = './Refuse.html?bidId='+bidId+'&refuseType='+type;
+				mui.openWindow({
+					url: dstUrl
+				});
+			}
+			
+			function acceptBid(bidid,houseId,housePublishUserId,housePublishNickName)
+			{
+				//
+				var status = '2';
+				statusStr = getBidStatusStr(status);
+				ajax_modify_bid_status(
+					{
+						bidid:bidid,
+						oprtype:status
+					}
+				);
+				//发送投标模板消息 此处为同步，后续应该改为投标成功后再发送模板消息
+				var msg = '您的投标被接收';
+				sendMsgToUserByWxTpl(msg,housePublishUserId,housePublishNickName,houseId);
+				//发送IM系统消息
+				var now = new Date();
+                var content = '您的投标被接受，所投需求的主题是'+subject+'需求发布人：'+housePublishNickName+'，请您查收。';
+                content += '接受时间：'+ now.toLocaleString();
+                sendSystemMsgToWildog(housePublishUserId,housePublishNickName,content,null);
+			}
+			
+			function rejectBid(bidid,houseId,housePublishUserId,housePublishNickName)
+			{
+				//
+				var status = '3';
+				statusStr = getBidStatusStr(status);
+				ajax_modify_bid_status(
+					{
+						bidid:bidid,
+						oprtype:status
+					}
+				);
+				//发送投标模板消息，后续应该改为投标成功后再发送模板消息
+				var msg = '您的投标被拒绝';
+				sendMsgToUserByWxTpl(msg,housePublishUserId,housePublishNickName,houseId);
+				//发送IM系统消息
+				var now = new Date();
+                var content = '您的投标被拒绝，所投需求的主题是'+subject+'需求发布人：'+housePublishNickName+'，请您查收。';
+                content += '拒绝时间：'+ now.toLocaleString();
+                sendSystemMsgToWildog(housePublishUserId,housePublishNickName,content,null);
+			}
+			
+			function modifyBidStatusSuccess(data)
+			{
+				if(data.rscode == 0)
+				{
+					//拒绝 接收按钮 不可见
+					//状态更新
+					//重新加载投标信息
+					initBidInfo();
+				}
+			}
+			
+			function initRequirementDetail()
+			{
+				var requirementId = localStorage.getItem("requirementId"); 
+
+				// var requirementId = 12; 
+				console.log("requirementId:"+requirementId);
+				byId("requirementInfo").setAttribute("requirement-id",requirementId);
+				
+				ajax_get_requirement_detail({
+					requirementid: requirementId
+				});
+			}
+			
+			//填充需求信息
+	        function fillRequiementInfo(data)
+	        {
+	        	console.log("fillRequiementInfo xxxx");
+	        	//将我的需求详情写入到缓存中去；方便修改页面使用
+	        	localStorage.setItem("zmzfangMyRequirement",JSON.stringify(data));
+	        	regions =  data.regions;
+	        	//初始化系统推荐的房源信息
+				initSystemRecommendInfo();
+	        	subject='求购'+data.subject+data.housetype+'室';
+	        	byId("requiremenSubject").innerText = subject;
+	        	byId("budget").innerText = data.budget;
+	        	if(data.storey == '0-300')
+	        	{
+	        		byId("storey").innerText = '不限';
+	        	}
+	        	else
+	        	{
+	        		byId("storey").innerText = data.storey+'层';
+	        	}
+	        	
+	        	byId("housetype").innerText = data.housetype + '室';
+	        	// alert(data.buildingtype);
+	        	byId("buildingtype").innerText = data.buildingtype;
+	        	byId("budget").innerText = data.budget;
+	        	byId("detail").innerText = data.detail;
+	        	byId("fee").innerText = '佣金'+ data.agentfee+'元';
+				byId("divideRate").innerText = data.dividerate;
+				byId("agentfee").innerText = data.agentfee;
+				if(data.publishusertype == 1)
+				{
+					//经纪人
+					byId("normalUserfeeDiv").classList.add("mui-hidden");
+					byId("agentUserFeeDiv").classList.remove("mui-hidden");
+				}
+				//初始化微信分享
+				initWxShare();
+	        }    
+	        
+	        function initBidInfo()
+	        {
+	        	requirementId = localStorage.getItem("requirementId");
+				console.log("requirementId:"+requirementId);
+				
+				ajax_get_bid_by_requirementid({
+					requirementid: requirementId
+				});
+	        }
+	        
+	        function getBidByRequiementIdSuccess(data)
+			{
+				console.log('getBidByRequiementIdSuccess:data '+JSON.stringify(data));
+			    var bidUl=document.getElementById('bidUl');
+			    localStorage.setItem('zmzfangBidByRequiement',JSON.stringify(data));
+			    
+				var firstFrag = document.createDocumentFragment();
+				for(var i in data)
+				{
+					var id=data[i].id;
+					firstFrag.appendChild(fillBidListLi(data[i]));
+				}
+				
+				bidUl.innerHTML = "";
+				bidUl.appendChild(firstFrag);
+				initEventListener();
+				byId("bidCnt").innerText = data?data.length:0;
+				
+				if(!data || data.length == 0)
+				{
+					showSystemRecommendList();
+				}
+			}
+						
+			//创建需求详情页中的投标信息
+			function fillBidListLi(data) 
+			{				
+				console.log('data:'+JSON.stringify(data));
+				
+				var ele = document.createElement("li");
+				var housetype = data.roomcnt+'室'+data.roomcnt+'厅'+data.bathroomcnt+'卫';
+				
+				var bidstatus = data.bidstatus;
+				var statusStr = getBidStatusStr(bidstatus);
+				
+				
+				var liContent = '';
+				liContent += '<div id="bidInfo" class="bid-info" bid-id="'+data.id+'" house-id="'+data.houseid+'" house-publish-user-id="'+data.biduserid+'" house-publish-nickname="'+data.nickname+'">';
+				liContent += '<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;float:left;">';
+				liContent += '<img style="width:42px; height:42px; " src="'+data.picture+'" alt="个人头像" />';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body" style="padding-left:10px;">';
+				liContent += '<h4 class="mui-ellipsis bid-user-nickname" style="margin-left: 0px;overflow: visible;">'+data.nickname+'</h4>';
+				liContent += '<h5 id="houseInfo"><span>'+data.districtname+'</span>&nbsp <span>'+housetype+'</span> </h5>';
+				liContent += '<h5><span>状态:</span><span>'+statusStr+'</span>';
+				if(data.refusereason !== null && data.refusereason !== '')
+				{
+					liContent += '<h5> 原因:<span id="reason">'+data.refusereason+'</span></h5>	';
+				}
+				liContent += '</h5>';
+				liContent += '<h5 class="publish-date" style="margin-right: 0px;">'+data.biddate+'</h5>';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body" style="padding-left:10px;">';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				liContent += '<div id="eventInfo" class="event-info">';
+				if(bidstatus == 2)
+				{
+					liContent += '<span id="sendMsgBnt" class="mui-icon iconfont icon-wx-b send-msg" bid-id="'+data.id+'" house-id="'+data.houseid+'" bid-status="'+data.bidstatus+'" house-districtname="'+data.districtname+'" house-publish-user-id="'+data.biduserid+'" house-publish-nickname="'+data.nickname+'"></span>';
+					liContent += '<div>';
+					liContent += '<button id="refuse" type="button" class="mui-btn mui-btn-danger refuse" bid-id="'+data.id+'" house-id="'+data.houseid+'" house-publish-user-id="'+data.biduserid+'" house-publish-nickname="'+data.nickname+'">未看中</button>';
+					liContent += '</div>';
+				}
+					
+				if(bidstatus == 1)
+				{
+					liContent += '<button id="rejectBid" class="mui-btn mui-btn-block reject-bid" type="button" bid-id="'+data.id+'" house-id="'+data.houseid+'" house-publish-user-id="'+data.biduserid+'" house-publish-nickname="'+data.nickname+'">拒绝</button>';
+					liContent += '<button id="acceptBid" class="mui-btn mui-btn-block accept-bid" type="button" bid-id="'+data.id+'" house-id="'+data.houseid+'" house-publish-user-id="'+data.biduserid+'" house-publish-nickname="'+data.nickname+'">接受</button>';
+				}				
+				liContent += '</div>';										
+				ele.innerHTML = liContent;
+				return ele;
+			}
+	
+	       
+	        
+	        function initSystemRecommendInfo()
+	        {
+	        	var requirementId = localStorage.getItem("requirementId");
+				console.log("initSystemRecommendInfo requirementId :"+requirementId);
+				
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				var userId = loginUser.id;
+
+				ajax_get_system_recommend({
+					requirementid: requirementId,
+					userid: userId,
+					regions: regions,
+				});
+	        }
+	        
+	        function getSystemRecommendSuccess(data)
+	        {
+	        	// console.log('getSystemRecommendSuccess:data'+JSON.stringify(data));
+			    if(page<1){
+					datas = data;
+				}
+
+			    var systemBidUl=document.getElementById('systemBidUl');
+			    
+				var firstFrag = document.createDocumentFragment();
+
+				var k = (datas.length - page*20)>20?20:(datas.length - page*20);
+				// alert(k);
+
+				for(var i in datas)
+				{
+					if(i>=k){
+						break;
+					}
+					var j = parseInt(page*20)+parseInt(i);
+					// alert(j);
+					// console.log(datas[j]);
+					firstFrag.appendChild(fillSystemRecommendListLi(datas[j]));
+				}
+				
+				// systemBidUl.innerHTML = "";
+				
+				systemBidUl.appendChild(firstFrag);
+				if(datas.length <= page*20){
+					mui.toast('没有更多了');
+					return;
+				}else{
+					$("#systemBidUl").append('<li class="more" style="text-align:center;padding:8px">加载更多</li>');
+					$('.more').off('tap',jz);
+					$('.more').on('tap',jz);
+					$('#systemBidUl li').off('tap',initSystemRecommendEvent);
+					$('#systemBidUl li').on('tap',initSystemRecommendEvent);
+				}
+				page++;
+				
+	        }
+	        function jz(){
+	        	$(this).remove();
+	        	getSystemRecommendSuccess();
+	        }
+	        function initSystemRecommendEvent()
+	        {
+					var houseId = $(this).children('.house-brief').attr('house-id');
+					// alert(houseId);
+					localStorage.setItem("houseId",houseId);
+					console.log('recommendInfo houseId:'+houseId);
+					
+					var dstUrl = '../HomePage/HouseDetail.html?houseId=' + houseId;
+					mui.openWindow({
+						url: dstUrl
+					});
+	        }
+	        
+	        //创建需求详情页中的投标信息
+			function fillSystemRecommendListLi(data) 
+			{		
+				var ele = document.createElement("li");
+				ele.className = "mui-table-view-cell mui-media ";
+				var publishdate = data.publishdate;
+				var timearray=publishdate.split(" ");
+				var newupdatetime=timearray[0];
+				
+				var housetype = data.roomcnt + '室'+ data.hallcnt + '厅' + data.bathroomcnt + '卫';
+				//console.log('bidstatus:'+data.bidstatus);				
+				
+				var liContent = '';
+				liContent += '<div id="houseBrief" class="house-brief" house-id="'+data.houseid+'">';
+				liContent += '<div style="width:42px; height:60px;overflow:hidden;float:left;margin-right:8px;">';
+				liContent += '<img id="housePic" class="mui-media-object mui-media-large  mui-pull-left" style="" data-lazyload-id="0" src="'+data.picture+'">';
+				liContent += '<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">'+data.nickname+'</div>';
+				liContent += '</div>';
+				liContent += '<div class="mui-media-body">';
+				liContent += '<h4 id="districtName" class="mui-ellipsis" style="margin-left: 0px;overflow: visible;">'+data.districtname+'</h4>';
+				liContent += '<h5 style="margin-left: 0px;"> <span id="houseType">'+housetype+'</span> <span id="price" style="margin-left:10px;">'+data.expectsaleprice+'万</span> <span id="buildingArea">'+data.buildingarea+' 平米</span></h5>';
+				liContent += '<h5><span style="float:right;margin-right: 0px;">'+newupdatetime+'</span><span style="position: absolute;top: 9px;right: 24px;"><a href="../Message/im-chat.html?id='+data.userid+'&nickname='+data.nickname+'"><span class="mui-icon mui-icon-chatboxes"></span></a></span><span style="position: absolute;top: 37px;right: 24px;">匹配度：'+data.mark+'%</span></h5>';
+				liContent += '</div>';
+				liContent += '</div>';
+				
+				
+				ele.innerHTML = liContent;
+
+				return ele;
+			}
+			
+			function deleteRequirementSuccess(data)
+			{
+				if(data && data.rscode == 0)
+				{
+					mui.toast("删除需求成功");
+					mui.openWindow({
+						url: './MyRequirement.html'
+					});
+
+				}
+				else
+				{
+					mui.toast("删除需求失败，请重试");
+				}
+			}
+			
+			function sendMsgToUserByWxTpl(msg,housePublishUserId,housePublishNickName,houseId) {
+				//想发送模板消息
+				console.log('sendMsgToUserByWxTpl');
+				var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+				if(!loginUser)
+				{
+					console.log('user info not exist');
+					return;
+				}
+				
+				var content = msg;
+			
+				var toUserid = housePublishUserId;
+				var fromUserid = loginUser.id;//chail
+				var templateId = 2;//投标模板消息
+				var toNickname = housePublishNickName;
+				var fromNickname = loginUser.nickname;
+				var url = 'http://www.zmzfang.com/?r=door/scope&view=Mine/MyHouseDetail&houseId='+houseId;
+				var col = [];
+				
+				ajax_send_template_message({
+					toUserid:toUserid,
+					toNickname:toNickname,
+					fromUserid:fromUserid,
+					fromNickname:fromNickname,
+					templateId:templateId,
+					content:content,
+					col:col,
+					url:url
+					
+				});
+			}
+		
+		function sendTplMsgSuccess(data){
+			if(data.rscode==0){
+				//mui.toast("提交成功");
+				//mui.back();
+				console.log('发送模板消息成功');
+			}else{
+				//mui.toast("提交失败，请重试！");
+				console.log('发送模板消息失败');
+			}
+		}
+		
+		function showSystemRecommendList()
+		{
+			$('#item1').removeClass('mui-active');
+			$('#item2').addClass('mui-active');
+			
+			$('#item1Link').removeClass('mui-active');
+			$('#item2Link').addClass('mui-active');
+		}
+		
+		</script>
+	</body>
+
+</html>

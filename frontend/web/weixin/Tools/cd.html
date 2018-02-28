@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+    	<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+	</head>
+	<style type="text/css">
+		.mui-radio{font-size:.9rem;}
+    	.mui-radio label{margin-left: 8px}
+    	.mui-input-group .mui-input-row{color:#333;}
+    	pre{white-space: inherit;}
+    	ul li{
+    		    font-size: .9rem;
+    			margin: 0 0 8px 3px;
+    	}
+    	#menu{font-size: 15px;font-weight: 400;position: relative;display: table;overflow: hidden;width: 100%;table-layout: fixed;background-color: transparent;-webkit-touch-callout: none;}
+    	#menu a{line-height: 38px; display: table-cell;overflow: hidden;width: 1%;-webkit-transition: background-color .1s linear;transition: background-color .1s linear;text-align: center;white-space: nowrap; text-overflow: ellipsis;color:#666;}
+    	#menu a.active{color: #007aff;border-bottom: 2px solid #007aff;}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+			<h1 class="mui-title" id="title">产调申请</h1>
+			
+		</header>
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">你还没有绑定微信公众号</span>
+				<br />
+				<button type="button" class="mui-btn" style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">请绑定</button>
+				<div style="width: 60%;margin: auto;">
+					<p style="text-align: left;padding-left: 10px;padding-top: 50px;">
+						芝麻找房</br>
+						为个人购房者对接全城最优秀的经纪人</br>
+						为经纪人提供公平、透明的合作平台 </br>
+						最短时间内找到最合心意的房源</br>
+						无论大小经纪公司，有房源就有客户</br>
+						这里没有垄断</br>
+						我们只提供你想要的</br>
+					</p>
+				</div>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			<div><h2>请注意：业务调整中，暂时无法接单！付款者，将无法产生订单！</h2></div>
+			<!-- <div id="displayAfterLoginDiv" class="display-after-login mui-hidden">
+				<div id="menu">
+					<a class="active" href="#">申请办理</a>
+					<a href="./cdList.html">我的产调</a>
+				</div>
+				<form class="mui-input-group">
+				    <div class="mui-input-row">
+				        <label>区域名</label>
+				        <select name="area" id="area">
+				        	<option value="">请选择区域</option>
+				        	<option value="黄浦区">黄浦区</option>
+				        	<option value="卢湾区">卢湾区</option>
+				        	<option value="徐汇区">徐汇区</option>
+				        	<option value="长宁区">长宁区</option>
+				        	<option value="静安区">静安区</option>
+				        	<option value="普陀区">普陀区</option>
+				        	<option value="闸北区">闸北区</option>
+				        	<option value="虹口区">虹口区</option>
+				        	<option value="杨浦区">杨浦区</option>
+				        	<option value="宝山区">宝山区</option>
+				        	<option value="闵行区">闵行区</option>
+				        	<option value="嘉定区">嘉定区</option>
+				        	<option value="浦东新区">浦东新区</option>
+				        	<option value="南汇区">南汇区</option>
+				        	<option value="奉贤区">奉贤区</option>
+				        	<option value="松江区">松江区</option>
+				        	<option value="金山区">金山区</option>
+				        	<option value="青浦区">青浦区</option>
+				        	<option value="崇明县">崇明县</option>
+				        </select>
+				    </div>
+				    
+				    <div class="mui-input-row">
+						<label>产证地址</label>
+							<input id="address" placeholder="地址或证号" name="address" type="text">
+					</div>
+					<div class="mui-input-row">
+						<label>手机号码</label>
+							<input id="mobile" name="mobile" type="text">
+					</div>
+					<div class="mui-input-row">
+						<label>产调费用</label>
+							<p style="float:left;padding: 10px;padding-left:0;font-size:17px;color:#333;">45 元</p>
+					</div>
+					<p style="color:red;padding: 10px 16px;" id="hint">
+				    </p>
+					<button type="button" id="submit" class="mui-btn mui-btn-success mui-btn-block"  onclick="return check();">提交申请</button>
+				</form>
+				<div id="help">
+				<div style="padding: 8px;border-bottom: 1px solid #ddd;width: 90%;margin: 0 auto;">使用说明</div>
+				<ul style="list-style: none;padding: 8px;width: 90%;margin: 0 auto;">
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989317&idx=1&sn=c0c7b60f41545ca96c181050e6c23559&scene=1&srcid=0902yeN3zlLXrhxDGr4oAZFS#wechat_redirect">接单时间安排</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989332&idx=1&sn=482f4451d5c4bd60b39cc38618525649&scene=1&srcid=0902jVwsOaJ35gOO5hXTqYoT#wechat_redirect">产调单怎么看</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989325&idx=1&sn=3ecaf006340cd21af90ddc6d61e5d9d7&scene=1&srcid=0902TIOn2PmV9KZ1F8AMuOKd#wechat_redirect">产调单的用途</a></li>
+					<li><a href="http://mp.weixin.qq.com/s?__biz=MzAxMzAxNDEwNQ==&mid=500989321&idx=1&sn=981b77b19cf86d87a513db5bfe8a47aa&scene=1&srcid=09021ZDv4THRexD3varVZsh9#wechat_redirect">退款说明</a></li>
+					<li><a href="https://m.huoban.com/share/app/14179f1826318473f3eb816b01683a8d/form/create_item">所要发票</a></li>
+					<li><a href="https://m.huoban.com/share/app/1d35a092fc4f454302c8f5c4a54d4e66/form/create_item">原件到付</a></li>
+ 				</ul>
+			</div>
+			</div>
+			
+		</div> -->
+		
+
+    <script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script type="text/javascript">
+		
+		var jsApiParameters,openid;
+		$(function(){
+			
+			
+			loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+			if(loginUser)
+			{
+
+				openid = loginUser.openid;
+
+				$("#mobile").val(loginUser.phone);
+				$("#displayAfterLoginDiv").removeClass('mui-hidden');
+				
+			}else{
+				if(mui.os.wechat){
+					window.location.href = 'http://www.zmzfang.com/?r=door/scope&view=Tools/cd';
+				}
+				$("#needLoginDiv").removeClass('mui-hidden');
+			}
+			
+		});
+		$('#area').on('change',function(){
+			var str = "预计出单: ";
+			switch($(this).val()){
+				case '':
+					$("#hint").text('');
+				break;
+				case '宝山区':
+					$("#hint").text(str+'1个工作日');
+				break;
+				case '虹口区':
+					$("#hint").text(str+'工作日10点30以后延续至下个工作日,周末统一安排在下周一');
+				break;
+				case '浦东新区':
+					$("#hint").text(str+'19点至21点出单');
+				break;
+				default:
+					$("#hint").text(str+'1-2小时');
+				break;
+			}
+		})
+		
+		function check(){
+			if($("#area option:selected").val() == '' || $("#address").val().trim() == '' || $("#mobile").val().trim() == ''){
+				mui.toast('请将信息填写完整！');
+				return false;
+			}else{
+				$.ajax({
+					type:"POST",
+					// url:"http://www.zmzfang.com/?r=wechat/setorder",
+					url:getInterfaceUrl()+"?r=wechat/setorder",
+					dataType:"json",
+					data:{
+						openid:openid,
+						area:$("#area option:selected").text(),
+						address:$("#address").val(),
+						mobile:$("#mobile").val(),
+					},
+					success: function(data){
+						// console.log(data);
+						if(data.code == 0){
+							mui.toast("生成订单失败！请联系管理员！");
+						}else{
+							mui.alert( '您的申请已提交，请继续下一步进行付款！', '芝麻找房提醒', '确定', function(){
+									sessionStorage.setItem('orderid',data.orderid);
+									
+									window.location.href = './cdSubmit.html';
+								})
+						}
+
+					},
+					error: function(jqXHR){
+						mui.toast("生成订单发生错误:"+ jqXHR.status+"！请联系管理员！");
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>

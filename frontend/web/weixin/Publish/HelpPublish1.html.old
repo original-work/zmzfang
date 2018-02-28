@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+		
+		<style type="text/css">
+			.mui-scroll-wrapper{
+				overflow: inherit;
+			}
+			/*hxj*/
+			#popup {
+				position: absolute;
+			    left: 0;
+			    top: 0;
+			    width: 100%;
+			    height: 100%;
+			    background: #fff;
+			    box-sizing: border-box;
+			    overflow: auto;
+			    -webkit-overflow-scrolling: touch;
+			    -webkit-transition-property: -webkit-transform;
+			    transition-property: transform;
+			    /*左右*/
+			    -webkit-transform: translate3d(-100%,0,0);
+			    transform: translate3d(-100%,0,0);
+			    -webkit-transition: -webkit-transform .2s ease;
+			    transition: transform .2s ease;
+			    /*上下*/
+			    /*-webkit-transform: translate3d(0,-100%,0);*/
+			    /*transform: translate3d(0,-100%,0);*/
+			    opacity: 0;
+			    z-index: -1;
+			}
+			#popup.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+			    /*color: #666;
+			    border-bottom: 2px solid blue;
+			    background: 0 0;*/
+			}
+
+			.img-responsive{
+	    		display: block;
+			    max-width: 100%;
+			    height: auto;
+			}
+			#subject{
+		    	margin-top: 10px;
+		    	margin-bottom: 10px;
+		    	text-align: center;
+		    	position: relative;
+		    }
+		    nav.header-nav{
+		    	padding: .6rem .75rem;
+		    }
+		    nav.header-nav a{
+		    	border: 1px solid #ddd;
+		    	padding: .25rem 0;
+		    	width: 4rem;
+		    	display: inline-block;
+		    	color:#999;
+		    	background: #fff;
+		    }
+		    nav.header-nav a:first-child{
+		    	border-radius:.3rem 0 0 .3rem;
+		    	border-right: none;
+		    }
+		    nav.header-nav a:last-child{
+		    	border-radius:0 .3rem .3rem 0;
+		    	border-left: none;
+		    }
+		    nav.header-nav a.current {
+			    color: #fff;
+			    background: #4cd964;
+			}
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">求助</h1>
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="needLoginDiv" class="need-login mui-hidden" style="text-align: center; margin-top: 20px;">
+				<span style="color: #000; font-size: 1.1rem;">芝麻找房微信端使用说明</span>
+				<br />
+				
+				<div style="width: 45%;margin: auto;margin-top: 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第一步：扫码关注，接收用户联系</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/qrcode.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:left;margin:5px 0 0 10px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第二步：点击个人中心</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q1.jpg" class="img-responsive" alt="/">
+				</div>
+				<div style="width: 45%;float:right;margin:5px 10px 0 0px;">
+						<p style="text-align: center;font-size: .85rem;margin-bottom:5px;color:#666;">
+						第三步：进入用户绑定</br>
+					</p>
+					<img src="http://www.zmzfang.com/assets/frontend/images/q2.jpg" class="img-responsive" alt="/">
+				</div>
+					<div style="clear: both;height: 5px;"></div>
+				<span>已关注请直接点击</span>
+				<br />
+				<button type="button" style="margin-top: 5px; margin-bottom:10px;padding: 5px 20px;background-color: #4cd964;color: #fff;">新用户绑定</button>
+			</div>
+			
+			<div id="needWxBrowserDiv" class="need-wxbrower mui-hidden" style="text-align: center; margin-top: 50px;">
+				<span style="color: gray; font-size: 0.9em;">请从公众号登陆</span>
+				<br />
+				<button type="button" class="mui-btn " style="margin-top: 10px; padding: 5px 20px;background-color: #4cd964;color: #fff;">返回主页</button>
+			</div>
+			
+			<div id="displayAfterLoginDiv">
+				<div id="subject">
+				    	<nav class="header-nav">
+				    		<a class="current" href="http://www.zmzfang.com/weixin/Publish/HelpPublish1.html">求助
+				    		<a href="http://www.zmzfang.com/weixin/Publish/RequirementPublish1.html">求购
+				    		<a href="http://www.zmzfang.com/weixin/Publish/RentPublish1.html">求租
+				    		<a href="http://www.zmzfang.com/weixin/Publish/HousePublish1.html">发房源</a>
+				    	</nav>
+				</div>
+				<ul id="addressInfoList" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>区域</label>
+							<input id='showCityPicker3' type="text" style="display:inline-block" placeholder="点击选择区域" readonly="readonly" />
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>主题</label>
+							<input id="helpsubject" type="text" class="mui-input-clear" placeholder="请输入求助主题">
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>有效时间</label>
+							<select id="rtime" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">立即</option>
+								<option value="2" selected="selected">一天内</option>
+								<option value="3">一周内</option>
+								<option value="4">一月内</option>
+								<option value="5">三月内</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>具体描述</label>
+							<textarea id="detail" rows="5" placeholder="请输入您的具体求助描述" ></textarea>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						    <label style="padding-left:15px;">是否红包奖励</label>
+							<div id="acceptAgentFlag" class="mui-switch mui-active">
+								<div class="mui-switch-handle"></div>
+							</div>
+					</li>
+				
+					<li id="feeLi" class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>愿支付红包</label>
+							<input id="fee" type="text" class="mui-input-clear" placeholder="单位元" >
+						</div>
+					</li>    
+										
+				</ul>				
+						
+				<div id='publish' class="submit-btn btn-green">发布求助</div>
+				
+			</div>
+		</div>
+		
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/loginCheck.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/area.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/wxShare.js"></script>
+		<script src="../js/Expert/common/wxpay.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+
+		  	var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var region;
+			var helpId;
+			mui.init({
+				swipeBack: true
+			});
+			
+			//初始化用户信息及检查
+			initUserAndCheck();
+			function initUserAndCheck()
+			{
+				initCheckView('../index.html','../Mine/reg.html');
+				//判断权限
+				//			
+				//没有用户信息时的处理方式
+				var noPhoneRegAfterJumpUrl = "../Publish/HelpPublish1.html";//继续打开本页，不跳转
+				var hasPhoneJumpUrl = null;
+				checkUserPhone(noPhoneRegAfterJumpUrl,hasPhoneJumpUrl);
+			}
+			
+			mui.ready(function() {
+				initAreaControl(); //初始化区域选择块
+				//初始化微信分享
+				wxShare();
+
+			});
+
+			var loginUser = JSON.parse(localStorage.getItem('zmzfangLoginUserInfo'));
+			
+			mui.back = function(){
+				mui.openWindow({
+					url: './HomePage/index.html'
+				});
+			};
+			//  hxj
+            var selectAreaFlag = 0;
+            
+			function initAreaControl()
+			{
+				//-----------------------------------------
+				//					//级联示例
+				var cityPicker3 = new mui.PopPicker({
+					layer: 3
+				});
+				cityPicker3.setData([areaData3[2]]);
+				var showCityPickerButton = document.getElementById('showCityPicker3');
+				
+				//重置区域相关信息
+//				resetAreaInfo();
+				showCityPickerButton.addEventListener('tap', function(event) {
+					cityPicker3.show(function(items) {
+						showCityPickerButton.value = items[2].text;	
+						region = items[2].value;
+					    selectAreaFlag = 1;//add by chail on 20160714
+					});	
+				}, false);
+			}
+			
+			document.querySelector('#acceptAgentFlag').addEventListener('toggle', function(event) {
+//				console.log('acceptAgentFlag click');
+				//console.log('height  1111 :'+document.body.scrollHeight);
+				acceptAgentFlag = this.classList.contains('mui-active');
+				//alert(acceptAgentFlag);
+				//初始化中介相关信息
+				initAgentInfo();
+				//跳转页面到底部
+				//console.log('height  2222 :'+document.body.scrollHeight);
+				window.scrollTo(0,document.body.scrollHeight);
+			},false);
+			function initAgentInfo(){
+		    	if(acceptAgentFlag){
+					$("#feeLi").removeClass('mui-hidden');
+		    	}else{
+		    		$("#feeLi").addClass('mui-hidden');
+		    		byId('fee').value='';
+		    	}
+		    }
+	        //增加需求发布按钮事件
+	        
+			document.querySelector('#publish').addEventListener('tap', function() {
+				var subject = byId('helpsubject').value;
+				var index = byId("rtime").selectedIndex;
+				var rtime = byId("rtime").options[index].value;
+				var fee;
+				
+				if(isNaN(parseInt(byId('fee').value))){
+					fee=0;
+				}else{
+					fee=byId('fee').value;
+				}
+
+				var detail = byId('detail').value;
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				var publishuserid = user.id;
+				
+				var options = new Object();
+				
+				options.publishuserid = publishuserid;
+				options.publishusertype = user.agentflag;
+				options.requirementtype = 1;
+				if(!region){
+					alert("请选择区域");
+				}else{
+					options.region = region;
+				}
+				
+				options.forhelpsubject = subject;
+				//options.rtime = rtime;
+				options.level = rtime;
+				options.rewardflag = acceptAgentFlag?1:0;
+				options.rewardfee = fee;
+				
+				options.forhelpdetail = detail;
+				options.mid = getRandStr(20);
+				
+				ajax_to_server(AddHelpUrl,options,addHelpSuc,addHelpFailed);
+			}, false);
+			
+			function addHelpSuc(data)
+			{
+				console.log('addHelpSuc data '+JSON.stringify(data));
+
+				if(data && data.rscode == 0)
+				{
+					mui.toast('发布成功')
+					console.log('begin pay click');
+					if(data && data.helpid)
+			    	{
+			    		pushHelp(data.helpid);
+			    	}
+			    	
+					if(data.rewardfee==0){
+						mui.openWindow({
+							url: 'http://www.zmzfang.com/weixin/HomePage/HelpDetail.html?helpId='+data.helpid
+						});
+					}
+
+					var requestInfo = new Object();
+					helpId = data.helpid;
+					requestInfo.orderid = 'qz'+data.helpid;
+					requestInfo.subject = '芝麻找房商品';
+					requestInfo.fee = data.rewardfee;
+					requestInfo.code = 'bb';
+					requestInfo.openid = loginUser.openid;
+
+					console.log('requestInfo.orderid is '+requestInfo.orderid);
+					console.log('requestInfo.subject is '+requestInfo.subject);
+					console.log('requestInfo.fee is '+requestInfo.fee);
+					console.log('requestInfo.code is '+requestInfo.code);
+					console.log('requestInfo.openid is '+requestInfo.openid);
+
+					wepay(requestInfo,jumpUrl);
+				}
+
+			}
+			function jumpUrl(data)
+			{
+				var dstUrl = 'http://www.zmzfang.com/weixin/HomePage/HelpDetail.html?helpId='+helpId;
+				//mui.toast(dstUrl);
+				mui.openWindow({
+					url: dstUrl,
+					id: 'HelpDetail.html'
+				});
+				
+			}
+			function addHelpFailed(data)
+			{
+				console.log('addHelpFailed data '+JSON.stringify(data));
+				mui.toast('发布失败'+JSON.stringify(data));
+			}
+			
+			function pushHelp(data)
+		    {
+		    	var helpid = data;
+		    	ajax_to_server(
+		    		pushRentUrl,{
+		    		helpid: helpid
+		    		},
+		    		null,
+		    		null
+		    	);
+	    		
+		    }
+		</script>
+	</body>
+
+</html>

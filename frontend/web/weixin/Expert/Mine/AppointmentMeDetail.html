@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+			}
+			.mui-table-view-cell
+			{
+				padding-left:10px;
+				padding-right:0px;
+				padding-top:5px;
+				padding-bottom: 0px;
+			}
+			
+			.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			#subject
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+			}
+			
+			#expertBrief{
+				border-bottom: 1px solid #ccc;
+			}
+			
+			#statuInfo{
+				clear:both;
+			}
+			#eventName{
+				margin-top: 5px;
+			}
+			#statuTime{
+				margin-top: 5px;
+				border-left: 2px solid #ccc;
+			}
+			#dealName{
+				margin-top: 5px;
+			}
+			#question
+			{
+				padding: 5px 10px;
+				border-top: 1px solid #ccc;
+				
+			}
+			
+			#promptDiv h5{
+				margin-bottom: 10px;
+				margin-top: 10px;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+			<a id="backLink" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">约见我的详情</h1>
+			<a id="homeLink" class="mui-icon mui-pull-right mui-hidden" href="http://www.zmzfang.com/weixin/mine.html"><span style="font-size:1rem">首页</span></a>
+		</header>
+		
+		<div class="mui-content">
+			<div id="appointmentMeBrief" appointment-id="5320" expert-id="474">
+				<div id="userBrief" class="col-xs-12">
+					<div id="userPicBrief" class="col-xs-2 mui-text-center" publishuser-id="">
+						<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+							<img id="headPic" style="width:42px; height:42px; " src="" alt="个人头像">
+						</div>
+					</div>
+					<div class="col-xs-10">
+						<div>
+							<div class="col-xs-8" style="margin-top: 5px;">
+								<span id="userName" ></span>
+							</div>
+							<div class="col-xs-4">
+								<p id="appointmentType" class="type mui-text-right" style="font-size:11px"></p>
+							</div>
+						</div>
+						
+						<div>
+							<div class="col-xs-6">
+								<h5>价格:<span id="fee"></span>元/次</h5>
+							</div>
+							<div class="col-xs-6">
+								<h5>状态:<span id="status"></span></h5>
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<h5 id="createTime" class="mui-text-right" style="font-size:11px"></h5>
+						</div>
+					</div>
+				</div>	
+			
+				<div style="margin-top: 10px;clear: both;">
+					<ul id="statusUl" class="mui-table-view">
+						<!--<li class="mui-table-view-cell mui-media" >
+							<div id="eventName" class="col-xs-3 mui-text-right">
+								<h5>问题提交</h5>
+							</div>
+							<div id="statuTime" class="col-xs-6">
+								<h5>2016-08-20 14:03:01</h5>
+							</div>
+							<div id="dealName" class="col-xs-3">
+								<h5>王大锤</h5>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media" >
+							<div id="eventName" class="col-xs-3 mui-text-right">
+								<h5>客户支付</h5>
+							</div>
+							<div id="statuTime" class="col-xs-6">
+								<h5>2016-08-20 14:03:01</h5>
+							</div>
+							<div id="dealName" class="col-xs-3">
+								<h5>王大锤</h5>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media" >
+							<div id="eventName" class="col-xs-3 mui-text-right">
+								<h5>专家答复</h5>
+							</div>
+							<div id="statuTime" class="col-xs-6">
+								<h5>2016-08-20 14:03:01</h5>
+							</div>
+							<div id="dealName" class="col-xs-3">
+								<h5>王大锤</h5>
+							</div>
+						</li>-->
+					</ul>
+				</div>
+				
+				<div id="subject" style="">
+					<h5>咨询问题</h5>
+					<p id="question"></p>
+				</div>
+				
+				<div id="alreadyAnserInfo" class="mui-hidden">
+					<div id="listen" class="col-xs-12">
+						<div class="col-xs-7 mui-text-center">
+							<button id="listenRecord" class="listen" type="button" class="mui-btn" style="width: 48px;height: 48px;border:0px;background-image:  url(../../img/play.png);">						
+							</button>
+							<span style="font-size:8px;padding-top: 8px;"><span id="duration">0</span>秒</span>
+							<audio style="display:none" id="musicBox" controls autoplay="false"></audio>
+							
+							
+						</div>
+						<!--
+                        	如果已经答复，则显示答复的录音，让专家本人可以听到并播放，显示收听人数；
+                        -->
+						<div id="listenCntDiv" class="col-xs-5">
+							<p style="font-size: 11px;margin-top: 10px"><span id="listenedCnt" class="mui-badge mui-badge-danger" style="">120</span>人收听</p>
+						</div>
+					</div>
+				</div>
+				
+				<div id="anserInfo" class="mui-hidden">
+					<div class="col-xs-12 mui-text-right">
+						<h5><span id="rejectOnline" class="mui-badge mui-badge-green">拒绝答复</span></h5>
+					</div>
+					
+					<div id="promptDiv" class="col-xs-12 mui-text-center">
+						<h5><span id="dida">0</span>秒</h5>
+						<h5>提示:<span id="prompt">一次答复最多可以录音60秒钟，点击可停止</span></h5>
+					</div>
+					
+					<div id="dealDiv" class="col-xs-12">
+						<div class="col-xs-4 mui-text-center">
+							<button id="resetTape" type="button" class="mui-btn mui-disabled" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+								重置
+							</button>
+						</div>
+						
+						<div class="col-xs-4 mui-text-center">
+							<button id="tape" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+								开始录音
+							</button>
+						</div>
+						<!--
+                        	如果已经答复，则显示答复的录音，让专家本人可以听到并播放，显示收听人数；
+                        -->
+						<div class="col-xs-4 mui-text-center">
+							<button id="uploadAnser" type="button" class="mui-btn mui-disabled" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+								上传
+							</button>
+						</div>
+						
+					</div>
+					<!--<div class="col-xs-12">
+						<button id="uploadAnser" type="button" class="mui-btn" style="width: 90%;height: 40px;margin-top: 5px;background-color: #4cd964;color: #fff;">
+							上传语音答复
+						</button>
+					</div>-->
+				</div>
+
+			</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/common.js?v=0.01"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/Mine/AppointmentMeDetail.js?v=0.01"></script>
+		
+	</body>
+
+</html>

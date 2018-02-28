@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.02" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.css" />
+        <link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+	
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">需求发布</h1>
+		
+		</header>
+
+
+		<div class="mui-content">
+			<section id='requirement-info' class="requirement-info">
+				<ul id="addressInfoList" class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>区域</label>
+							<input id="areaName" type="text" placeholder="" disabled="disabled">
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>总价</label>
+							<select id="budget" onblur="yongjin()">
+							  <option value="0-99">100万以内</option>
+							  <option value="100-149">100万到150万</option>
+							  <option value="150-199">150万到200万</option>
+							  <option value="200-299">200万到300万</option>
+							  <option value="300-399">300万到400万</option>
+							  <option value="400-599">400万到600万</option>
+							  <option value="600-799">600万到800万</option>
+							  <option value="800-999">800万到1000万</option>
+							  <option value="1000-90000">1000万以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>户型</label>
+							<select id="houseType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">1室</option>
+								<option value="2" selected="selected">2室</option>
+								<option value="3">3室</option>
+								<option value="4">4室</option>
+								<option value="5-10">5室及以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>楼层</label>
+							<select id="storey" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="0-300">不限</option>
+								<option value="1-2">1-2楼</option>
+								<option value="3-4">3-4楼</option>
+								<option value="5-6">5-6楼</option>
+								<option value="7-10">7-10楼</option>
+								<option value="11-15">11-15楼</option>
+								<option value="16-20">16-20楼</option>
+								<option value="21-25">21-25楼</option>
+								<option value="26-30">26-30楼</option>
+								<option value="31-300">30楼以上</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>类型</label>
+							<select id="buildingType" class="mui-btn mui-btn-block" style="float:left;width:50%">
+								<option value="1">住宅</option>
+								<option value="2">商住</option>
+								<option value="3">办公</option>
+								<option value="4">商铺</option>
+							</select>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>具体描述</label>
+							<textarea id="detail" rows="5" placeholder="请输入您的具体需求描述，合理的需求价格会吸引更多的房源方" ></textarea>
+						</div>
+					</li>
+				
+					<li class="mui-table-view-cell mui-hidden">
+						    <label style="padding-left:15px;">是否接受经纪人佣金</label>
+							<div id="acceptAgentFlag" class="mui-switch mui-active">
+								<div class="mui-switch-handle"></div>
+							</div>
+					</li>
+				
+					<li id="feeLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+							<label>愿支付佣金</label>
+							<input id="fee" type="text" class="mui-input-clear" placeholder="单位元" >
+						</div>
+					</li>    
+					
+					<li id="divideRateLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+							<label>分佣比例</label>	
+							<input id="divideRateFirst" type="text" class="mui-input-clear" style="width:50px;float:left;border: 1px solid #D8D8E6" placeholder="5">
+							<label style="float:left;width:2px;padding-left: 2px">:</label>
+							<input id="divideRateSecond" type="text" class="mui-input-clear" style="width:50px;float:left;border: 1px solid #D8D8E6" placeholder="5">
+						</div>
+					</li>    
+
+    
+					<li id="expectDivideFeeLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+							<label>预计分佣</label>
+							<input id="agentfee" type="text" placeholder="单位元" class="mui-input-clear">
+						</div>
+					</li>    
+
+					<li id="divideFeeDescribeLi" class="mui-table-view-cell mui-hidden">
+						<div class="mui-input-row">
+							<p><small style="float:right">中介费为2%，由双方共同带看</small></p>
+						</div>
+					</li>    
+					
+				</ul>
+				<div id='commitRequirementPublish' class="submit-btn btn-green">发布需求</div>
+				
+			</section>
+	
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/ajax.js"></script>
+		<script src="../js/commonAjax.js"></script>
+		<script src="../js/wxShare.js"></script>
+		
+		<script type="text/javascript" charset="UTF-8">
+
+			function yongjin(){
+				//$("#divideRateSecond").css("background-color","#D6D6FF");
+
+				$price=$("#budget").val();
+				$prices=$price.split("-");
+				// console.log($prices[0]);
+				
+				$personalfee = getAgentFeeByPerson($prices[0]);
+				$("#fee").attr('placeholder','佣金最少'+$personalfee+'元');
+				
+				$jingjirenfee = getAgentFeeByAgent($prices[0]);
+				$("#agentfee").attr('placeholder','分佣最少'+$jingjirenfee+'元');
+		
+			};
+				
+			
+			$("input#divideRateFirst").blur(function(){
+				// $("#divideRateSecond").css("background-color","#D6D6FF");
+				$("#divideRateSecond").val(10-$("#divideRateFirst").val());
+			});
+
+			$("input#fee").blur(function(){
+
+				$price=$("#budget").val();
+				$prices=$price.split("-");
+				// console.log($prices[0]);
+				
+				$agfee = getAgentFeeByPerson($prices[0]);
+				if($agfee>parseInt($("#fee").val())){
+					
+					mui.toast("支付佣金最低为"+$agfee+"元");
+					return false;
+				}
+			});
+
+			$("input#agentfee").blur(function(){
+
+				$price=$("#budget").val();
+				$prices=$price.split("-");
+				// console.log($prices[0]);
+				$agfee = getAgentFeeByAgent($prices[0]);
+
+				if($agfee>parseInt($("#agentfee").val())){
+					
+					mui.toast("预计分佣最低为"+$agfee+"元");
+					return false;
+				}
+			});
+
+						
+		    var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var acceptAgentFlag = true;
+			var agentfee = 0;
+			var dividerate = "";
+			var expectdividefee = 0;
+			var dividefeedescribe = "";
+			var publishRegion ;	
+			var subject = '';
+			mui.init({
+				swipeBack: false
+			});
+			
+			mui.ready(function() {
+				loginUser = JSON.parse(localStorage.getItem("zmzfangLoginUserInfo"));
+				publishRegion = JSON.parse(localStorage.getItem('zmzfangPublishRegionText'));
+				publishRegionView = JSON.parse(localStorage.getItem('zmzfangPublishRegionValue'));
+				//初始化区域信息
+				initAreaInfo();
+				//初始化 接收经纪人投标
+				initAgentInfo();
+				//初始化微信分享
+				wxShare();
+			});
+			
+			document.querySelector('#acceptAgentFlag').addEventListener('toggle', function(event) {
+				console.log('acceptAgentFlag click');
+				//console.log('height  1111 :'+document.body.scrollHeight);
+				acceptAgentFlag = this.classList.contains('mui-active');
+				//alert(acceptAgentFlag);
+				//初始化中介相关信息
+				initAgentInfo();
+				//跳转页面到底部
+				//console.log('height  2222 :'+document.body.scrollHeight);
+				window.scrollTo(0,document.body.scrollHeight);
+			},false);
+		
+			
+			initPublishEvent();
+		     //增加需求发布按钮事件
+		     function initPublishEvent()
+		     {
+		     	document.querySelector('#commitRequirementPublish').addEventListener('tap', addRequirement, false);
+		     	console.log('initPublishEvent addEventListener');
+		    }
+			
+			function removePublishEvent()
+			{
+				document.querySelector('#commitRequirementPublish').removeEventListener('tap', addRequirement, false);
+				console.log('removePublishEvent removeEventListener');
+			}
+		
+			function addRequirement()
+			{
+				console.log('commitRequirementPublish click');
+				
+				var data = localStorage.getItem('zmzfangLoginUserInfo');
+				var user = JSON.parse(data);
+				
+				//获取界面输入元素内容
+				var publishuserid = user.id;
+				var publishusertype = user.agentflag;
+				
+				var requirementtype = localStorage.getItem("publish-requirementtype");
+				var region1 = '';
+				var region2 = '';
+				var region3 = '';
+				
+				if(requirementtype == 1)
+				{
+					region1 = publishRegionView.region1;
+					region2 = publishRegionView.region2;
+					region3 = publishRegionView.region3;
+				}
+			
+				var districtid = localStorage.getItem("publish-districtid");
+				var districtname = localStorage.getItem("publish-districtname");
+				
+				var index = byId("budget").selectedIndex;
+				var budget = byId("budget").options[index].value;
+				
+				index = byId("houseType").selectedIndex;
+				console.log('index:'+index);
+				//
+				var housetype = byId("houseType").options[index].value;
+				
+				index = byId("storey").selectedIndex;
+				var storey = byId("storey").options[index].value;
+				
+				
+				index = byId("buildingType").selectedIndex;
+				var buildingtype = byId("buildingType").options[index].text;
+		
+				var detail = byId("detail").value;
+				
+				if(!checkPublishInfo())
+				{
+					return;
+				}
+				
+				agentfee = 0;
+				dividerate = "";
+				expectdividefee = 0;
+				dividefeedescribe = "";
+				
+				var flag = "0";
+				if(acceptAgentFlag)
+				{
+					flag = "1";
+					if(!checkAgentInfo())
+					{
+						return ;
+					}
+				}
+				$("#commitRequirementPublish").attr("disabled","disabled");
+				removePublishEvent();
+				
+				var city = user?user.city:null;
+				var options = {
+						publishuserid: publishuserid,
+						publishusertype: publishusertype,
+						requirementtype: requirementtype,
+						region1: region1,
+						region2: region2,
+						region3: region3,
+						subject: subject,
+						districtid: districtid,
+						districtname: districtname,
+						budget: budget,
+						housetype: housetype,
+						storey: storey,
+						buildingtype: buildingtype,
+						detail: detail,
+						acceptagentflag: flag,
+						agentfee: agentfee,
+						dividerate: dividerate,
+						expectdividefee: expectdividefee,
+						dividefeedescribe: dividefeedescribe,
+						mid: getRandStr(20),
+						city:city
+					};
+				ajax_to_server(addRequirementByCityUrl,options,addRequirementSuccess,addRequirementFail);
+				//ajax_add_requirement();
+			}
+			
+		    function initAreaInfo()
+		    {
+		    	
+		    	var requirementtype=localStorage.getItem("publish-requirementtype");
+			
+				var districtname=localStorage.getItem("publish-districtname");
+
+				if(requirementtype ==1)
+				{
+					for (var i in publishRegion) {
+						subject += publishRegion[i]+';';
+					}
+				}
+				else
+				{
+					subject += districtname;	
+					$('#areaName').siblings('label').value = '小区';
+				}
+				
+		    	console.log('subject:'+subject);
+		    	
+		    	document.getElementById('areaName').value = subject;
+		    	
+		    }
+		    
+		    function initAgentInfo()
+		    {
+		    	if(acceptAgentFlag)
+		    	{
+		    		//接收中介投标，显示部分字段
+		    		//经纪人发布
+			    	if(loginUser.agentflag == '1')
+			    	{
+			    		$("#divideRateLi").removeClass('mui-hidden');
+			    		$("#expectDivideFeeLi").removeClass('mui-hidden');
+			    		$("#divideFeeDescribeLi").removeClass('mui-hidden');
+			    	}
+			    	 else
+			    	{
+			    		$("#feeLi").removeClass('mui-hidden');
+			    	}
+		    		
+		    	}
+		    	else
+		    	{
+		    		//不接收中介投标，隐藏部分字段
+		    		$("#feeLi").addClass('mui-hidden');
+		    		$("#divideRateLi").addClass('mui-hidden');
+			    	$("#expectDivideFeeLi").addClass('mui-hidden');
+			    	$("#divideFeeDescribeLi").addClass('mui-hidden');
+		    	}
+		    }
+		    
+		    function checkPublishInfo()
+		    {
+		    	var detail = byId("detail").value;
+		    	if(detail == null || detail == '')
+		    	{
+		    		mui.toast("具体描述不能为空，请至少输入5个汉字");
+				    return false;
+		    	}
+		    	var detailLen = getByteLen(detail.trim());
+		    	//alert('detailLen:'+detailLen);
+		    	if(detailLen < 10)
+		    	{
+		    		mui.toast("请至少输入5个字符");
+				    return false;
+		    	}	
+		    	if(detailLen > 200)
+		    	{
+		    		mui.toast("字符超长，限100汉字");
+				    return false;
+		    	}	
+
+		    	return true;
+		    }
+		    
+		    function checkAgentInfo()
+		    {
+		    	//当接受经纪人投标时 才进行检查
+		    	
+		    	if(loginUser.agentflag == '1'){
+		    		//经纪人发布
+					var divideRateFirst = byId("divideRateFirst").value;
+					var divideRateSecond= byId("divideRateSecond").value;
+					console.log('divideRateFirst:'+divideRateFirst);
+					console.log('divideRateSecond:'+divideRateSecond);
+					
+					agentfee = byId("agentfee").value;
+					
+					
+					if(divideRateFirst == null || divideRateFirst == '' || isNaN(divideRateFirst))
+					{
+						mui.toast("分佣比率请输入有效数字");
+						return false;
+					}
+					
+					
+					if(divideRateSecond == null || divideRateSecond == '' || isNaN(divideRateSecond))
+					{
+						mui.toast("分佣比率请输入有效数字");
+						return false;
+					}
+					
+					var sum = parseFloat(divideRateFirst)+parseFloat(divideRateSecond);
+					console.log("divideRateFirst+divideRateSecond:"+sum);
+					if(sum != 10.0)
+					{
+						mui.toast("分佣比率两侧之和应该为10");
+						return false;
+					}
+					
+					dividerate = divideRateFirst+":"+divideRateSecond;
+					
+					if(agentfee == null || agentfee == '' || isNaN(agentfee))
+					{
+						mui.toast("请输入预期分佣价钱，单位元");
+						return false;
+					}
+
+
+					$price=$("#budget").val();
+					$prices=$price.split("-");
+
+					$agfee = getAgentFeeByAgent($prices[0]);
+
+					if($agfee>parseInt($("#agentfee").val())){
+						
+						mui.toast("预计分佣最低为"+$agfee+"元");
+						return false;
+					}
+					
+		    	}
+		    	else{   //个人发布
+		    		agentfee = byId("fee").value;
+		    		if(agentfee == null || agentfee == '' || isNaN(agentfee))
+					{
+						mui.toast("请输入愿意支付的佣金，单位元");
+						return false;
+					}
+
+			    	$price=$("#budget").val();
+					$prices=$price.split("-");
+
+					$agfee = getAgentFeeByPerson($prices[0]);
+					if($agfee > parseInt($("#fee").val())){
+						
+						mui.toast("支付佣金最低为"+$agfee+"元");
+						return false;
+					}
+
+		    	}
+		    	return true;
+		    }
+		    
+		    function addRequirementSuccess(data)
+		    {
+		    	console.log('data:'+JSON.stringify(data));
+		    	if(!data || data.rscode !== 0)
+				{
+					$("#commitRequirementPublish").removeAttr("disabled");
+					mui.toast('发布需求失败:'+data.error);
+					return;
+				}
+				
+				
+		    	toastMSG = '需求发布成功';
+		    	//向后台发送 命令，触发发送给经纪人的逻辑
+		    	
+		    	if(data && data.id)
+		    	{
+		    		pushRequirement(data.id);
+		    	}
+		    	
+		    	//
+		    	/*
+				mui.toast(toastMSG);
+				mui.openWindow({
+					url: '../Mine/MyRequirement.html'
+				});
+				*/
+				
+				var dstUrl = "../Mine/MyRequirementDetail.html?requirementId="+data.id;
+				mui.toast(toastMSG);
+				mui.openWindow({
+					url: dstUrl
+				});
+				
+		    }
+		    
+		    function addRequirementFail(data)
+		    {
+		    	$("#commitRequirementPublish").removeAttr("disabled");
+		    	console.log('addRequirementFail data:'+JSON.stringify(data));
+		    	var toastMSG = '网络异常，需求提交失败，请重试！';
+				mui.toast(toastMSG);
+				initPublishEvent();
+		    }
+		    
+		    function getByteLen(val) {
+	            var len = 0;
+	            for (var i = 0; i < val.length; i++) {
+	                 var a = val.charAt(i);
+	                 if (a.match(/[^\x00-\xff]/ig) != null) 
+	                {
+	                    len += 2;
+	                }
+	                else
+	                {
+	                    len += 1;
+	                }
+	            }
+	            return len;
+        	}
+		    
+		    function pushRequirement(data)
+		    {
+		    	var requirementid = data;
+	    		ajax_push_requirement({
+					requirementid: requirementid
+				});
+		    }
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01">
+	<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+</head>
+<body>
+	<div class="mui-content">
+	</div>
+	<script src="https://npmcdn.com/react@15.3.1/dist/react.js"></script>
+	<script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.js"></script>
+	<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+	<script src="https://npmcdn.com/jquery@3.1.1/dist/jquery.min.js"></script>
+	<script type="text/babel">
+		var CommentBox = React.createClass({
+			getInitialState : function () {
+				return {
+					desc : '-',
+					imgPath : '../img/favicon.ico'
+				};
+			},
+			componentDidMount : function () {
+				$.ajax({
+					type:"POST",
+					url:this.props.source,
+					dataType:"json",
+					data:{
+					},
+					success: function(data){
+						if (this.isMounted()) {
+							this.setState({
+								desc : data[0].read
+							});
+						}
+					}error: function(jqXHR){
+						mui.toast("发生错误"+ jqXHR.status);
+					}.bind(this)
+				});
+			},
+			render: function() {
+				return (
+					<li className="firstitle">
+						<div>
+							<img id="topic-picture" src={this.state.imgPath} alt="话题" />
+						</div>
+						<div>
+							<p></p>
+							<p>{this.state.desc}人已阅</p>
+						</div>
+						<div style={{clear:'both',color:'red'}}>1111</div>
+					</li>
+				);
+			}
+		});
+		ReactDOM.render(
+			<CommentBox source ="http://www.zmzfang.com/?r=topic/last-content" />,
+			$('.mui-content')[0]
+		);
+	</script>
+</body>
+</html>

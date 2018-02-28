@@ -1,0 +1,9 @@
+提现相关
+
+详见数据库表设计；前台只负责提交申请，后台负责审核，并执行实际的提现转账操作；
+
+备注3：提现申请提交后，新增t_withdraw_cash（提现记录表）中记录，新增t_withdraw_cash_status（提现状态表）中状态，t_account_detail表中新增提现支出的记录，对应orderid填写，提现记录表中id；t_account表中当前待领取收益remainedprofit，减少account，锁定收益增加account；
+备注3：审核通过后，更新t_withdraw_cash（提现记录表）中状态，新增t_withdraw_cash_status（提现状态表）中状态，审核通过后才可以进行转账操作；
+备注4：审核未通过，更新t_withdraw_cash（提现记录表）中状态，新增t_withdraw_cash_status（提现状态表）中状态，t_account_detail表中新增提现退款的记录，对应orderid填写，提现记录表中id；t_account表中当前待领取收益remainedprofit，增加account，锁定收益减少account；
+备注5：转账成功，更新t_withdraw_cash（提现记录表）中状态，新增t_withdraw_cash_status（提现状态表）中状态，t_account表中已提现收益drawedprofit，增加account，锁定收益减少account；
+备注6：转账失败，更新t_withdraw_cash（提现记录表）中状态，新增t_withdraw_cash_status（提现状态表）中状态，t_account_detail表中新增提现退款的记录，对应orderid填写，提现记录表中id；t_account表中当前待领取收益remainedprofit，增加account，锁定收益减少account；

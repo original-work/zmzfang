@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../../img/favicon.ico">
+		<style type="text/css">
+			
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			.introduction {
+				font-size: 12px;
+				margin-bottom:0px;
+				padding-top:5px;
+				padding-left: 3px;
+				padding-right: 3px;
+				background-color: #f7f7f7;
+				line-height: 14px;
+				text-indent:1em;
+			}
+			.expertisenDiv
+			{
+				clear:both;
+				text-indent:1em;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				top: 105px;
+				bottom: 0px
+			}
+			
+			#expertSubjectDiv:after { 
+			content:""; 
+			display: block; 
+			clear: both; 
+			} 
+			
+			.subjctBtn
+			{
+				width: 90%;
+				height: 40px;
+				color: #fff;
+			}
+			.select
+			{
+				background-color: #4cd964;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav">
+        	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        	<h1 class="mui-title" style="left:-20px;right:inherit;">专家列表</h1>
+        	<a href="../User/search.html?type=2"><span id="search" class="mui-icon mui-icon-search" style="position: absolute;right: 20px;top:0px;"></span></a>
+        	<!--<div class="col-xs-2" >
+        		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        		<label style="padding-left:0px;width: 100%;font-size:11px;position:relative;top:10px;">区域</label>
+        	</div>
+
+			<div class="col-xs-4">
+        		<select id="area" class="mui-btn mui-btn-block" style="width:70%">
+					<option value="130000">不限</option>
+					<option value="130100">青浦区</option>
+					<option value="130200">松江区</option>
+					<option value="130300">嘉定区</option>
+					<option value="130400">闵行区</option>
+					<option value="130500">宝山区</option>
+					<option value="130600">金山区</option>
+					<option value="130700">长宁区</option>
+					<option value="130800">普陀区</option>
+					<option value="130900">杨浦区</option>
+					<option value="131000">虹口区</option>
+					<option value="131100">黄浦区</option>
+					<option value="131200">静安区</option>
+					<option value="131300">奉贤区</option>
+					<option value="131400">徐汇区</option>
+					<option value="131500">闸北区</option>
+					<option value="131600">浦东新区</option>
+					<option value="131700">崇明区</option>
+				</select>
+        	</div>
+        	<div class="col-xs-6">
+        		<h1 class="mui-title" style="left:-20px;right:inherit;">专家列表</h1>
+			</div>-->
+			
+		</header>
+		
+		<div class="mui-content">
+			<div id="expertListDiv">
+				<div id="expertSubjectDiv" style="padding: 10px 10px;">
+					<!--<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+						<a id="policyLink" class="mui-control-item mui-active" href="">
+							政策
+						</a>
+						<a id="loanLink" class="mui-control-item" href="">
+							贷款
+						</a>
+						<a id="tradingLink" class="mui-control-item" href="">
+							交易税费
+						</a>
+						<a id="lawLink" class="mui-control-item" href="">
+							法律纠纷
+						</a>
+						<a id="marketLink" class="mui-control-item" href="">
+							市场行情
+						</a>
+					</div>-->
+					<div class="col-xs-4 mui-text-center">
+						<button id="tradingLink" type="button" class="mui-btn subjctBtn mui-btn-green">
+						交易税政
+						</button>
+					</div>
+					<div class="col-xs-4 mui-text-center">
+						<button id="loanLink" type="button" class="mui-btn subjctBtn mui-btn-grey">
+						贷款
+						</button>
+					</div>
+					
+					<div class="col-xs-4 mui-text-center">
+						<button id="lawLink" type="button" class="mui-btn subjctBtn mui-btn-grey">
+						房产纠纷
+						</button>
+					</div>
+				</div>
+				
+				<div class="mui-slider-group">
+					
+					<div id="policy" class="mui-content mui-scroll-wrapper mui-hidden">
+						<div class="mui-scroll">
+							<ul id="policyListUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+					
+					<div id="trading" class="mui-content mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul id="tradingListUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+					
+					<div id="loan" class="mui-content mui-scroll-wrapper mui-hidden pull-refresh">
+						<div class="mui-scroll">
+							<ul id="loanListUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+					
+					<div id="law" class="mui-content mui-scroll-wrapper mui-hidden">
+						<div class="mui-scroll">
+							<ul id="lawListUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+					
+					<div id="market" class="mui-content mui-scroll-wrapper mui-hidden">
+						<div class="mui-scroll">
+							<ul id="marketListUl" class="mui-table-view">
+							</ul>
+						</div>
+					</div>
+					
+					<!--<div id="policy" class="mui-control-content mui-slider-item mui-active">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll" data="test">
+								<ul id="policyListUl" class="mui-table-view">
+									<li class="mui-table-view-cell mui-media" >
+										<div id="expertBrief" class="col-xs-12 expert-brief" expert-id="8" user-id="10218">
+											<div id="userPicBrief" class="col-xs-2 mui-text-center">
+												<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+													<img id="expertHeadPic" style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+												</div>
+												<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+													<h5 id="name">王大锤</h5>
+												</div>
+											</div>
+											<div class="col-xs-10">
+												<div>
+													<div class="col-xs-7">
+														<h5 id="domain" class="mui-badge mui-badge-danger" style="">领域:<span id="domain">公积金</span></h5>
+													</div>
+													<div class="col-xs-5">
+														<p class="mui-text-right" style="font-size:11px"><span id="scores">0</span>个赞</p>
+													</div>
+												</div>
+											
+												<div class="expertisenDiv" style="">
+													<p id="expertisen">公积金中心工作人员，擅长公积金贷款，税费，复议等。答复时间晚上7点到10点</p>
+												</div>
+											</div>
+											
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>-->
+					<!--<div id="loan" class="mui-control-content area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="loanListUl" class="mui-table-view">
+									<li class="mui-table-view-cell mui-media" >
+										<div id="expertBrief" class="col-xs-12 expert-brief" expert-id="8" user-id="10218">
+											<div id="userPicBrief" class="col-xs-2 mui-text-center">
+												<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+													<img id="expertHeadPic" style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+												</div>
+												<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+													<h5 id="name">王大锤</h5>
+												</div>
+											</div>
+											<div class="col-xs-10">
+												<div>
+													<div class="col-xs-7">
+														<h5 id="domain" class="mui-badge mui-badge-danger" style="">领域:<span id="domain">公积金</span></h5>
+													</div>
+													<div class="col-xs-5">
+														<p class="mui-text-right" style="font-size:11px"><span id="scores">0</span>个赞</p>
+													</div>
+												</div>
+											
+												<div class="expertisenDiv" style="">
+													<p id="expertisen">公积金中心工作人员，擅长公积金贷款，税费，复议等。答复时间晚上7点到10点</p>
+												</div>
+											</div>
+											
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>-->
+					<!--<div id="trading" class="mui-control-content area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="tradingListUl" class="mui-table-view">
+									<li class="mui-table-view-cell mui-media" >
+										<div id="expertBrief" class="col-xs-12 expert-brief" expert-id="8" user-id="10218">
+											<div id="userPicBrief" class="col-xs-2 mui-text-center">
+												<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+													<img id="expertHeadPic" style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+												</div>
+												<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+													<h5 id="name">王大锤</h5>
+												</div>
+											</div>
+											<div class="col-xs-10">
+												<div>
+													<div class="col-xs-7">
+														<h5 id="domain" class="mui-badge mui-badge-danger" style="">领域:<span id="domain">公积金</span></h5>
+													</div>
+													<div class="col-xs-5">
+														<p class="mui-text-right" style="font-size:11px"><span id="scores">0</span>个赞</p>
+													</div>
+												</div>
+											
+												<div class="expertisenDiv" style="">
+													<p id="expertisen">公积金中心工作人员，擅长公积金贷款，税费，复议等。答复时间晚上7点到10点</p>
+												</div>
+											</div>
+											
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>-->
+					<!--<div id="law" class="mui-control-content area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="lawListUl" class="mui-table-view">
+									<li class="mui-table-view-cell mui-media" >
+										<div id="expertBrief" class="col-xs-12 expert-brief" expert-id="8" user-id="10218">
+											<div id="userPicBrief" class="col-xs-2 mui-text-center">
+												<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+													<img id="expertHeadPic" style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+												</div>
+												<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+													<h5 id="name">王大锤</h5>
+												</div>
+											</div>
+											<div class="col-xs-10">
+												<div>
+													<div class="col-xs-7">
+														<h5 id="domain" class="mui-badge mui-badge-danger" style="">领域:<span id="domain">公积金</span></h5>
+													</div>
+													<div class="col-xs-5">
+														<p class="mui-text-right" style="font-size:11px"><span id="scores">0</span>个赞</p>
+													</div>
+												</div>
+											
+												<div class="expertisenDiv" style="">
+													<p id="expertisen">公积金中心工作人员，擅长公积金贷款，税费，复议等。答复时间晚上7点到10点</p>
+												</div>
+											</div>
+											
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>-->
+					
+					<!--<div id="market" class="mui-control-content area-div">
+						<div id="scroll" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="marketListUl" class="mui-table-view">
+								</ul>
+							</div>
+						</div>
+					</div>-->
+				</div>
+		
+				
+			
+				<!--<ul id='expertListUl' class="mui-table-view">						
+					<li class="mui-table-view-cell mui-media" >
+						<div id="expertBrief" class="col-xs-12 expert-brief" expert-id="8" user-id="10218">
+							<div id="userPicBrief" class="col-xs-2 mui-text-center">
+								<div style="width:42px; height:42px; border-radius:50%; overflow:hidden;margin:auto;">
+									<img id="expertHeadPic" style="width:42px; height:42px; " src="http://www.zmzfang.com/weixin/img/headpic/5319.jpg" alt="个人头像">
+								</div>
+								<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+									<h5 id="name">王大锤</h5>
+								</div>
+							</div>
+							<div class="col-xs-10">
+								<div>
+									<div class="col-xs-7">
+										<h5 id="domain" class="mui-badge mui-badge-danger" style="">领域:<span id="domain">公积金</span></h5>
+									</div>
+									<div class="col-xs-5">
+										<p class="mui-text-right" style="font-size:11px"><span id="scores">0</span>个赞</p>
+									</div>
+								</div>
+							
+								<div class="expertisenDiv" style="">
+									<p id="expertisen">公积金中心工作人员，擅长公积金贷款，税费，复议等。答复时间晚上7点到10点</p>
+								</div>
+							</div>
+							
+						</div>	
+					</li>
+					
+			    </ul>-->
+			
+			</div>	
+		</div>
+		<div style="height: 50px;">
+		</div>
+		
+		<script src="../../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/Expert/common/common.js?v=0.01"></script>
+		<script src="../../js/Expert/common/expertAjax.js?v=0.01"></script>
+		<script src="../../js/Expert/List/ExpertList.js?v=0.01"></script>
+		
+	</body>
+
+</html>

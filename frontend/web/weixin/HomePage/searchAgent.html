@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			body{
+				overflow: hidden;
+			}
+			.mui-bar{
+				z-index: 1000;
+			}
+			.mui-scroll-wrapper
+			{
+				overflow: visible;
+				top:44px;
+				bottom:50px;
+			}
+			
+			li label{
+				padding-left: 15px;
+			}
+			.mui-table-view-cell{
+				padding:5px 15px;
+			}
+			
+			.col-xs-1,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-12
+			{
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			#keywords
+			{
+				border-top-left-radius:2em;
+				border-top-right-radius:2em;
+				border-bottom-right-radius:2em;
+				border-bottom-left-radius:2em;
+			}
+			.thd,.dh3rd{
+				display:inline-block;
+				width: calc( 33.3% - 11px );
+				text-align: center;
+				padding: 5px 10px;
+				border-right:1px solid #efefef;
+				margin:10px 5px;
+				color:#666;
+			}
+			.thd.active{
+				border-right:none;
+			}
+
+			.line{
+				width:100%;
+				height: 1px;
+				background: #ddd;
+			}
+			#noDataDiv
+			{
+				padding-left: 25px;
+				margin-top: 20px;
+				padding-bottom: 10px;
+				border-bottom: 1px solid #d3dcc6;
+			}
+			.content{
+				font-size:.9rem;
+			}
+			.content .mui-table-view-cell{
+				padding-left:1rem;
+			}
+			.mui-table-view.mui-grid-view{
+				padding: 0;
+			}
+			.mui-i-select-list{
+				padding:0;
+				box-shadow: none;
+				-webkit-box-shadow:none;
+			}
+			.mui-i-select-list .mui-icon{
+				font-size: 12px;
+			}
+			.filter_item {
+			    position: absolute;
+			    background: #fff;
+			    top: 88px;
+			    left: 0;
+			    right: 0;
+			    -webkit-transition: -webkit-transform .5s ease;
+			    transition: transform .5s ease;
+			    -webkit-transform: translate3d(0,-100%,0);
+			    transform: translate3d(0,-100%,0);
+			    opacity: 0;
+			    z-index: -1;
+			}
+			.filter_item.active {
+			    -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+			    opacity: 1;
+			    z-index: 999;
+			    overflow-y: auto;
+			    max-height: 24.25rem;
+			}
+			.mui-backdrop{
+
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button id="reset" class="mui-btn mui-btn-link mui-btn-nav mui-pull-left">重置</button>
+			<h1 class="mui-title">
+				<input type="text" id="keywords" style="padding-left:36px;margin:0">
+			</h1>
+			<button id="searchBtn" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">搜索</button>
+			<span id="search" class="mui-icon mui-icon-search" style="position: absolute;left: 52px;top:0px;"></span>
+		</header>
+		
+		
+		<div class="mui-content">
+		<div class="mui-i-select-list mui-bar" style="z-index: 1000;display: none">
+			<ul class="mui-table-view mui-grid-view ">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-i-selectBtn">
+					<a href="javascript:void(0)"><span id="city_value">城市</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-i-selectBtn">
+					<a href="javascript:void(0)"><span id="region_value">区域</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-i-selectBtn">
+					<a href="javascript:void(0)"><span id="block_value">板块</span>&nbsp;<span class="mui-icon mui-icon-arrowdown"></span></a>
+				</li>
+			</ul>
+		</div>
+		<div class="content">
+			<div class="filter_item">
+				<ul class="city_list mui-table-view">
+					<li class="mui-table-view-cell"	 data=''>不限</li>
+					<li class="mui-table-view-cell" data='13'>上海市</li>
+					<li class="mui-table-view-cell" data='001013'>北京市</li>
+					<li class="mui-table-view-cell" data='057113'>杭州市</li>
+					<li class="mui-table-view-cell" data='002013'>广州市</li>
+					<li class="mui-table-view-cell" data='075513'>深圳市</li>
+				</ul>
+			</div>
+			<div class="filter_item">
+				<ul class="region_list mui-table-view">
+					<li class="mui-table-view-cell" data=''>请先选择城市</li>
+				</ul>
+			</div>
+			<div class="filter_item">
+				<ul class="block_list mui-table-view">
+					<li class="mui-table-view-cell" data=''>请先选择城市/区域</li>
+				</ul>
+			</div>
+		</div>
+		<div class="mui-scroll-wrapper">
+			<div id="mui-scroll">
+				<div id="noDataDiv" class="mui-text-left" style="display:none;">
+					<h5 id="noDataPrompt">没有找到匹配的经纪人，换个关键词试试</h5>
+				</div>
+
+				<div id="matchAgentDiv" style="display:none;">
+					<!--数据列表-->
+					<ul id="matchAgentUl" class="mui-table-view">
+					</ul>
+				</div>
+				<div id="hotAgentDiv" class="mui-card" style="">
+					<h5 style="font-size:1rem;height:3rem;line-height:3rem;padding-left:1rem;color:#000;border-left:3px solid #007aff;margin:0;border-bottom:1px solid #ddd">找靠谱经纪人</h5>
+					<div id="hotKeyDiv">
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div id="hotApartmentDiv" class="mui-card" style="">
+					<h5 style="font-size:1rem;height:3rem;line-height:3rem;padding-left:1rem;color:#000;border-left:3px solid #dd524d;margin:0;border-bottom:1px solid #ddd">找业务经纪人</h5>
+					<div id="hotApartmentKeyDiv">
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div id="newComer" class="mui-card">
+					<h5 style="font-size:1rem;height:3rem;line-height:3rem;padding-left:1rem;color:#000;border-left:3px solid #4cd964;margin:0;border-bottom:1px solid #ddd">最新加入</h5>
+					<ul id="newComerDiv" class="mui-table-view"></ul>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<script type="text/javascript" src="http://at.alicdn.com/t/font_7tf8h2djr1rcz0k9.js"></script>
+		<script src = "https://cdn.wilddog.com/sdk/js/2.4.3/wilddog.js"></script>
+		<script src="http://www.zmzfang.com/weixin/js/foot.js?v=0.02"  charset="UTF-8"></script>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/wxShare.js?v=0.01"></script>
+		<script src="../js/common.js?v=0.01"></script>
+		<script src="../js/commonAjax.js?v=0.01"></script>
+		<script src="../js/dom.create.js?v=0.01"></script>
+		<script src="../js/area.js"></script>
+		<script src="../js/HomePage/searchAAB.js?v=0.01"></script>
+		<script type="text/javascript">
+			$('#flashLink').addClass('mui-active');
+			wxShare({'title':'买房，找人比找房更重要，靠谱房产中介都在这里',"desc":'芝麻找房 - 满足你对经纪人的一切要求！','link':window.document.location.href})
+			var index = '',city='',cityV,regionV;
+			var mask = mui.createMask(callback);
+			$('.mui-i-selectBtn').on('tap',function(){//区域，地铁，总价，户型被选中的动作
+					
+					if(index === $(this).index()){
+						index = '';
+						mask.close();
+					}else{
+						index = $(this).index();
+						$('.content .filter_item').removeClass('active');
+
+						$('.content .filter_item:eq('+index+')').addClass('active');
+
+						document.body.style.overflow='hidden';
+						mask.show();//显示遮罩
+					}
+			});
+			
+			function callback(){
+				$('.content .filter_item').removeClass('active');
+				document.body.style.overflow='';
+			}
+			$('.city_list li').on('tap',function(){
+				city = $(this).text();
+				sessionStorage.setItem('SA_city',city);
+				cityV = $(this).attr('data');
+				$('#city_value').text(city);
+				$(this).parent().parent().removeClass('active');
+				mask.close();
+				if(city == '不限'){
+					$('.region_list').html('<li class="mui-table-view-cell" data="">请先选择城市</li>');
+					$('#region_value').text('区域');
+					$('#block_value').text('板块');
+					$('.block_list').html('<li class="mui-table-view-cell" data="">请先选择城市/区域</li>');
+					history.replaceState({}, '', getNewUrl(location.href,"area",''));
+					beginSearch(0)
+					return;
+				}
+				var cityJ,liDom = '<li class="mui-table-view-cell" data="'+cityV+'">不限</li>';
+				switch(city){
+					case '':
+					break;
+					case '上海市':
+					cityJ = areaData3[2].children;
+					break;
+					case '广州市':
+					cityJ = gzAreaData[0].children;
+					break;
+					case '北京市':
+					cityJ = bjAreaData[0].children;
+					break;
+					case '杭州市':
+					cityJ = hzAreaData[0].children;
+					break;
+					case '深圳市':
+					cityJ = szAreaData[0].children;
+					break;
+				}
+				for(i in cityJ){
+					var str = cityJ[i].value
+					var value = str.substring(0,str.length-2);
+					liDom += '<li class="mui-table-view-cell" data="'+value+'">'+cityJ[i].text+'</li>';
+				}
+				$('.region_list').html(liDom);
+				$('#region_value').text('区域');
+				$('#block_value').text('板块');
+				$('.block_list').html('<li class="mui-table-view-cell" data="">请先选择城市/区域</li>');
+				var aps = $(this).attr('data');
+				history.replaceState({}, '', getNewUrl(location.href,"area",aps));
+				beginSearch(0)
+				/***** start region events *****/
+				$('.region_list li').on('tap',function(){
+					regionV = $(this).attr('data');
+					$('#region_value').text($(this).text());
+					$(this).parent().parent().removeClass('active');
+					mask.close();
+					var regionJ,liDom ='<li class="mui-table-view-cell" data="'+regionV+'">不限</li>';
+					var index = $(this).index() - 1;
+					if(index == -1){
+						$('#block_value').text('板块');
+						$('.block_list').html('<li class="mui-table-view-cell" data="">请先选择城市/区域</li>');
+						var aps = $(this).attr('data');
+						history.replaceState({}, '', getNewUrl(location.href,"area",aps));
+						beginSearch(0)
+						return;
+					}
+					switch(city){
+						case '':
+						break;
+						case '上海市':
+						regionJ = areaData3[2].children[index].children;
+						break;
+						case '广州市':
+						regionJ = gzAreaData[0].children[index].children;
+						break;
+						case '北京市':
+						regionJ = bjAreaData[0].children[index].children;
+						break;
+						case '杭州市':
+						regionJ = hzAreaData[0].children[index].children;
+						break;
+						case '深圳市':
+						regionJ = szAreaData[0].children[index].children;
+						break;
+					}
+					for(i in regionJ){
+						liDom += '<li class="mui-table-view-cell" data="'+regionJ[i].value+'">'+regionJ[i].text+'</li>';
+					}
+					$('.block_list').html(liDom);
+					$('#block_value').text('板块');
+					var aps = $(this).attr('data');
+					history.replaceState({}, '', getNewUrl(location.href,"area",aps));
+					beginSearch(0)
+					/***** start block events *****/
+					$('.block_list li').on('tap',function(){
+						$('#block_value').text($(this).text());
+						var aps = $(this).attr('data');
+						history.replaceState({}, '', getNewUrl(location.href,"area",aps));
+						beginSearch(0)
+						$(this).parent().parent().removeClass('active');
+						mask.close();
+					})
+				})
+			})
+			window.addEventListener("popstate", function() {
+				beginSearch(0)
+			});
+			var getNewUrl = function changeURLPar(url, par, par_value) 
+			{ 
+				var pattern = par+'=([^&]*)'; 
+				var replaceText = par+'='+par_value; 
+				if (url.match(pattern))
+				{
+					var tmp = '/\\'+par+'=[^&]*/'; 
+					tmp = url.replace(eval(tmp), replaceText); 
+					return (tmp); 
+				}
+				else 
+				{
+					if (url.match('[\?]'))
+					{ 
+						return url+'&'+ replaceText; 
+					}else{
+						return url+'?'+replaceText; 
+					}
+				}
+				return url+'\n'+par+'\n'+par_value; 
+			}
+			$('#reset').on('tap',function(){
+				mui('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+				history.replaceState({}, '', 'http://www.zmzfang.com/weixin/HomePage/searchAgent.html');
+				beginSearch(0)
+			})
+		</script>
+	</body>
+</html>

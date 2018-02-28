@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01" />
+		<link rel="shortcut icon"  type="image/x-icon" href="img/favicon.ico">
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+    	<style type="text/css">
+    		.mui-radio,#type1,#type2{font-size:.9rem;}
+    		#type1 .mui-input-row,#type2 .mui-input-row{height:50px;}
+    		.mui-radio label,#type1 label,#type2{margin-left: 8px}
+    		.mui-input-group .mui-input-row{color:#333;}
+    		.mui-input-row label{width:60%;}
+    		.mui-numbox{height:46px;}
+    	</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+			<h1 class="mui-title" id="title">限购自查工具</h1>
+			
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+			    <div class="mui-input-row">
+			        <label>户籍地址</label>
+			    </div>
+			    <div class="mui-input-row mui-radio">
+					<label for="radio1">上海户口
+						<input id="radio1" name="type" value="0" checked="checked"  type="radio"  onclick="$.postJSON(0)">
+					</label>
+				</div>
+				<div class="mui-input-row mui-radio">
+					<label for="radio2">非上海户口
+						<input id="radio2" name="type" value="1" type="radio" onclick="$.postJSON(1)">
+					</label>
+				</div>
+				<div class="mui-input-row mui-radio">
+					<label for="radio3">境外人士
+						<input id="radio3" name="type" value="2" type="radio" onclick="$.postJSON(1)">
+					</label>
+				</div>
+				<div class="mui-input-row">
+			        <label>是否已婚</label>
+			        <div class="mui-switch mui-active" id="mySwitch">
+					  <div class="mui-switch-handle"></div>
+					</div>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>房产情况</label>
+			    </div>
+			    <div id="type1">
+				    <div class="mui-input-row">
+				    	<label for="before">2011年1月28日之前与家人共同拥有上海市房产</label>
+				    	<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+						  <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+						  <input name="before" id="before" class="mui-numbox-input" type="number" />
+						  <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+						</div>
+			        </div>
+			        <div class="mui-input-row hidden" style="display:none;">
+				    	<label for="peiou">2011年1月28日之前配偶与其家人共同拥有上海市房产</label>
+				    	<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+						  <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+						  <input name="peiou" id="peiou" class="mui-numbox-input" type="number" />
+						  <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+						</div>
+			        </div>
+			        <div class="mui-input-row hidden" style="display:none;">
+				    	<label for="after">2011年1月28日之后与家人拥有上海市房产</label>
+				    	<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+						  <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+						  <input name="after" id="after" class="mui-numbox-input" type="number" />
+						  <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+						</div>
+			        </div>
+					<div class="mui-input-row">
+				    	<label for="child" id="ctext">本人、配偶及未成年子女名下单独拥有上海市房产</label>
+				    	<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+						  <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+						  <input name="child" id="child" class="mui-numbox-input" type="number" />
+						  <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+						</div>
+			        </div>
+			    </div>
+		        <div id="type2" style="display:none">
+					<div class="mui-input-row">
+				    	<label for="child" id="ctext">本人家庭中所有成员拥有上海市房产数</label>
+				    	<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+						  <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+						  <input name="child2" id="child2" class="mui-numbox-input" type="number" />
+						  <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+						</div>
+			        </div>
+				</div>
+				<button type="button" id="submit" class="mui-btn mui-btn-success mui-btn-block">开始计算</button>
+			</form>
+			<fieldset class="border" style="display:none;"> 
+				<p><strong>查询结果</strong></p>
+				<p id="result"></p>
+				<p><a href="javascript:void(0)" onclick="backToCal()" class="mui-btn mui-btn-success mui-btn-block">重新计算</a></p>
+			</fieldset>
+		</div>
+		
+
+    <script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/ajax.js"></script>
+    <script>
+
+	//ajax
+		$(function(){
+		  $(".hidden").show();
+		  var ismarry=1;
+		  document.getElementById("mySwitch").addEventListener("toggle",function(event){
+				  if(event.detail.isActive){
+				    	$(".hidden").show();
+				    	ismarry=1;
+				  }else{
+				    	$(".hidden").hide();
+				    	ismarry=0;
+				  }
+		  })
+		  $("#submit").bind("click",function(){
+			  var obj=$("input[name=type]");
+			  var firstbuyhome;
+			  var onlybuyhome;
+				if(obj!=null){
+					var i;
+					for(i=0;i<obj.length;i++){
+						if(obj[i].checked){
+							type=obj[i].value;
+						}
+					}
+				}
+			$.ajax({
+				 type:"POST",
+				 // url:"http://www.zmzfang.com/?r=tools/results",
+				 url:getInterfaceUrl()+"?r=tools/results",
+				 data:{
+						type:type,
+						action:"canbuy",
+						before:$("#before").val(),
+						after:$("#after").val(),
+						ismarry:ismarry,
+						peiou:$("#peiou").val(),
+						child:$("#child").val(),
+						child2:$("#child2").val(),
+				},
+				 success: function(data){
+							$('form').hide();
+							$('fieldset').show();
+							$("#result").html(data);		
+					},
+				 error: function(jqXHR){
+						alert("发生错误"+ jqXHR.status);
+					}
+			});
+		  });
+
+		});
+		function backToCal(){
+		  		$('form').show();
+				$('fieldset').hide();
+				$("#result").html('');
+		  }
+		$.postJSON = function(x) {
+				 if(x==0){
+					$("#type1").show();
+					$("#type2").hide();
+				}else{
+					$("#type1").hide();
+					$("#type2").show();
+				}
+		};
+    </script>
+</body>
+</html>

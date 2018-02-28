@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="http://www.zmzfang.com/weixin/js/head.js"></script>
+    	<title>芝麻找房</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css?v=0.01">
+		<link rel="shortcut icon"  type="image/x-icon" href="../img/favicon.ico">
+		<style type="text/css">
+			.mui-table-view.mui-grid-view{
+				padding: 0;
+			}
+			
+			.mui-scroll-wrapper
+			{
+				top: 44px;
+				bottom: 0px
+			}
+			.mui-table-view:first-child
+			{
+				margin-top:0px;
+			}
+			
+			.content{
+				font-size:.9rem;
+			}
+
+			.icon {
+		       width: 1em; height: 1em;
+		       vertical-align: -0.15em;
+		       fill: currentColor;
+		       overflow: hidden;
+		    }
+		</style>
+	</head>
+
+	<body>
+        <header class="mui-bar mui-bar-nav" style="">
+        	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">求助列表</h1>
+			<a href="./search.html?type=4"><span id="search" class="mui-icon mui-icon-search" style="position: absolute;right: 20px;top:0px;"></span></a>
+         <!-- <div id="logo"><img src="http://www.zmzfang.com/weixin/img/banner.png" height="40" width="320" /></div> -->
+		</header>
+		
+		<div class="mui-content">
+			<div id="supplymentDiv" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<!--数据列表-->
+					<ul id="helpUl" class="mui-table-view mui-table-view-chevron">
+<!-- 						<li class="mui-table-view-cell mui-media" id="helpid-7">
+							<div id="helpBrief" class="help-brief" contactor="逍遥游" help-id="7">
+								<div class="col-xs-2 mui-text-center">
+									<div style="width:60px; height:60px;  overflow:hidden;">
+										<img style="width:45px; height:45px; border-radius:100%;" src="http://www.zmzfang.com/images/head/14793583681503771296.jpg" alt="个人头像">
+										<div style="text-overflow: ellipsis;white-space: nowrap;text-align:center;margin-top:-4px;font-size:.5rem;overflow: hidden;">
+											逍遥游
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-xs-10">
+									<div>
+										<div class="col-xs-7 mui-text-left">
+											<p><span>悬赏</span> - <span>红包5元</span></p>
+										</div>
+										<div class="col-xs-5 mui-text-right">
+											<p class="publish-date" style="">10小时前</p>
+										</div>
+										
+									</div>
+									<div>
+										<div class="col-xs-7 mui-text-left">
+											<p><span>求助</span> - <span>帮我拉产调</span></p>
+										</div>
+										<div class="col-xs-5 mui-text-right">
+											<p class="reply-times" style="">58条评论</p>
+										</div>
+										
+									</div>
+									<div>
+										<div class="col-xs-7 mui-text-left">
+											<p><span>联系人：逍遥游</span></p>
+										</div>
+										<div class="col-xs-5 mui-text-right">
+											<p class="publish-date" style="">电话：18019398639</p>
+										</div>
+										
+									</div>
+								</div>
+								
+							</div>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+		
+		</div>
+		
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script src="../js/dom.create.js" charset="UTF-8"></script>
+		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/wxShare.js"></script>
+		<script>
+			var startSn = 0;
+			var mask = mui.createMask(callback);
+
+			mui.init(
+			{
+				swipeBack: false,
+				gestureConfig:{
+					doubletap:true
+				},
+			});
+			
+			mui('#supplymentDiv').pullRefresh({
+				up: {
+						height:50,
+						contentrefresh: '正在加载...',
+						contentnomore:'没有更多数据了',
+						callback: pullupRefresh
+					}
+				}	
+			);
+	
+			
+			mui.ready(function() {
+				wxShare({"link":"http://www.zmzfang.com/weixin/HomePage/HelpList.html"});
+				getHelpList(0);
+			});
+
+
+			 //增加需求列表中tap事件
+			mui('#helpUl').on('tap', 'li', function() {
+				var helpId = $(this).children('#helpBrief').attr('help-id');
+				localStorage.setItem("helpId", helpId);
+				
+				var dstUrl = './HelpDetail.html?helpId='+helpId;
+
+				mui.openWindow({
+					url: dstUrl,
+					id: 'HelpDetail.html'
+				});
+			});
+			
+			function getQueryString(name) {
+			    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			    var r = window.location.search.substr(1).match(reg);
+			    if (r != null) return unescape(r[2]); return null;
+		    }
+
+			function getHelpList(startsn,countsn)
+			{
+				console.log("getHelpList");
+				var start = startsn;
+				var count = arguments[1] ? arguments[1] : 20;
+				var region = getQueryString('region')?region:'%';
+				console.log("region is "+region);
+				console.log("start is "+start);
+				console.log("count is "+count);
+				
+				var supInfo=new Object();
+				supInfo.region=region;
+				supInfo.start=start;
+				supInfo.count=count;
+				ajax_get_help_list(supInfo,getHelpListSuccess,getHelpListFailed);
+				mask.close();
+			}
+			
+			//获取需求列表成功后的处理方法，新建li元素
+			function getHelpListSuccess(data)
+			{
+				console.log('获取房源列表成功'+data);
+				var helpUl=$('#helpUl');
+				if(!data){
+					mui.toast('未能获取到更多数据');
+					return ;
+				}
+
+				var firstFrag ='';
+				for(var i in data)
+				{
+					firstFrag +=fillHelpListLi(data[i]);
+				}
+				startSn += data.length;
+				console.log(startSn);
+				
+				helpUl.append(firstFrag);
+			}
+
+			function getHelpListFailed(data){
+				console.log(JSON.stringify(data));
+				toastMSG = '获取求助列表失败';
+				mui.toast(toastMSG);
+			}
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				console.log('pullupRefresh');
+				var self = this;
+				setTimeout(function() {
+					getHelpList(startSn);
+					self.endPullupToRefresh(false); 
+				}, 1000);
+	
+			}
+			
+			function callback(){
+				//$('.content .filter_item').removeClass('active');
+				document.body.style.overflow='';
+			}
+
+		</script>
+	</body>
+
+</html>
